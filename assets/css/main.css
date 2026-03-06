@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+@layer base {
+  html {
+    font-family: 'Noto Sans Arabic', 'Inter', sans-serif;
+  }
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium transition-colors duration-200;
+  }
+  .btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700;
+  }
+  .btn-secondary {
+    @apply bg-gray-500 text-white hover:bg-gray-600;
+  }
+  .btn-success {
+    @apply bg-green-500 text-white hover:bg-green-600;
+  }
+  .btn-danger {
+    @apply bg-red-500 text-white hover:bg-red-600;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .print-invoice {
+    font-family: 'Noto Sans Arabic', 'Inter', sans-serif;
+    direction: rtl;
+    max-width: 210mm;
+    margin: 0 auto;
+    padding: 20mm;
+    background: white;
+    color: black;
+  }
+
+  .print-header {
+    text-align: center;
+    border-bottom: 2px solid #000;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+  }
+
+  .print-company-info {
+    margin-bottom: 20px;
+  }
+
+  .print-invoice-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+
+  .print-customer-info,
+  .print-invoice-info {
+    flex: 1;
+  }
+
+  .print-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+
+  .print-table th,
+  .print-table td {
+    border: 1px solid #000;
+    padding: 8px;
+    text-align: right;
+  }
+
+  .print-table th {
+    background: #f5f5f5;
+    font-weight: bold;
+  }
+
+  .print-totals {
+    text-align: left;
+    margin-top: 20px;
+  }
+
+  .print-total-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+  }
+
+  .print-footer {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+  }
+}
