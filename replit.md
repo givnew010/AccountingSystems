@@ -12,12 +12,23 @@ A comprehensive Arabic-language (RTL) accounting and inventory management system
 - **Language:** Arabic (ar), RTL layout
 
 ## Project Structure
-- `pages/` — Application routes (dashboard, login, sales, purchases, products, customers, suppliers)
-- `components/` — Reusable UI components (globally registered)
+- `pages/` — Application routes: dashboard, login, sales, purchases, products, customers, suppliers, units, currencies, categories, branches-warehouses, users, sales-return, purchase-return, reports, import
+- `components/` — Reusable UI components (globally registered): `ListSection.vue`, `ActionButtons.vue`, `MessageDialog.vue`, etc.
 - `layouts/default.vue` — Main authenticated layout with sidebar and auth guards
 - `stores/` — Pinia stores (`auth.ts`, `sidebar.ts`)
-- `composables/` — Shared logic (`useToast.ts`)
+- `composables/` — Shared logic (`useToast.ts`, `helper.js`)
 - `assets/css/main.css` — Global styles
+
+## UI Pattern (All Pages)
+All pages follow the `customers.vue` reference pattern:
+- Split-panel layout: `ListSection` on left, form panel on right
+- `ActionButtons` component for New/Edit/Delete/Save/Cancel (plus Print/Post for invoices)
+- Form always visible; inputs disabled via `:disabled="isViewMode"`
+- State: `selectedItemId`, `lastSelectedItemId`, `isViewMode`
+- Delete dialogs: `inject('showMessage')` — never `confirm()` or inline `MessageDialog`
+- Notifications: `injectToast()` from `~/composables/useToast`
+- Helpers: `getDefaultValues(Structure)` from `~/composables/helper`
+- Invoice pages use `computed` to map invoices → `{ no, name, status }` for `ListSection`
 
 ## Key Configuration
 - Dev server runs on `0.0.0.0:5000` for Replit compatibility
