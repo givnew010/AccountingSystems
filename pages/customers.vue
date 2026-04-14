@@ -4,7 +4,7 @@
     <div class="flex flex-col lg:flex-row h-screen">
       <!-- List Section -->
       <ListSection title="العملاء" :items="customers" search-placeholder="البحث في العملاء..." :disabled="!isViewMode"
-        :selectedItemId="selectedItemId" @select-item="selectCustomerById" />
+        :selectedItemId="selectedItemId" @select-item="selectItem" />
 
       <!-- Content Section (Left side for RTL) -->
       <div class="w-full m-2 bg-white p-5 rounded-lg h-full overflow-hidden">
@@ -64,13 +64,6 @@
       </div>
     </div>
   </div>
-  <!-- <MessageDialog 
-  v-model:show="showDeleteDialog" 
-  title="تأكيد الحذف"
-  :message="`هل أنت متأكد من حذف العميل «${deleteCandidateName}»؟`" 
-  @confirm="confirmDelete" @cancel="cancelDelete"
-  confirm-text="حذف" 
-  cancel-text="إلغاء" /> -->
 </template>
 
 <script setup>
@@ -92,7 +85,6 @@ const Structure = {
 const selectedItemId = ref(null)
 const lastselectedItemId = ref(null)
 const isViewMode = ref(true)
-const showDeleteDialog = ref(false)
 const { addToast } = injectToast()
 const currentData = ref({ ...getDefaultValues(Structure) })
 const showMessage = inject('showMessage');
@@ -134,13 +126,13 @@ const customers = ref([
 // Methods
 onMounted(() => {
   isViewMode.value = true
-  selectCustomerById(customers.value[0]?.id ?? -1)
+  selectItem(customers.value[0]?.id ?? -1)
 })
 
 const newCustomer = () => {
   isViewMode.value = false
   lastselectedItemId.value = selectedItemId.value
-  selectCustomerById(-1)
+  selectItem(-1)
 }
 
 const editCustomer = () => {
@@ -158,7 +150,7 @@ const saveCustomer = () => {
     if (index > -1) {
       customers.value[index] = { ...currentData.value, id: selectedItemId.value }
       isViewMode.value = true
-      selectCustomerById(customers.value[index].id)
+      selectItem(customers.value[index].id)
       addToast('تم تحديث العميل بنجاح', 'success')
     }
   } else {
@@ -167,49 +159,38 @@ const saveCustomer = () => {
     const newCustomerData = { ...currentData.value, id: newId, no: newId }
     customers.value.push(newCustomerData)
     isViewMode.value = true
-    selectCustomerById(newCustomerData.id)
+    selectItem(newCustomerData.id)
     addToast('تم إضافة العميل بنجاح', 'success')
   }
 }
 
 const cancelNewOrEdit = () => {
   isViewMode.value = true
-  selectCustomerById(lastselectedItemId.value)
+  selectItem(lastselectedItemId.value)
 }
 
 const deleteCustomer = () => {
   if (!selectedItemId.value) return
-  const cust = customers.value.find(c => c.id === selectedItemId.value)
+  // const cust = customers.value.find(c => c.id === selectedItemId.value)
   showMessage({
     title: 'تأكيد الحذف',
     message: `هل أنت متأكد أنك تريد حذف هذا العميل${currentData.value.id && currentData.value.name ? ` (${currentData.value.id} - ${currentData.value.name})` : ''} ؟`,
     cancelText: 'إلغاء',
     confirmText: 'حذف',
-    onCancel: cancelDelete,
+    onCancel: () => {},
     onConfirm: confirmDelete
   });
 }
 
 const confirmDelete = () => {
-  const id = deleteCandidateId.value
-  const index = customers.value.findIndex(c => c.id === id)
+  const index = customers.value.findIndex(customer => customer.id === currentData.value.id)
   if (index > -1) {
     customers.value.splice(index, 1)
-    // select previous item or first
-    const nextId = customers.value[index]?.id ?? customers.value[index - 1]?.id ?? null
-    selectCustomerById(nextId)
+    selectItem(index >= 0 && index < customers.value.length ?
+      customers.value[index].id : index === customers.value.length ?
+        customers.value[index - 1]?.id : null);
     addToast('تم حذف العميل بنجاح', 'success')
   }
-  // reset dialog state
-  showDeleteDialog.value = false
-  deleteCandidateId.value = null
-  deleteCandidateName.value = ''
-}
-
-const cancelDelete = () => {
-  showDeleteDialog.value = false
-  deleteCandidateId.value = null
-  deleteCandidateName.value = ''
 }
 
 const printCustomer = () => {
@@ -217,7 +198,7 @@ const printCustomer = () => {
   alert('طباعة العميل - سيتم تنفيذها لاحقاً')
 }
 
-const selectCustomerById = (id) => {
+const selectItem = (id) => {
   const customer = customers.value.find(c => c.id === id) ?? { ...getDefaultValues(Structure) }
   selectedItemId.value = customer.id ?? null
   currentData.value = { ...customer }

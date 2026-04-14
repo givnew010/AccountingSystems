@@ -1,90 +1,78 @@
 <template>
-  <aside class="p-2 my-2 mr-2 w-80 bg-white rounded-lg h-full flex flex-col overflow-hidden" :class="{ 'opacity-50 pointer-events-none': disabled }">
-      <!-- Header -->
-      <div class="pt-4 pb-3 flex-shrink-0">
-        <h1 class="text-2xl font-bold text-gray-900 mb-[18px] mr-2">{{ title }}</h1>
+  <aside class="p-2 my-2 mr-2 w-80 bg-white rounded-lg h-full flex flex-col overflow-hidden"
+    :class="{ 'opacity-50 pointer-events-none': disabled }">
+    <!-- Header -->
+    <div class="pt-4 pb-3 flex-shrink-0">
+      <h1 class="text-2xl font-bold text-gray-900 mb-[18px] mr-2">{{ title }}</h1>
 
-        <!-- Search -->
-        <div class="mb-1.5">
-          <input
-            v-model="searchQuery"
-            type="text"
-            :placeholder="searchPlaceholder"
-            :disabled="disabled"
-            class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
-          />
-        </div>
-
-        <!-- Filter -->
-        <div class="mb-1.5" v-if="showStatusFilter">
-          <select
-            v-model="statusFilter"
-            :disabled="disabled"
-            class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
-          >
-            <option value="all">جميع الحالات</option>
-            <option value="active">نشط</option>
-            <option value="inactive">غير نشط</option>
-          </select>
-        </div>
-
-        <!-- Record Navigation Buttons -->
-        <div v-if="paginatedItems && paginatedItems.length > 0" class="flex justify-between items-center">
-          <button
-            @click="navigatePrevious"
-            :disabled="!canNavigatePreviousInternal || disabled"
-            :class="['p-1 rounded-md flex items-center text-sm text-gray-700', !canNavigatePreviousInternal || disabled ? 'opacity-50' : 'hover:bg-gray-200']">
-            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-            السابق
-          </button>
-          <span class="text-xs text-gray-500">
-            {{ internalCurrentRecordIndex + 1 }} / {{ paginatedItems.length }}
-          </span>
-          <button
-            @click="navigateNext"
-            :disabled="!canNavigateNextInternal || disabled"
-            :class="['p-1 rounded-md flex items-center text-sm text-gray-700', !canNavigateNextInternal || disabled ? 'opacity-50' : 'hover:bg-gray-200']">
-            التالي
-            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-          </button>
-        </div>
+      <!-- Search -->
+      <div class="mb-1.5">
+        <input v-model="searchQuery" type="text" :placeholder="searchPlaceholder" :disabled="disabled"
+          class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100" />
       </div>
 
-      <!-- ListItem -->
-      <div class="flex-1 overflow-y-auto">
-        <div v-if="paginatedItems.length > 0" class="space-y-0.5 pb-3">
-          <div
-            v-for="item in paginatedItems"
-            :key="item.id"
-            :ref="el => setItemRef(el, item.id)"
-            @click="onItemClick(item)"
-            class="cursor-pointer hover:bg-blue-100 rounded-md p-2.5 transition-colors"
-            :class="{
-              'bg-blue-200': selectedItemId && selectedItemId === item.id,
-              'bg-gray-50': !selectedItemId || selectedItemId !== item.id
-            }"
-          >
-            <div class="flex justify-between items-center">
-              <div class="flex-grow min-w-0">
-                <div class="flex items-baseline space-x-1 rtl:space-x-reverse truncate">
-                  <span class="font-medium text-gray-800 text-sm shrink-0">{{ item.no + ' #' }}</span>
-                  <span class="text-xs text-gray-600">{{ item.name }}</span>
-                </div>
+      <!-- Filter -->
+      <div class="mb-1.5" v-if="showStatusFilter">
+        <select v-model="statusFilter" :disabled="disabled"
+          class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100">
+          <option value="all">جميع الحالات</option>
+          <option value="active">نشط</option>
+          <option value="inactive">غير نشط</option>
+        </select>
+      </div>
+
+      <!-- Record Navigation Buttons -->
+      <div v-if="paginatedItems && paginatedItems.length > 0" class="flex justify-between items-center">
+        <button @click="navigatePrevious" :disabled="!canNavigatePreviousInternal || disabled"
+          :class="['p-1 rounded-md flex items-center text-sm text-gray-700', !canNavigatePreviousInternal || disabled ? 'opacity-50' : 'hover:bg-gray-200']">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+          السابق
+        </button>
+        <span class="text-xs text-gray-500">
+          {{ internalCurrentRecordIndex + 1 }} / {{ paginatedItems.length }}
+        </span>
+        <button @click="navigateNext" :disabled="!canNavigateNextInternal || disabled"
+          :class="['p-1 rounded-md flex items-center text-sm text-gray-700', !canNavigateNextInternal || disabled ? 'opacity-50' : 'hover:bg-gray-200']">
+          التالي
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ListItem -->
+    <div class="flex-1 overflow-y-auto">
+      <div v-if="paginatedItems.length > 0" class="space-y-0.5 pb-3">
+        <div v-for="item in paginatedItems" :key="item.id" :ref="el => setItemRef(el, item.id)"
+          @click="onItemClick(item)" class="cursor-pointer hover:bg-blue-100 rounded-md p-2.5 transition-colors" :class="{
+            'bg-blue-200': selectedItemId && selectedItemId === item.id,
+            'bg-gray-50': !selectedItemId || selectedItemId !== item.id
+          }">
+          <div class="flex justify-between items-center">
+            <div class="flex-grow min-w-0">
+              <div class="flex items-baseline space-x-1 rtl:space-x-reverse truncate">
+                <span class="font-medium text-gray-800 text-sm shrink-0">{{ item.no + ' #' }}</span>
+                <span class="text-xs text-gray-600">{{ item.name }}</span>
               </div>
-              <span v-if="item.status" :class="['px-2 py-0.5 text-xs rounded-full whitespace-nowrap ml-2 shrink-0', itemStatusClass(item.status)]">
-                {{ itemStatusText(item.status) }}
-              </span>
             </div>
+            <span v-if="item.status"
+              :class="['px-2 py-0.5 text-xs rounded-full whitespace-nowrap ml-2 shrink-0', itemStatusClass(item.status)]">
+              {{ itemStatusText(item.status) }}
+            </span>
           </div>
         </div>
-        <!-- Empty State -->
-        <div v-if="paginatedItems.length === 0" class="text-center py-8 text-gray-500">
-          لا توجد بيانات متاحة
-        </div>
       </div>
+      <!-- Empty State -->
+      <div v-if="paginatedItems.length === 0" class="text-center py-8 text-gray-500">
+        لا توجد بيانات متاحة
+      </div>
+    </div>
 
-      
-    </aside>
+
+  </aside>
 </template>
 
 <script setup>
@@ -137,7 +125,7 @@ const currentPage = ref(1)
 
 // Filtered items based on search and status
 const filteredItems = computed(() => {
-  let filtered = props.items
+  let filtered = props.items.reverse()
 
   // Filter by search query
   if (searchQuery.value) {
@@ -174,8 +162,8 @@ const internalCurrentRecordIndex = computed(() => {
 });
 
 const canNavigatePreviousInternal = computed(() => internalCurrentRecordIndex.value > 0);
-const canNavigateNextInternal = computed(() => 
-  internalCurrentRecordIndex.value !== -1 && 
+const canNavigateNextInternal = computed(() =>
+  internalCurrentRecordIndex.value !== -1 &&
   internalCurrentRecordIndex.value < (paginatedItems.value.length - 1)
 );
 
