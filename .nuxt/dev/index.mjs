@@ -9,12 +9,12 @@ import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLin
 import { parseURL, withoutBase, joinURL, getQuery, withQuery, withTrailingSlash, decodePath, withLeadingSlash, withoutTrailingSlash, joinRelativeURL } from 'file:///home/runner/workspace/node_modules/ufo/dist/index.mjs';
 import { renderToString } from 'file:///home/runner/workspace/node_modules/vue/server-renderer/index.mjs';
 import destr, { destr as destr$1 } from 'file:///home/runner/workspace/node_modules/destr/dist/index.mjs';
-import { createHooks } from 'file:///home/runner/workspace/node_modules/nitropack/node_modules/hookable/dist/index.mjs';
+import { createHooks } from 'file:///home/runner/workspace/node_modules/hookable/dist/index.mjs';
 import { createFetch, Headers as Headers$1 } from 'file:///home/runner/workspace/node_modules/ofetch/dist/node.mjs';
 import { fetchNodeRequestHandler, callNodeRequestHandler } from 'file:///home/runner/workspace/node_modules/node-mock-http/dist/index.mjs';
 import { createStorage, prefixStorage } from 'file:///home/runner/workspace/node_modules/unstorage/dist/index.mjs';
 import unstorage_47drivers_47fs from 'file:///home/runner/workspace/node_modules/unstorage/drivers/fs.mjs';
-import { digest } from 'file:///home/runner/workspace/node_modules/ohash/dist/index.mjs';
+import { digest } from 'file:///home/runner/workspace/node_modules/nitropack/node_modules/ohash/dist/index.mjs';
 import { klona } from 'file:///home/runner/workspace/node_modules/klona/dist/index.mjs';
 import defu, { defuFn } from 'file:///home/runner/workspace/node_modules/defu/dist/defu.mjs';
 import { snakeCase } from 'file:///home/runner/workspace/node_modules/scule/dist/index.mjs';
