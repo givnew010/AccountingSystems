@@ -4,7 +4,7 @@
       <ListSection title="العملات" :items="currencies" search-placeholder="البحث في العملات..."
         :disabled="!isViewMode" :selectedItemId="selectedItemId" @select-item="selectCurrencyById" />
 
-      <div class="w-full m-2 bg-white p-5 rounded-lg h-full overflow-hidden">
+      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto lg:overflow-hidden min-h-0">
         <ActionButtons :isViewMode="isViewMode" :editDisabled="!selectedItemId" :deleteDisabled="!selectedItemId"
           @new="newCurrency" @edit="editCurrency" @delete="deleteCurrency"
           @save="saveCurrency" @cancel="cancelNewOrEdit" />

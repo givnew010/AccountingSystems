@@ -4,12 +4,12 @@
       <ListSection title="المنتجات" :items="productsForList" search-placeholder="البحث في المنتجات..."
         :disabled="!isViewMode" :selectedItemId="selectedItemId" @select-item="selectItem" />
 
-      <div class="w-full m-2 bg-white p-5 rounded-lg h-full overflow-hidden">
+      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto lg:overflow-hidden min-h-0">
         <ActionButtons :isViewMode="isViewMode" :editDisabled="!selectedItemId"
           :deleteDisabled="!selectedItemId" @new="newProduct" @edit="editProduct"
           @delete="deleteProduct" @save="saveProduct" @cancel="cancelEdit" />
 
-        <form @submit.prevent="saveProduct" class="space-y-4 overflow-y-auto max-h-[calc(100vh-160px)] pb-4">
+        <form @submit.prevent="saveProduct" class="space-y-4 pb-4">
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">اسم المنتج</label>

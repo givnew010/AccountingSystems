@@ -1,5 +1,5 @@
 <template>
-  <aside class="p-2 my-2 mr-2 w-80 bg-white rounded-lg h-full flex flex-col overflow-hidden"
+  <aside class="p-2 my-2 mx-2 lg:mr-2 lg:ml-0 w-full lg:w-80 bg-white rounded-lg h-64 lg:h-full flex flex-col overflow-hidden flex-shrink-0"
     :class="{ 'opacity-50 pointer-events-none': disabled }">
     <!-- Header -->
     <div class="pt-4 pb-3 flex-shrink-0">

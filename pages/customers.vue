@@ -7,7 +7,7 @@
         :selectedItemId="selectedItemId" @select-item="selectItem" />
 
       <!-- Content Section (Left side for RTL) -->
-      <div class="w-full m-2 bg-white p-5 rounded-lg h-full overflow-hidden">
+      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto lg:overflow-hidden min-h-0">
         <!-- Action Buttons -->
 
         <ActionButtons :isViewMode="isViewMode" :showPrint="true" :editDisabled="!selectedItemId"

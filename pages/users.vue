@@ -4,12 +4,12 @@
       <ListSection title="المستخدمون" :items="users" search-placeholder="البحث في المستخدمين..."
         :disabled="!isViewMode" :selectedItemId="selectedItemId" @select-item="selectItem" />
 
-      <div class="w-full m-2 bg-white p-5 rounded-lg h-full overflow-hidden">
+      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto lg:overflow-hidden min-h-0">
         <ActionButtons :isViewMode="isViewMode" :editDisabled="!selectedItemId"
           :deleteDisabled="!selectedItemId" @new="newUser" @edit="editUser"
           @delete="deleteUser" @save="saveUser" @cancel="cancelEdit" />
 
-        <form @submit.prevent="saveUser" class="space-y-4 overflow-y-auto max-h-[calc(100vh-160px)] pb-4 pr-1">
+        <form @submit.prevent="saveUser" class="space-y-4 pb-4 pr-1">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">اسم المستخدم</label>
             <input v-model="currentData.username" type="text" required :disabled="isViewMode || !!selectedItemId"

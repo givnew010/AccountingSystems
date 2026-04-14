@@ -4,7 +4,7 @@
       <ListSection title="وحدات القياس" :items="units" search-placeholder="البحث في الوحدات..."
         :disabled="!isViewMode" :selectedItemId="selectedItemId" @select-item="selectUnitById" />
 
-      <div class="w-full m-2 bg-white p-5 rounded-lg h-full overflow-hidden">
+      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto lg:overflow-hidden min-h-0">
         <ActionButtons :isViewMode="isViewMode" :showPrint="false" :editDisabled="!selectedItemId"
           :deleteDisabled="!selectedItemId" @new="newUnit" @edit="editUnit"
           @delete="deleteUnit" @save="saveUnit" @cancel="cancelEdit" />

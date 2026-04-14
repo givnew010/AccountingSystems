@@ -17,7 +17,7 @@
       <ListSection title="الفروع" :items="branches" search-placeholder="البحث في الفروع..."
         :disabled="!branchViewMode" :selectedItemId="branchSelectedId" @select-item="selectBranch" />
 
-      <div class="w-full m-2 bg-white p-5 rounded-lg h-full overflow-hidden">
+      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto lg:overflow-hidden min-h-0">
         <ActionButtons :isViewMode="branchViewMode" :editDisabled="!branchSelectedId"
           :deleteDisabled="!branchSelectedId" @new="newBranch" @edit="editBranch"
           @delete="deleteBranch" @save="saveBranch" @cancel="cancelBranchEdit" />
@@ -68,7 +68,7 @@
       <ListSection title="المستودعات" :items="warehouses" search-placeholder="البحث في المستودعات..."
         :disabled="!warehouseViewMode" :selectedItemId="warehouseSelectedId" @select-item="selectWarehouse" />
 
-      <div class="w-full m-2 bg-white p-5 rounded-lg h-full overflow-hidden">
+      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto lg:overflow-hidden min-h-0">
         <ActionButtons :isViewMode="warehouseViewMode" :editDisabled="!warehouseSelectedId"
           :deleteDisabled="!warehouseSelectedId" @new="newWarehouse" @edit="editWarehouse"
           @delete="deleteWarehouse" @save="saveWarehouse" @cancel="cancelWarehouseEdit" />

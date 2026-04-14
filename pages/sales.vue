@@ -4,14 +4,14 @@
       <ListSection title="فواتير المبيعات" :items="invoicesForList" search-placeholder="البحث في الفواتير..."
         :disabled="!isViewMode" :selectedItemId="selectedItemId" @select-item="selectItem" />
 
-      <div class="w-full m-2 bg-white p-5 rounded-lg h-full overflow-hidden">
+      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto lg:overflow-hidden min-h-0">
         <ActionButtons :isViewMode="isViewMode" :showPrint="true" :showPost="true"
           :editDisabled="!selectedItemId" :deleteDisabled="!selectedItemId || currentData.status === 'posted'"
           :printDisabled="!selectedItemId" :postDisabled="!selectedItemId || currentData.status === 'posted'"
           @new="newInvoice" @edit="editInvoice" @delete="deleteInvoice" @save="saveInvoice"
           @cancel="cancelEdit" @print="printInvoice" @post="postInvoice" />
 
-        <form @submit.prevent="saveInvoice" class="space-y-4 overflow-y-auto max-h-[calc(100vh-160px)] pb-4">
+        <form @submit.prevent="saveInvoice" class="space-y-4 pb-4">
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">رقم الفاتورة</label>

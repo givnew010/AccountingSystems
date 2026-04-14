@@ -4,7 +4,7 @@
       <ListSection title="الموردين" :items="suppliers" search-placeholder="البحث في الموردين..."
         :disabled="!isViewMode" :selectedItemId="selectedItemId" @select-item="selectItem" />
 
-      <div class="w-full m-2 bg-white p-5 rounded-lg h-full overflow-hidden">
+      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto lg:overflow-hidden min-h-0">
         <ActionButtons :isViewMode="isViewMode" :showPrint="true" :editDisabled="!selectedItemId"
           :deleteDisabled="!selectedItemId" :printDisabled="!selectedItemId" @new="newSupplier" @edit="editSupplier"
           @delete="deleteSupplier" @print="printSupplier" @save="saveSupplier" @cancel="cancelNewOrEdit" />
