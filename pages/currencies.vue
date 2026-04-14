@@ -1,10 +1,10 @@
 <template>
   <div class="min-h-screen bg-gray-100 overflow-hidden">
-    <div class="flex flex-col lg:flex-row h-screen">
+    <div class="flex flex-row h-screen">
       <ListSection title="العملات" :items="currencies" search-placeholder="البحث في العملات..."
         :disabled="!isViewMode" :selectedItemId="selectedItemId" @select-item="selectCurrencyById" />
 
-      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto lg:overflow-hidden min-h-0">
+      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto">
         <ActionButtons :isViewMode="isViewMode" :editDisabled="!selectedItemId" :deleteDisabled="!selectedItemId"
           @new="newCurrency" @edit="editCurrency" @delete="deleteCurrency"
           @save="saveCurrency" @cancel="cancelNewOrEdit" />

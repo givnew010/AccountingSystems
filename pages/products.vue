@@ -1,10 +1,10 @@
 <template>
   <div class="min-h-screen bg-gray-100 overflow-hidden">
-    <div class="flex flex-col lg:flex-row h-screen">
+    <div class="flex flex-row h-screen">
       <ListSection title="المنتجات" :items="productsForList" search-placeholder="البحث في المنتجات..."
         :disabled="!isViewMode" :selectedItemId="selectedItemId" @select-item="selectItem" />
 
-      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto lg:overflow-hidden min-h-0">
+      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto">
         <ActionButtons :isViewMode="isViewMode" :editDisabled="!selectedItemId"
           :deleteDisabled="!selectedItemId" @new="newProduct" @edit="editProduct"
           @delete="deleteProduct" @save="saveProduct" @cancel="cancelEdit" />

@@ -1,10 +1,10 @@
 <template>
   <div class="min-h-screen bg-gray-100 overflow-hidden">
-    <div class="flex flex-col lg:flex-row h-screen">
+    <div class="flex flex-row h-screen">
       <ListSection title="فواتير المبيعات" :items="invoicesForList" search-placeholder="البحث في الفواتير..."
         :disabled="!isViewMode" :selectedItemId="selectedItemId" @select-item="selectItem" />
 
-      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto lg:overflow-hidden min-h-0">
+      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto">
         <ActionButtons :isViewMode="isViewMode" :showPrint="true" :showPost="true"
           :editDisabled="!selectedItemId" :deleteDisabled="!selectedItemId || currentData.status === 'posted'"
           :printDisabled="!selectedItemId" :postDisabled="!selectedItemId || currentData.status === 'posted'"

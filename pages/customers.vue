@@ -1,13 +1,13 @@
 <template>
   <div class="min-h-screen bg-gray-100 overflow-hidden">
     <!-- Main Content -->
-    <div class="flex flex-col lg:flex-row h-screen">
+    <div class="flex flex-row h-screen">
       <!-- List Section -->
       <ListSection title="العملاء" :items="customers" search-placeholder="البحث في العملاء..." :disabled="!isViewMode"
         :selectedItemId="selectedItemId" @select-item="selectItem" />
 
       <!-- Content Section (Left side for RTL) -->
-      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto lg:overflow-hidden min-h-0">
+      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto">
         <!-- Action Buttons -->
 
         <ActionButtons :isViewMode="isViewMode" :showPrint="true" :editDisabled="!selectedItemId"

@@ -1,10 +1,10 @@
 <template>
   <div class="min-h-screen bg-gray-100 overflow-hidden">
-    <div class="flex flex-col lg:flex-row h-screen">
+    <div class="flex flex-row h-screen">
       <ListSection title="وحدات القياس" :items="units" search-placeholder="البحث في الوحدات..."
         :disabled="!isViewMode" :selectedItemId="selectedItemId" @select-item="selectUnitById" />
 
-      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto lg:overflow-hidden min-h-0">
+      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto">
         <ActionButtons :isViewMode="isViewMode" :showPrint="false" :editDisabled="!selectedItemId"
           :deleteDisabled="!selectedItemId" @new="newUnit" @edit="editUnit"
           @delete="deleteUnit" @save="saveUnit" @cancel="cancelEdit" />

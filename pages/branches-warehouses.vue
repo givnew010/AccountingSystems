@@ -13,11 +13,11 @@
     </div>
 
     <!-- Branches Tab -->
-    <div v-if="activeTab === 'branches'" class="flex flex-col lg:flex-row h-[calc(100vh-44px)]">
+    <div v-if="activeTab === 'branches'" class="flex flex-row h-[calc(100vh-44px)]">
       <ListSection title="الفروع" :items="branches" search-placeholder="البحث في الفروع..."
         :disabled="!branchViewMode" :selectedItemId="branchSelectedId" @select-item="selectBranch" />
 
-      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto lg:overflow-hidden min-h-0">
+      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto">
         <ActionButtons :isViewMode="branchViewMode" :editDisabled="!branchSelectedId"
           :deleteDisabled="!branchSelectedId" @new="newBranch" @edit="editBranch"
           @delete="deleteBranch" @save="saveBranch" @cancel="cancelBranchEdit" />
@@ -64,11 +64,11 @@
     </div>
 
     <!-- Warehouses Tab -->
-    <div v-if="activeTab === 'warehouses'" class="flex flex-col lg:flex-row h-[calc(100vh-44px)]">
+    <div v-if="activeTab === 'warehouses'" class="flex flex-row h-[calc(100vh-44px)]">
       <ListSection title="المستودعات" :items="warehouses" search-placeholder="البحث في المستودعات..."
         :disabled="!warehouseViewMode" :selectedItemId="warehouseSelectedId" @select-item="selectWarehouse" />
 
-      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto lg:overflow-hidden min-h-0">
+      <div class="flex-1 m-2 bg-white p-5 rounded-lg overflow-auto">
         <ActionButtons :isViewMode="warehouseViewMode" :editDisabled="!warehouseSelectedId"
           :deleteDisabled="!warehouseSelectedId" @new="newWarehouse" @edit="editWarehouse"
           @delete="deleteWarehouse" @save="saveWarehouse" @cancel="cancelWarehouseEdit" />
