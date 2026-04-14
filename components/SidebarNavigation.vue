@@ -2,9 +2,9 @@
   <div
     :class="[
       'fixed top-0 h-full bg-white border-r border-gray-200 shadow-sm transition-all duration-300 z-50',
-      'hidden md:flex md:flex-col', // Hidden on mobile, flex on md+
+      'hidden md:flex md:flex-col',
       sidebarStore.isCollapsed ? 'w-16' : 'w-64',
-      'right-0' // For RTL, sidebar on the right
+      'right-0'
     ]"
   >
     <!-- Header -->
@@ -24,15 +24,17 @@
           <NuxtLink
             :to="item.path"
             :class="[
-              'flex items-center px-3 py-2 rounded-lg transition-colors',
+              'flex items-center gap-3 px-3 py-2 rounded-lg transition-colors overflow-hidden',
               'hover:bg-blue-50 hover:text-blue-600',
               $route.path === item.path ? 'bg-blue-50 text-blue-600' : 'text-gray-600'
             ]"
           >
             <component :is="item.icon" class="w-6 h-6 flex-shrink-0" />
             <span
-              v-if="!sidebarStore.isCollapsed"
-              class="ml-3 text-sm font-medium transition-opacity"
+              :class="[
+                'text-sm font-medium whitespace-nowrap transition-all duration-300 overflow-hidden',
+                sidebarStore.isCollapsed ? 'max-w-0 opacity-0' : 'max-w-xs opacity-100'
+              ]"
             >
               {{ item.label }}
             </span>
@@ -43,11 +45,16 @@
 
     <!-- User Info -->
     <div class="p-4 border-t border-gray-200">
-      <div class="flex items-center mb-3">
+      <div class="flex items-center gap-3 mb-3 overflow-hidden">
         <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold flex-shrink-0">
           م
         </div>
-        <div v-if="!sidebarStore.isCollapsed" class="ml-3">
+        <div
+          :class="[
+            'overflow-hidden transition-all duration-300 whitespace-nowrap',
+            sidebarStore.isCollapsed ? 'max-w-0 opacity-0' : 'max-w-xs opacity-100'
+          ]"
+        >
           <p class="text-sm font-medium text-gray-900">{{ authStore.user?.name }}</p>
           <p class="text-xs text-gray-500">{{ authStore.user?.role }}</p>
         </div>
@@ -55,12 +62,17 @@
       <button
         @click="logout"
         :class="[
-          'w-full flex items-center px-3 py-2 rounded-lg transition-colors',
+          'w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors overflow-hidden',
           'hover:bg-red-50 hover:text-red-600 text-red-600'
         ]"
       >
         <ArrowRightOnRectangleIcon class="w-5 h-5 flex-shrink-0" />
-        <span v-if="!sidebarStore.isCollapsed" class="ml-2 text-sm font-medium">
+        <span
+          :class="[
+            'text-sm font-medium whitespace-nowrap transition-all duration-300 overflow-hidden',
+            sidebarStore.isCollapsed ? 'max-w-0 opacity-0' : 'max-w-xs opacity-100'
+          ]"
+        >
           تسجيل الخروج
         </span>
       </button>
