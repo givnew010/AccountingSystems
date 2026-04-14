@@ -1,1 +1,1 @@
-export { default } from "file:///C:/Users/ALSADI/Desktop/Templates/AccountingSystems/node_modules/@nuxt/vite-builder/dist/runtime/client.manifest.mjs"
+export { default } from "file:///home/runner/workspace/node_modules/@nuxt/vite-builder/dist/runtime/client.manifest.mjs"

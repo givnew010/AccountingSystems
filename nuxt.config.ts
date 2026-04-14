@@ -2,7 +2,7 @@ import { defineNuxtConfig } from 'nuxt/config'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   compatibilityDate: '2026-01-17',
   modules: [
     '@nuxtjs/tailwindcss',
@@ -18,14 +18,7 @@ export default defineNuxtConfig({
     ]
   },
   css: ['~/assets/css/main.css'],
-  runtimeConfig: {
-    // Private keys (only available on the server-side)
-    // Public keys that are exposed to the client-side
-    // public: {
-    //   apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api'
-    // }
-  },
-  // RTL support
+  runtimeConfig: {},
   app: {
     head: {
       htmlAttrs: {
@@ -33,6 +26,18 @@ export default defineNuxtConfig({
         lang: 'ar'
       }
     }
+  },
+  devServer: {
+    port: 5000,
+    host: '0.0.0.0'
+  },
+  vite: {
+    server: {
+      allowedHosts: true,
+      hmr: {
+        clientPort: 443,
+        protocol: 'wss'
+      }
+    }
   }
 })
-
