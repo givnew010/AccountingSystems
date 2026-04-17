@@ -2,7 +2,7 @@ import { defineNuxtConfig } from 'nuxt/config'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: false },
+  devtools: { enabled: true },
   compatibilityDate: '2026-01-17',
   modules: [
     '@nuxtjs/tailwindcss',
@@ -27,17 +27,17 @@ export default defineNuxtConfig({
       }
     }
   },
-  devServer: {
-    port: 5000,
-    host: '0.0.0.0'
-  },
-  vite: {
-    server: {
-      allowedHosts: true,
-      hmr: {
-        clientPort: 443,
-        protocol: 'wss'
-      }
-    }
-  }
+  // devServer: {
+  //   port: 5000,
+  //   host: '0.0.0.0'
+  // },
+  // vite: {
+  //   server: {
+  //     allowedHosts: true,
+  //     hmr: {
+  //       clientPort: 443,
+  //       protocol: 'wss'
+  //     }
+  //   }
+  // }
 })
