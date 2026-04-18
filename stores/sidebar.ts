@@ -9,6 +9,14 @@ export const useSidebarStore = defineStore('sidebar', () => {
     isCollapsed.value = !isCollapsed.value
   }
 
+  const expandSidebar = () => {
+    isCollapsed.value = false
+  }
+
+  const collapseSidebar = () => {
+    isCollapsed.value = true
+  }
+
   const toggleMobileMenu = () => {
     isMobileMenuOpen.value = !isMobileMenuOpen.value
   }
@@ -21,6 +29,8 @@ export const useSidebarStore = defineStore('sidebar', () => {
     isCollapsed,
     isMobileMenuOpen,
     toggleCollapse,
+    expandSidebar,
+    collapseSidebar,
     toggleMobileMenu,
     closeMobileMenu
   }
