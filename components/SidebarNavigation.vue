@@ -194,6 +194,7 @@ import {
   BanknotesIcon,
   ChevronDownIcon,
   BuildingStorefrontIcon,
+  ArchiveBoxIcon,
   TagIcon,
   ScaleIcon,
   CurrencyDollarIcon,
@@ -248,7 +249,8 @@ const navigationStructure = [
     label: 'الواجهات الأساسية',
     icon: RectangleGroupIcon,
     children: [
-      { name: 'branches-warehouses', path: '/branches-warehouses', label: 'الفروع والمستودعات', icon: BuildingStorefrontIcon },
+      { name: 'branches', path: '/branches', label: 'الفروع', icon: BuildingStorefrontIcon },
+      { name: 'warehouses', path: '/warehouses', label: 'المستودعات', icon: ArchiveBoxIcon },
       { name: 'categories', path: '/categories', label: 'التصنيفات', icon: TagIcon },
       { name: 'units', path: '/units', label: 'الواحدات', icon: ScaleIcon },
       { name: 'currencies', path: '/currencies', label: 'العملات', icon: CurrencyDollarIcon },
