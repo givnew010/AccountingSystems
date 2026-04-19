@@ -2015,6 +2015,23 @@ async function errorHandler(error, event) {
   // H3 will handle fallback
 }
 
+const script = `
+if (!window.__NUXT_DEVTOOLS_TIME_METRIC__) {
+  Object.defineProperty(window, '__NUXT_DEVTOOLS_TIME_METRIC__', {
+    value: {},
+    enumerable: false,
+    configurable: true,
+  })
+}
+window.__NUXT_DEVTOOLS_TIME_METRIC__.appInit = Date.now()
+`;
+
+const _1tlfEPNRzeN_2rhH6G8m3JJSRWY3xyO54X9oJjMjEKE = (function(nitro) {
+  nitro.hooks.hook("render:html", (htmlContext) => {
+    htmlContext.head.push(`<script>${script}<\/script>`);
+  });
+});
+
 const rootDir = "/home/runner/workspace";
 
 const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"}],"link":[],"style":[],"script":[],"noscript":[],"htmlAttrs":{"dir":"rtl","lang":"ar"}};
@@ -2114,7 +2131,8 @@ function onConsoleLog(callback) {
 }
 
 const plugins = [
-  _aa3aYI7lpJ3UTko12srUKyUGj5zzxqGpcc8VD7Awhc,
+  _1tlfEPNRzeN_2rhH6G8m3JJSRWY3xyO54X9oJjMjEKE,
+_aa3aYI7lpJ3UTko12srUKyUGj5zzxqGpcc8VD7Awhc,
 _wH6JrtIxmaSoA8lCPWFnE9z4lQeXW6H5z3l5aymEQw
 ];
 

@@ -28,9 +28,6 @@
       "nuxt": [
         "../node_modules/nuxt"
       ],
-      "vite/client": [
-        "../node_modules/vite/client"
-      ],
       "nitropack/types": [
         "../node_modules/nitropack/types"
       ],
