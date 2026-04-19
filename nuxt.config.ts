@@ -27,17 +27,18 @@ export default defineNuxtConfig({
       }
     }
   },
-  // devServer: {
-  //   port: 5000,
-  //   host: '0.0.0.0'
-  // },
-  // vite: {
-  //   server: {
-  //     allowedHosts: true,
-  //     hmr: {
-  //       clientPort: 443,
-  //       protocol: 'wss'
-  //     }
-  //   }
-  // }
+  devServer: {
+    port: 5000,
+    host: '0.0.0.0'
+  },
+  vite: {
+    server: {
+      allowedHosts: true,
+      hmr: {
+        host: process.env.REPLIT_DEV_DOMAIN || 'localhost',
+        clientPort: 443,
+        protocol: 'wss'
+      }
+    }
+  }
 })
