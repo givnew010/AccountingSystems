@@ -16,6 +16,7 @@ type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {},
 interface _GlobalComponents {
   ActionButtons: typeof import("../../components/ActionButtons.vue")['default']
   ComboBox: typeof import("../../components/ComboBox.vue")['default']
+  DynamicTable: typeof import("../../components/DynamicTable.vue")['default']
   ListSection: typeof import("../../components/ListSection.vue")['default']
   MessageDialog: typeof import("../../components/MessageDialog.vue")['default']
   SidebarNavigation: typeof import("../../components/SidebarNavigation.vue")['default']
@@ -50,6 +51,7 @@ interface _GlobalComponents {
   NuxtIsland: typeof import("../../node_modules/nuxt/dist/app/components/nuxt-island")['default']
   LazyActionButtons: LazyComponent<typeof import("../../components/ActionButtons.vue")['default']>
   LazyComboBox: LazyComponent<typeof import("../../components/ComboBox.vue")['default']>
+  LazyDynamicTable: LazyComponent<typeof import("../../components/DynamicTable.vue")['default']>
   LazyListSection: LazyComponent<typeof import("../../components/ListSection.vue")['default']>
   LazyMessageDialog: LazyComponent<typeof import("../../components/MessageDialog.vue")['default']>
   LazySidebarNavigation: LazyComponent<typeof import("../../components/SidebarNavigation.vue")['default']>

@@ -48,70 +48,15 @@
           </div>
 
           <!-- Units Sub-table -->
-          <div class="mt-4">
-            <div class="flex justify-between items-center mb-3">
-              <h3 class="text-base font-medium text-gray-900">وحدات القياس</h3>
-              <button v-if="!isViewMode" type="button" @click="addUnit"
-                class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 flex items-center gap-1 text-sm">
-                + إضافة وحدة
-              </button>
-            </div>
-
-            <div class="overflow-x-auto border border-gray-200 rounded-lg">
-              <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                  <tr>
-                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500">الوحدة</th>
-                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500">النوع</th>
-                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500">معامل التحويل</th>
-                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500">سعر البيع</th>
-                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500">سعر الشراء</th>
-                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500">الكمية</th>
-                    <th v-if="!isViewMode" class="px-3 py-2 text-right text-xs font-medium text-gray-500"></th>
-                  </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                  <tr v-for="(unit, index) in currentData.units" :key="index">
-                    <td class="px-3 py-2">
-                      <select v-model="unit.unitId" required :disabled="isViewMode"
-                        class="w-full px-2 py-1 border border-gray-300 rounded text-sm disabled:bg-gray-100">
-                        <option value="">اختر الوحدة</option>
-                        <option v-for="u in availableUnits" :key="u.id" :value="u.id">{{ u.name }}</option>
-                      </select>
-                    </td>
-                    <td class="px-3 py-2">
-                      <select v-model="unit.type" required :disabled="isViewMode"
-                        class="w-full px-2 py-1 border border-gray-300 rounded text-sm disabled:bg-gray-100">
-                        <option value="base">أساسية</option>
-                        <option value="derived">مشتقة</option>
-                      </select>
-                    </td>
-                    <td class="px-3 py-2">
-                      <input v-model.number="unit.conversionRate" type="number" step="0.01" :disabled="isViewMode"
-                        class="w-20 px-2 py-1 border border-gray-300 rounded text-sm disabled:bg-gray-100" />
-                    </td>
-                    <td class="px-3 py-2">
-                      <input v-model.number="unit.salePrice" type="number" step="0.01" :disabled="isViewMode"
-                        class="w-20 px-2 py-1 border border-gray-300 rounded text-sm disabled:bg-gray-100" />
-                    </td>
-                    <td class="px-3 py-2">
-                      <input v-model.number="unit.purchasePrice" type="number" step="0.01" :disabled="isViewMode"
-                        class="w-20 px-2 py-1 border border-gray-300 rounded text-sm disabled:bg-gray-100" />
-                    </td>
-                    <td class="px-3 py-2">
-                      <input v-model.number="unit.currentQuantity" type="number" step="0.01" :disabled="isViewMode"
-                        class="w-20 px-2 py-1 border border-gray-300 rounded text-sm disabled:bg-gray-100" />
-                    </td>
-                    <td v-if="!isViewMode" class="px-3 py-2">
-                      <button type="button" @click="removeUnit(index)" class="text-red-600 hover:text-red-800">✕</button>
-                    </td>
-                  </tr>
-                  <tr v-if="currentData.units?.length === 0">
-                    <td colspan="7" class="px-3 py-4 text-center text-sm text-gray-500">لا توجد وحدات مضافة</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <div class="mt-3">
+            <DynamicTable
+              v-model="currentData.units"
+              :columns="unitsColumns"
+              :is-view-mode="isViewMode"
+              :show-delete="true"
+              title="وحدات القياس"
+              empty-text="لا توجد وحدات مضافة"
+            />
           </div>
         </form>
       </div>
@@ -244,14 +189,72 @@ const confirmDelete = () => {
   }
 }
 
-const addUnit = () => {
-  if (!currentData.value.units) currentData.value.units = []
-  currentData.value.units.push({ unitId: '', type: 'base', conversionRate: 1, salePrice: 0, purchasePrice: 0, costPrice: 0, currentQuantity: 0 })
-}
-
-const removeUnit = (index) => {
-  currentData.value.units.splice(index, 1)
-}
+const unitsColumns = [
+  {
+    field: 'unitId',
+    label: 'الوحدة',
+    type: 'select',
+    placeholder: 'اختر',
+    trigger: true,
+    options: availableUnits.value.map(u => ({ label: u.name, value: u.id })),
+    width: '130px'
+  },
+  {
+    field: 'type',
+    label: 'النوع',
+    type: 'select',
+    default: 'base',
+    options: [
+      { label: 'أساسية', value: 'base' },
+      { label: 'مشتقة', value: 'derived' }
+    ],
+    width: '100px'
+  },
+  {
+    field: 'conversionRate',
+    label: 'معامل التحويل',
+    type: 'input',
+    inputType: 'number',
+    step: '0.01',
+    min: 0,
+    default: 1,
+    width: '100px',
+    align: 'center'
+  },
+  {
+    field: 'salePrice',
+    label: 'سعر البيع',
+    type: 'input',
+    inputType: 'number',
+    step: '0.01',
+    min: 0,
+    default: 0,
+    width: '90px',
+    align: 'center'
+  },
+  {
+    field: 'purchasePrice',
+    label: 'سعر الشراء',
+    type: 'input',
+    inputType: 'number',
+    step: '0.01',
+    min: 0,
+    default: 0,
+    width: '90px',
+    align: 'center'
+  },
+  {
+    field: 'currentQuantity',
+    label: 'الكمية',
+    type: 'input',
+    inputType: 'number',
+    step: '0.01',
+    min: 0,
+    default: 0,
+    width: '80px',
+    align: 'center'
+  }
+]
 
 onMounted(() => {
   isViewMode.value = true

@@ -49,66 +49,14 @@
           </div>
 
           <!-- Products Table -->
-          <div class="border border-gray-200 rounded-lg">
-            <div class="p-3 border-b border-gray-200 flex justify-between items-center">
-              <h3 class="text-base font-medium text-gray-900">المنتجات</h3>
-              <button v-if="!isViewMode" type="button" @click="addItem"
-                class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">+ إضافة منتج</button>
-            </div>
-            <div class="overflow-x-auto">
-              <table class="w-full">
-                <thead class="bg-gray-50">
-                  <tr>
-                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500">المنتج</th>
-                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500">الوحدة</th>
-                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500">الكمية</th>
-                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500">السعر</th>
-                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500">الخصم</th>
-                    <th class="px-3 py-2 text-right text-xs font-medium text-gray-500">الإجمالي</th>
-                    <th v-if="!isViewMode" class="px-3 py-2"></th>
-                  </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                  <tr v-for="(item, index) in currentData.items" :key="index">
-                    <td class="px-3 py-2">
-                      <select v-model="item.productId" @change="updateProduct(index)" :disabled="isViewMode"
-                        class="w-full px-2 py-1 border border-gray-300 rounded text-sm disabled:bg-gray-100">
-                        <option value="">اختر المنتج</option>
-                        <option v-for="p in products" :key="p.id" :value="p.id">{{ p.name }}</option>
-                      </select>
-                    </td>
-                    <td class="px-3 py-2">
-                      <select v-model="item.unit" :disabled="isViewMode"
-                        class="w-full px-2 py-1 border border-gray-300 rounded text-sm disabled:bg-gray-100">
-                        <option value="piece">قطعة</option>
-                        <option value="kg">كيلو</option>
-                        <option value="box">صندوق</option>
-                      </select>
-                    </td>
-                    <td class="px-3 py-2">
-                      <input v-model.number="item.quantity" @input="calcTotal(index)" type="number" min="0" step="0.01"
-                        :disabled="isViewMode"
-                        class="w-20 px-2 py-1 border border-gray-300 rounded text-sm disabled:bg-gray-100" />
-                    </td>
-                    <td class="px-3 py-2">
-                      <input v-model.number="item.price" @input="calcTotal(index)" type="number" min="0" step="0.01"
-                        :disabled="isViewMode"
-                        class="w-24 px-2 py-1 border border-gray-300 rounded text-sm disabled:bg-gray-100" />
-                    </td>
-                    <td class="px-3 py-2">
-                      <input v-model.number="item.discount" @input="calcTotal(index)" type="number" min="0" step="0.01"
-                        :disabled="isViewMode"
-                        class="w-20 px-2 py-1 border border-gray-300 rounded text-sm disabled:bg-gray-100" />
-                    </td>
-                    <td class="px-3 py-2 text-sm font-medium text-gray-900">{{ item.total.toFixed(2) }}</td>
-                    <td v-if="!isViewMode" class="px-3 py-2">
-                      <button type="button" @click="removeItem(index)" class="text-red-600 hover:text-red-800">✕</button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <DynamicTable
+            v-model="currentData.items"
+            :columns="salesItemsColumns"
+            :is-view-mode="isViewMode"
+            :show-delete="true"
+            title="المنتجات"
+            empty-text="لا توجد منتجات"
+          />
 
           <div class="bg-gray-50 p-4 rounded-lg flex justify-between items-center">
             <span class="text-lg font-medium text-gray-900">الإجمالي:</span>
@@ -127,7 +75,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, inject } from 'vue'
+import { ref, computed, watch, onMounted, inject } from 'vue'
 import { injectToast } from '~/composables/useToast'
 import { getDefaultValues } from '~/composables/helper'
 
@@ -270,28 +218,93 @@ const printInvoice = () => {
   addToast('جاري الطباعة...', 'info')
 }
 
-const addItem = () => {
-  if (!currentData.value.items) currentData.value.items = []
-  currentData.value.items.push({ productId: '', unit: 'piece', quantity: 1, price: 0, discount: 0, total: 0 })
-}
-
-const removeItem = (index) => {
-  currentData.value.items.splice(index, 1)
-}
-
-const updateProduct = (index) => {
-  const item = currentData.value.items[index]
-  const product = products.value.find(p => p.id == item.productId)
-  if (product) {
-    item.price = product.price
-    calcTotal(index)
+const salesItemsColumns = computed(() => [
+  {
+    field: 'productId',
+    label: 'المنتج',
+    type: 'select',
+    placeholder: 'اختر المنتج',
+    trigger: true,
+    options: products.value.map(p => ({ label: p.name, value: p.id })),
+    width: '160px'
+  },
+  {
+    field: 'unit',
+    label: 'الوحدة',
+    type: 'select',
+    default: 'piece',
+    options: [
+      { label: 'قطعة', value: 'piece' },
+      { label: 'كيلو', value: 'kg' },
+      { label: 'صندوق', value: 'box' }
+    ],
+    width: '90px'
+  },
+  {
+    field: 'quantity',
+    label: 'الكمية',
+    type: 'input',
+    inputType: 'number',
+    step: '0.01',
+    min: 0,
+    default: null,
+    width: '75px',
+    align: 'center'
+  },
+  {
+    field: 'price',
+    label: 'السعر',
+    type: 'input',
+    inputType: 'number',
+    step: '0.01',
+    min: 0,
+    default: null,
+    width: '85px',
+    align: 'center'
+  },
+  {
+    field: 'discount',
+    label: 'الخصم',
+    type: 'input',
+    inputType: 'number',
+    step: '0.01',
+    min: 0,
+    default: null,
+    width: '75px',
+    align: 'center'
+  },
+  {
+    field: 'total',
+    label: 'الإجمالي',
+    type: 'display',
+    bold: true,
+    align: 'center',
+    width: '85px',
+    format: (val, row) => {
+      const qty = parseFloat(row.quantity) || 0
+      const price = parseFloat(row.price) || 0
+      const discount = parseFloat(row.discount) || 0
+      return Math.max(0, qty * price - discount).toFixed(2)
+    }
   }
-}
+])
 
-const calcTotal = (index) => {
-  const item = currentData.value.items[index]
-  item.total = Math.max(0, (item.quantity * item.price) - (item.discount || 0))
-}
+// Auto-fill price when product is selected
+watch(
+  () => currentData.value.items,
+  (items) => {
+    if (!items) return
+    items.forEach(item => {
+      if (item.productId && (item.price === null || item.price === undefined || item.price === '')) {
+        const product = products.value.find(p => p.id == item.productId)
+        if (product) {
+          item.price = product.price
+        }
+      }
+    })
+  },
+  { deep: true }
+)
 
 onMounted(() => {
   isViewMode.value = true

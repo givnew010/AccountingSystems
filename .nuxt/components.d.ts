@@ -16,6 +16,7 @@ type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {},
 
 export const ActionButtons: typeof import("../components/ActionButtons.vue")['default']
 export const ComboBox: typeof import("../components/ComboBox.vue")['default']
+export const DynamicTable: typeof import("../components/DynamicTable.vue")['default']
 export const ListSection: typeof import("../components/ListSection.vue")['default']
 export const MessageDialog: typeof import("../components/MessageDialog.vue")['default']
 export const SidebarNavigation: typeof import("../components/SidebarNavigation.vue")['default']
@@ -50,6 +51,7 @@ export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/compone
 export const NuxtIsland: typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
 export const LazyActionButtons: LazyComponent<typeof import("../components/ActionButtons.vue")['default']>
 export const LazyComboBox: LazyComponent<typeof import("../components/ComboBox.vue")['default']>
+export const LazyDynamicTable: LazyComponent<typeof import("../components/DynamicTable.vue")['default']>
 export const LazyListSection: LazyComponent<typeof import("../components/ListSection.vue")['default']>
 export const LazyMessageDialog: LazyComponent<typeof import("../components/MessageDialog.vue")['default']>
 export const LazySidebarNavigation: LazyComponent<typeof import("../components/SidebarNavigation.vue")['default']>
