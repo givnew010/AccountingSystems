@@ -22,12 +22,14 @@
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">الفئة</label>
-              <select v-model="currentData.categoryId" required :disabled="isViewMode"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100">
-                <option value="">اختر الفئة</option>
-                <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
-              </select>
+              <label class="block text-sm font-medium text-gray-700 mb-1">التصنيفات</label>
+              <ComboBox
+                v-model="currentData.categoryId"
+                :options="categoryOptions"
+                placeholder="اختر التصنيف"
+                :disabled="isViewMode"
+                clearable
+              />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">المستودع/الفرع</label>
@@ -122,6 +124,8 @@ const isViewMode = ref(true)
 const currentData = ref({ ...getDefaultValues(Structure), units: [] })
 
 const productsForList = computed(() => products.value.map(p => ({ ...p })))
+
+const categoryOptions = computed(() => categories.value.map(c => ({ label: c.name, value: c.id })))
 
 const selectItem = (id) => {
   const product = products.value.find(p => p.id === id) ?? { ...getDefaultValues(Structure), units: [] }
