@@ -2,14 +2,14 @@
   <div ref="rootRef" class="relative" @keydown="onKeydown">
     <div
       :class="[
-        'flex items-center w-full border rounded bg-white transition-colors',
+        'flex items-center w-full border transition-colors',
         size === 'sm' ? 'rounded' : 'rounded-lg',
-        disabled ? 'bg-gray-100 cursor-not-allowed' : 'cursor-text',
-        isOpen
-          ? 'border-blue-400 ring-1 ring-blue-400'
-          : 'border-gray-300 hover:border-gray-400'
+        disabled ? 'bg-gray-100' : 'bg-white',
+        isOpen && !disabled
+          ? 'border-transparent ring-2 ring-blue-500'
+          : 'border-gray-300'
       ]"
-      @mousedown.prevent="onTriggerMouseDown"
+      @click="onWrapperClick"
     >
       <input
         ref="inputRef"
@@ -20,6 +20,7 @@
         type="text"
         autocomplete="off"
         @focus="open"
+        @click.stop="open"
         @input="onInput"
         :class="[
           'flex-1 bg-transparent focus:outline-none disabled:cursor-not-allowed',
@@ -45,7 +46,8 @@
         v-if="!disabled"
         type="button"
         tabindex="-1"
-        @mousedown.prevent="toggle"
+        @mousedown.prevent
+        @click.stop="toggle"
         :class="['flex items-center text-gray-400', size === 'sm' ? 'pl-1 pr-1.5' : 'pl-1 pr-3']"
       >
         <svg
@@ -202,11 +204,11 @@ const toggle = () => {
   isOpen.value ? close() : open()
 }
 
-const onTriggerMouseDown = (e: MouseEvent) => {
+const onWrapperClick = (e: MouseEvent) => {
   if (props.disabled) return
   if (e.target === inputRef.value) return
-  toggle()
-  nextTick(() => inputRef.value?.focus())
+  inputRef.value?.focus()
+  open()
 }
 
 const onInput = () => {
