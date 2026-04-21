@@ -80,30 +80,17 @@
 
 <script setup>
 import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
+import { storeToRefs } from 'pinia'
 
 const authStore = useAuthStore()
 const router = useRouter()
 
-const form = ref({
-  username: '',
-  password: ''
-})
-
-const error = ref('')
-const loading = ref(false)
+const loginStore = useLoginStore()
+const { form, error, loading } = storeToRefs(loginStore)
 
 const handleLogin = async () => {
-  loading.value = true
-  error.value = ''
-
-  try {
-    await authStore.login(form.value.username, form.value.password)
-    await router.push('/')
-  } catch (err) {
-    error.value = err.message || 'حدث خطأ غير متوقع'
-  } finally {
-    loading.value = false
-  }
+  const res = await loginStore.submit(authStore)
+  if (res.ok) await router.push('/')
 }
 
 // Redirect if already authenticated
