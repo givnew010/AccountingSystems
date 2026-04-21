@@ -17,48 +17,41 @@
         <!-- Customer Form -->
         <form @submit.prevent="saveCustomer" class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">الاسم</label>
-            <input v-model="currentData.name" type="text" required :disabled="isViewMode"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100" />
+            <UiLabel required :disabled="isViewMode">الاسم</UiLabel>
+            <UiInput v-model="currentData.name" type="text" required :disabled="isViewMode" />
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">الهاتف</label>
-            <input v-model="currentData.phone" type="tel" required :disabled="isViewMode"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100" />
+            <UiLabel required :disabled="isViewMode">الهاتف</UiLabel>
+            <UiInput v-model="currentData.phone" type="tel" required :disabled="isViewMode" />
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">العنوان</label>
-            <textarea v-model="currentData.address" rows="3" :disabled="isViewMode"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"></textarea>
+            <UiLabel :disabled="isViewMode">العنوان</UiLabel>
+            <UiTextarea v-model="currentData.address" :disabled="isViewMode" rows="3" />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">الرصيد الافتتاحي</label>
-              <input v-model.number="currentData.openingBalance" type="number" step="0.01" min="0"
-                :disabled="isViewMode"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100" />
+              <UiLabel :disabled="isViewMode">الرصيد الافتتاحي</UiLabel>
+              <UiInput v-model="currentData.openingBalance" type="number" step="0.01" min="0" :disabled="isViewMode" />
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">نوع الرصيد</label>
-              <select v-model="currentData.balanceType" :disabled="isViewMode"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100">
+              <UiLabel :disabled="isViewMode">نوع الرصيد</UiLabel>
+              <UiSelect v-model="currentData.balanceType" :disabled="isViewMode">
                 <option value="debit">مدين</option>
                 <option value="credit">دائن</option>
-              </select>
+              </UiSelect>
             </div>
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">الحالة</label>
-            <select v-model="currentData.status" :disabled="isViewMode"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100">
+            <UiLabel :disabled="isViewMode">الحالة</UiLabel>
+            <UiSelect v-model="currentData.status" :disabled="isViewMode">
               <option value="active">نشط</option>
               <option value="inactive">غير نشط</option>
-            </select>
+            </UiSelect>
           </div>
         </form>
       </div>
@@ -67,106 +60,27 @@
 </template>
 
 <script setup>
-import { ref, inject, onMounted } from 'vue'
+import { inject, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import { injectToast } from '~/composables/useToast'
-import { getDefaultValues } from '~/composables/helper'
 
-const Structure = {
-  id: { type: Number, default: null },
-  no: { type: Number, default: null },
-  name: { type: String, default: '' },
-  phone: { type: String, default: '' },
-  address: { type: String, default: '' },
-  openingBalance: { type: Number, default: 0 },
-  balanceType: { type: String, default: 'debit' },
-  status: { type: String, default: 'active' }
-}
-
-const selectedItemId = ref(null)
-const lastselectedItemId = ref(null)
-const isViewMode = ref(true)
+const customersStore = useCustomersStore()
+const { customers, selectedItemId, isViewMode, currentData } = storeToRefs(customersStore)
 const { addToast } = injectToast()
-const currentData = ref({ ...getDefaultValues(Structure) })
 const showMessage = inject('showMessage');
 
-// Mock data
-const customers = ref([
-  {
-    id: 1,
-    no: 1,
-    name: 'أحمد محمد',
-    phone: '0501234567',
-    address: 'الرياض، المملكة العربية السعودية',
-    openingBalance: 1000,
-    balanceType: 'debit',
-    status: 'active'
-  },
-  {
-    id: 2,
-    no: 2,
-    name: 'فاطمة علي',
-    phone: '0507654321',
-    address: 'جدة، المملكة العربية السعودية',
-    openingBalance: 500,
-    balanceType: 'credit',
-    status: 'active'
-  },
-  {
-    id: 3,
-    no: 3,
-    name: 'محمد أحمد',
-    phone: '0509876543',
-    address: 'الدمام، المملكة العربية السعودية',
-    openingBalance: 0,
-    balanceType: 'debit',
-    status: 'inactive'
-  }
-])
-
-// Methods
+// Methods (UI layer)
 onMounted(() => {
-  isViewMode.value = true
-  selectItem(customers.value[0]?.id ?? -1)
+  customersStore.init()
 })
 
-const newCustomer = () => {
-  isViewMode.value = false
-  lastselectedItemId.value = selectedItemId.value
-  selectItem(-1)
-}
-
-const editCustomer = () => {
-  if (selectedItemId.value) {
-    isViewMode.value = false
-    lastselectedItemId.value = selectedItemId.value
-    // Form is already populated from selectCustomer
-  }
-}
+const newCustomer = () => customersStore.newCustomer()
+const editCustomer = () => customersStore.editCustomer()
+const cancelNewOrEdit = () => customersStore.cancelNewOrEdit()
 
 const saveCustomer = () => {
-  if (selectedItemId.value) {
-    // Update existing customer
-    const index = customers.value.findIndex(c => c.id === selectedItemId.value)
-    if (index > -1) {
-      customers.value[index] = { ...currentData.value, id: selectedItemId.value }
-      isViewMode.value = true
-      selectItem(customers.value[index].id)
-      addToast('تم تحديث العميل بنجاح', 'success')
-    }
-  } else {
-    // Add new customer
-    const newId = Math.max(...customers.value.map(c => c.id)) + 1
-    const newCustomerData = { ...currentData.value, id: newId, no: newId }
-    customers.value.push(newCustomerData)
-    isViewMode.value = true
-    selectItem(newCustomerData.id)
-    addToast('تم إضافة العميل بنجاح', 'success')
-  }
-}
-
-const cancelNewOrEdit = () => {
-  isViewMode.value = true
-  selectItem(lastselectedItemId.value)
+  const res = customersStore.saveCustomer()
+  addToast(res.type === 'updated' ? 'تم تحديث العميل بنجاح' : 'تم إضافة العميل بنجاح', 'success')
 }
 
 const deleteCustomer = () => {
@@ -183,14 +97,8 @@ const deleteCustomer = () => {
 }
 
 const confirmDelete = () => {
-  const index = customers.value.findIndex(customer => customer.id === currentData.value.id)
-  if (index > -1) {
-    customers.value.splice(index, 1)
-    selectItem(index >= 0 && index < customers.value.length ?
-      customers.value[index].id : index === customers.value.length ?
-        customers.value[index - 1]?.id : null);
-    addToast('تم حذف العميل بنجاح', 'success')
-  }
+  const ok = customersStore.confirmDeleteSelected()
+  if (ok) addToast('تم حذف العميل بنجاح', 'success')
 }
 
 const printCustomer = () => {
@@ -198,10 +106,6 @@ const printCustomer = () => {
   alert('طباعة العميل - سيتم تنفيذها لاحقاً')
 }
 
-const selectItem = (id) => {
-  const customer = customers.value.find(c => c.id === id) ?? { ...getDefaultValues(Structure) }
-  selectedItemId.value = customer.id ?? null
-  currentData.value = { ...customer }
-}
+const selectItem = (id) => customersStore.selectItem(id)
 
 </script>

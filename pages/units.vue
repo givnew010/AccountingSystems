@@ -59,55 +59,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted, inject } from 'vue'
+import { onMounted, inject } from 'vue'
+import { storeToRefs } from 'pinia'
 import { injectToast } from '~/composables/useToast'
-import { getDefaultValues } from '~/composables/helper'
-
-const Structure = {
-  id: { type: Number, default: null },
-  no: { type: Number, default: null },
-  name: { type: String, default: '' },
-  symbol: { type: String, default: '' },
-  type: { type: String, default: 'count' },
-  description: { type: String, default: '' },
-  status: { type: String, default: 'active' },
-  usageCount: { type: Number, default: 0 }
-}
+const unitsStore = useUnitsStore()
+const { units, selectedItemId, isViewMode, unitForm } = storeToRefs(unitsStore)
 
 const { addToast } = injectToast()
 const showMessage = inject('showMessage')
+const selectUnitById = (id) => unitsStore.selectUnitById(id)
+const newUnit = () => unitsStore.newUnit()
+const editUnit = () => unitsStore.editUnit()
+const cancelEdit = () => unitsStore.cancelEdit()
 
-const units = ref([
-  { id: 1, no: 1, name: 'قطعة', symbol: 'قطعة', type: 'count', description: 'وحدة العد للأشياء القابلة للعد', status: 'active', usageCount: 25 },
-  { id: 2, no: 2, name: 'كيلو جرام', symbol: 'كجم', type: 'weight', description: 'وحدة قياس الوزن', status: 'active', usageCount: 15 },
-  { id: 3, no: 3, name: 'لتر', symbol: 'لتر', type: 'volume', description: 'وحدة قياس الحجم للسوائل', status: 'active', usageCount: 8 },
-  { id: 4, no: 4, name: 'متر مربع', symbol: 'م²', type: 'area', description: 'وحدة قياس المساحة', status: 'active', usageCount: 3 },
-  { id: 5, no: 5, name: 'علبة', symbol: 'علبة', type: 'count', description: 'وحدة العد للعلب والحزم', status: 'inactive', usageCount: 0 }
-])
-
-const selectedItemId = ref(null)
-const lastSelectedItemId = ref(null)
-const isViewMode = ref(true)
-
-const unitForm = ref({ ...getDefaultValues(Structure) })
-
-const selectUnitById = (id) => {
-  const unit = units.value.find(u => u.id === id) ?? { ...getDefaultValues(Structure) }
-  selectedItemId.value = unit.id ?? null
-  unitForm.value = { ...unit }
-}
-
-const newUnit = () => {
-  isViewMode.value = false
-  lastSelectedItemId.value = selectedItemId.value
-  selectUnitById(-1)
-}
-
-const editUnit = () => {
-  if (selectedItemId.value) {
-    isViewMode.value = false
-    lastSelectedItemId.value = selectedItemId.value
-  }
+const saveUnit = () => {
+  const res = unitsStore.saveUnit()
+  addToast(res.type === 'updated' ? 'تم تحديث الوحدة بنجاح' : 'تم إضافة الوحدة بنجاح', 'success')
 }
 
 const deleteUnit = () => {
@@ -123,42 +90,11 @@ const deleteUnit = () => {
 }
 
 const confirmDelete = () => {
-  const id = unitForm.value.id
-  const index = units.value.findIndex(u => u.id === id)
-  if (index > -1) {
-    units.value.splice(index, 1)
-    const nextId = units.value[index]?.id ?? units.value[index - 1]?.id ?? null
-    selectUnitById(nextId)
-    addToast('تم حذف الوحدة بنجاح', 'success')
-  }
-}
-
-const saveUnit = () => {
-  if (selectedItemId.value) {
-    const index = units.value.findIndex(u => u.id === selectedItemId.value)
-    if (index > -1) {
-      units.value[index] = { ...unitForm.value, id: selectedItemId.value }
-      isViewMode.value = true
-      selectUnitById(units.value[index].id)
-      addToast('تم تحديث الوحدة بنجاح', 'success')
-    }
-  } else {
-    const newId = Math.max(...units.value.map(u => u.id)) + 1
-    const newUnitData = { ...unitForm.value, id: newId, no: newId, usageCount: 0 }
-    units.value.push(newUnitData)
-    isViewMode.value = true
-    selectUnitById(newUnitData.id)
-    addToast('تم إضافة الوحدة بنجاح', 'success')
-  }
-}
-
-const cancelEdit = () => {
-  isViewMode.value = true
-  selectUnitById(lastSelectedItemId.value)
+  const ok = unitsStore.confirmDeleteSelected()
+  if (ok) addToast('تم حذف الوحدة بنجاح', 'success')
 }
 
 onMounted(() => {
-  isViewMode.value = true
-  selectUnitById(units.value[0]?.id ?? -1)
+  unitsStore.init()
 })
 </script>

@@ -129,114 +129,28 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, inject } from 'vue'
+import { onMounted, inject } from 'vue'
+import { storeToRefs } from 'pinia'
 import { injectToast } from '~/composables/useToast'
-import { getDefaultValues } from '~/composables/helper'
-
-const Structure = {
-  id: { type: Number, default: null },
-  no: { type: Number, default: null },
-  number: { type: String, default: '' },
-  date: { type: String, default: new Date().toISOString().split('T')[0] },
-  supplierId: { type: [Number, String], default: '' },
-  supplier: { type: Object, default: null },
-  originalInvoiceNo: { type: String, default: '' },
-  returnReason: { type: String, default: '' },
-  notes: { type: String, default: '' },
-  items: { type: Array, default: [] },
-  total: { type: Number, default: 0 },
-  status: { type: String, default: 'draft' }
-}
+const purchaseReturnStore = usePurchaseReturnStore()
+const { suppliers, products, invoicesForList, selectedItemId, isViewMode, currentData, invoiceTotal } =
+  storeToRefs(purchaseReturnStore)
 
 const { addToast } = injectToast()
 const showMessage = inject('showMessage')
-
-const suppliers = ref([
-  { id: 1, name: 'شركة الأمانة للتوريدات' },
-  { id: 2, name: 'مؤسسة النور للإمداد' },
-  { id: 3, name: 'شركة الخليج للتجارة' }
-])
-
-const products = ref([
-  { id: 1, name: 'منتج 1', costPrice: 8.00 },
-  { id: 2, name: 'منتج 2', costPrice: 20.00 },
-  { id: 3, name: 'منتج 3', costPrice: 12.00 }
-])
-
-const invoices = ref([
-  {
-    id: 1, no: 1, number: 'PRTN-001', date: '2024-01-18', supplierId: 1, supplier: { name: 'شركة الأمانة للتوريدات' },
-    originalInvoiceNo: 'PUR-001', returnReason: 'defective', notes: '',
-    items: [{ productId: 1, unit: 'piece', quantity: 2, price: 8.00, total: 16.00 }],
-    total: 16.00, status: 'draft'
-  }
-])
-
-const selectedItemId = ref(null)
-const lastSelectedItemId = ref(null)
-const isViewMode = ref(true)
-const currentData = ref({ ...getDefaultValues(Structure), items: [] })
-
-const invoicesForList = computed(() => invoices.value.map(inv => ({
-  ...inv,
-  name: `${inv.number} - ${inv.supplier?.name || ''}`,
-  no: inv.id
-})))
-
-const invoiceTotal = computed(() => {
-  return (currentData.value.items || []).reduce((sum, item) => sum + (item.total || 0), 0)
-})
-
-const getStatusLabel = (status) => {
-  const labels = { draft: 'مسودة', posted: 'مُرحّل', paid: 'مكتمل' }
-  return labels[status] || status
-}
-
-const selectItem = (id) => {
-  const invoice = invoices.value.find(inv => inv.id === id) ?? { ...getDefaultValues(Structure), items: [] }
-  selectedItemId.value = invoice.id ?? null
-  currentData.value = { ...invoice, items: invoice.items ? invoice.items.map(i => ({ ...i })) : [] }
-}
-
-const newInvoice = () => {
-  isViewMode.value = false
-  lastSelectedItemId.value = selectedItemId.value
-  const nextNumber = `PRTN-${String(invoices.value.length + 1).padStart(3, '0')}`
-  selectedItemId.value = null
-  currentData.value = { ...getDefaultValues(Structure), number: nextNumber, items: [] }
-}
-
-const editInvoice = () => {
-  if (selectedItemId.value) {
-    isViewMode.value = false
-    lastSelectedItemId.value = selectedItemId.value
-  }
-}
+const getStatusLabel = (status) => purchaseReturnStore.getStatusLabel(status)
+const selectItem = (id) => purchaseReturnStore.selectItem(id)
+const newInvoice = () => purchaseReturnStore.newInvoice()
+const editInvoice = () => purchaseReturnStore.editInvoice()
+const cancelEdit = () => purchaseReturnStore.cancelEdit()
+const addItem = () => purchaseReturnStore.addItem()
+const removeItem = (index) => purchaseReturnStore.removeItem(index)
+const updateProduct = (index) => purchaseReturnStore.updateProduct(index)
+const calcTotal = (index) => purchaseReturnStore.calcTotal(index)
 
 const saveInvoice = () => {
-  const supplier = suppliers.value.find(s => s.id == currentData.value.supplierId)
-  const total = invoiceTotal.value
-  if (selectedItemId.value) {
-    const index = invoices.value.findIndex(inv => inv.id === selectedItemId.value)
-    if (index > -1) {
-      invoices.value[index] = { ...currentData.value, id: selectedItemId.value, supplier, total }
-      isViewMode.value = true
-      selectItem(invoices.value[index].id)
-      addToast('تم تحديث المرتجع بنجاح', 'success')
-    }
-  } else {
-    const newId = Math.max(...invoices.value.map(inv => inv.id), 0) + 1
-    const newInv = { ...currentData.value, id: newId, no: newId, supplier, total }
-    invoices.value.push(newInv)
-    isViewMode.value = true
-    selectItem(newInv.id)
-    addToast('تم إضافة المرتجع بنجاح', 'success')
-  }
-}
-
-const cancelEdit = () => {
-  isViewMode.value = true
-  selectItem(lastSelectedItemId.value)
+  const res = purchaseReturnStore.saveInvoice()
+  addToast(res.type === 'updated' ? 'تم تحديث المرتجع بنجاح' : 'تم إضافة المرتجع بنجاح', 'success')
 }
 
 const deleteInvoice = () => {
@@ -248,55 +162,22 @@ const deleteInvoice = () => {
     confirmText: 'حذف',
     onCancel: () => {},
     onConfirm: () => {
-      const index = invoices.value.findIndex(inv => inv.id === currentData.value.id)
-      if (index > -1) {
-        invoices.value.splice(index, 1)
-        selectItem(invoices.value[index]?.id ?? invoices.value[index - 1]?.id ?? null)
-        addToast('تم حذف المرتجع بنجاح', 'success')
-      }
+      const ok = purchaseReturnStore.confirmDeleteSelected()
+      if (ok) addToast('تم حذف المرتجع بنجاح', 'success')
     }
   })
 }
 
 const postInvoice = () => {
-  if (!selectedItemId.value || currentData.value.status === 'posted') return
-  const index = invoices.value.findIndex(inv => inv.id === selectedItemId.value)
-  if (index > -1) {
-    invoices.value[index].status = 'posted'
-    currentData.value.status = 'posted'
-    addToast('تم ترحيل المرتجع بنجاح', 'success')
-  }
+  const ok = purchaseReturnStore.postInvoice()
+  if (ok) addToast('تم ترحيل المرتجع بنجاح', 'success')
 }
 
 const printInvoice = () => {
   addToast('جاري الطباعة...', 'info')
 }
 
-const addItem = () => {
-  if (!currentData.value.items) currentData.value.items = []
-  currentData.value.items.push({ productId: '', unit: 'piece', quantity: 1, price: 0, total: 0 })
-}
-
-const removeItem = (index) => {
-  currentData.value.items.splice(index, 1)
-}
-
-const updateProduct = (index) => {
-  const item = currentData.value.items[index]
-  const product = products.value.find(p => p.id == item.productId)
-  if (product) {
-    item.price = product.costPrice
-    calcTotal(index)
-  }
-}
-
-const calcTotal = (index) => {
-  const item = currentData.value.items[index]
-  item.total = Math.max(0, item.quantity * item.price)
-}
-
 onMounted(() => {
-  isViewMode.value = true
-  selectItem(invoices.value[0]?.id ?? -1)
+  purchaseReturnStore.init()
 })
 </script>

@@ -53,74 +53,25 @@
 </template>
 
 <script setup>
-import { ref, onMounted, inject } from 'vue'
+import { onMounted, inject } from 'vue'
+import { storeToRefs } from 'pinia'
 import { injectToast } from '~/composables/useToast'
-import { getDefaultValues } from '~/composables/helper'
-
-const currencies = ref([
-  { id: 1, no: 1, name: 'الريال السعودي', code: 'SAR', symbol: 'ر.س', exchangeRate: 1.0, status: 'active' },
-  { id: 2, no: 2, name: 'الدولار الأمريكي', code: 'USD', symbol: '$', exchangeRate: 3.75, status: 'active' },
-  { id: 3, no: 3, name: 'اليورو', code: 'EUR', symbol: '€', exchangeRate: 4.1, status: 'active' },
-  { id: 4, no: 4, name: 'الجنيه الإسترليني', code: 'GBP', symbol: '£', exchangeRate: 4.8, status: 'inactive' }
-])
-
-const Structure = {
-  id: { type: Number, default: null },
-  no: { type: Number, default: null },
-  name: { type: String, default: '' },
-  code: { type: String, default: '' },
-  symbol: { type: String, default: '' },
-  exchangeRate: { type: Number, default: 1.0 },
-  status: { type: String, default: 'active' }
-}
-
-const selectedItemId = ref(null)
-const lastSelectedItemId = ref(null)
-const isViewMode = ref(true)
+const currenciesStore = useCurrenciesStore()
+const { currencies, selectedItemId, isViewMode, currencyForm } = storeToRefs(currenciesStore)
 const { addToast } = injectToast()
 const showMessage = inject('showMessage')
-const currencyForm = ref({ ...getDefaultValues(Structure) })
 
 onMounted(() => {
-  isViewMode.value = true
-  selectCurrencyById(currencies.value[0]?.id ?? -1)
+  currenciesStore.init()
 })
 
-const newCurrency = () => {
-  isViewMode.value = false
-  lastSelectedItemId.value = selectedItemId.value
-  selectCurrencyById(-1)
-}
-
-const editCurrency = () => {
-  if (selectedItemId.value) {
-    isViewMode.value = false
-    lastSelectedItemId.value = selectedItemId.value
-  }
-}
+const newCurrency = () => currenciesStore.newCurrency()
+const editCurrency = () => currenciesStore.editCurrency()
+const cancelNewOrEdit = () => currenciesStore.cancelNewOrEdit()
 
 const saveCurrency = () => {
-  if (selectedItemId.value) {
-    const idx = currencies.value.findIndex(c => c.id === selectedItemId.value)
-    if (idx > -1) {
-      currencies.value[idx] = { ...currencyForm.value, id: selectedItemId.value }
-      isViewMode.value = true
-      selectCurrencyById(currencies.value[idx].id)
-      addToast('تم تحديث العملة بنجاح', 'success')
-    }
-  } else {
-    const newId = Math.max(...currencies.value.map(c => c.id)) + 1
-    const newCur = { ...currencyForm.value, id: newId, no: newId }
-    currencies.value.push(newCur)
-    isViewMode.value = true
-    selectCurrencyById(newCur.id)
-    addToast('تم إضافة العملة بنجاح', 'success')
-  }
-}
-
-const cancelNewOrEdit = () => {
-  isViewMode.value = true
-  selectCurrencyById(lastSelectedItemId.value)
+  const res = currenciesStore.saveCurrency()
+  addToast(res.type === 'updated' ? 'تم تحديث العملة بنجاح' : 'تم إضافة العملة بنجاح', 'success')
 }
 
 const deleteCurrency = () => {
@@ -137,19 +88,9 @@ const deleteCurrency = () => {
 }
 
 const confirmDelete = () => {
-  const id = selectedItemId.value
-  const idx = currencies.value.findIndex(c => c.id === id)
-  if (idx > -1) {
-    currencies.value.splice(idx, 1)
-    const nextId = currencies.value[idx]?.id || currencies.value[idx - 1]?.id || null
-    selectCurrencyById(nextId)
-    addToast('تم حذف العملة بنجاح', 'success')
-  }
+  const ok = currenciesStore.confirmDeleteSelected()
+  if (ok) addToast('تم حذف العملة بنجاح', 'success')
 }
 
-const selectCurrencyById = id => {
-  const cur = currencies.value.find(c => c.id === id) ?? { ...getDefaultValues(Structure) }
-  selectedItemId.value = cur.id ?? null
-  currencyForm.value = { ...cur }
-}
+const selectCurrencyById = id => currenciesStore.selectCurrencyById(id)
 </script>

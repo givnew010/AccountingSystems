@@ -55,99 +55,26 @@
 </template>
 
 <script setup>
-import { ref, onMounted, inject } from 'vue'
+import { onMounted, inject } from 'vue'
+import { storeToRefs } from 'pinia'
 import { injectToast } from '~/composables/useToast'
-import { getDefaultValues } from '~/composables/helper'
 
-const WarehouseStructure = {
-  id: { type: Number, default: null },
-  no: { type: Number, default: null },
-  name: { type: String, default: '' },
-  branchId: { type: [Number, String], default: '' },
-  branchName: { type: String, default: '' },
-  location: { type: String, default: '' },
-  capacity: { type: Number, default: null },
-  status: { type: String, default: 'active' },
-  productsCount: { type: Number, default: 0 }
-}
-
-const BranchStructure = {
-  id: { type: Number, default: null },
-  no: { type: Number, default: null },
-  name: { type: String, default: '' },
-  address: { type: String, default: '' },
-  phone: { type: String, default: '' },
-  email: { type: String, default: '' },
-  status: { type: String, default: 'active' },
-  warehousesCount: { type: Number, default: 0 }
-}
-
-const branches = ref([
-  { id: 1, no: 1, name: 'المقر الرئيسي', address: 'الرياض، المملكة العربية السعودية', phone: '+966112345678', email: 'main@company.com', status: 'active', warehousesCount: 3 },
-  { id: 2, no: 2, name: 'فرع جدة', address: 'جدة، المملكة العربية السعودية', phone: '+966212345678', email: 'jeddah@company.com', status: 'active', warehousesCount: 2 },
-  { id: 3, no: 3, name: 'فرع الدمام', address: 'الدمام، المملكة العربية السعودية', phone: '+966312345678', email: 'dammam@company.com', status: 'inactive', warehousesCount: 0 }
-])
-
-const warehouses = ref([
-  { id: 1, no: 1, name: 'المستودع الرئيسي', branchId: 1, branchName: 'المقر الرئيسي', location: 'المنطقة الصناعية', capacity: 1000, status: 'active', productsCount: 150 },
-  { id: 2, no: 2, name: 'مستودع الإلكترونيات', branchId: 1, branchName: 'المقر الرئيسي', location: 'المبنى B', capacity: 500, status: 'active', productsCount: 75 },
-  { id: 3, no: 3, name: 'مستودع الأثاث', branchId: 1, branchName: 'المقر الرئيسي', location: 'المستودع الخارجي', capacity: 800, status: 'active', productsCount: 45 },
-  { id: 4, no: 4, name: 'مستودع جدة الرئيسي', branchId: 2, branchName: 'فرع جدة', location: 'المنطقة الصناعية', capacity: 600, status: 'active', productsCount: 90 },
-  { id: 5, no: 5, name: 'مستودع جدة الفرعي', branchId: 2, branchName: 'فرع جدة', location: 'وسط المدينة', capacity: 300, status: 'inactive', productsCount: 0 }
-])
+const warehousesStore = useWarehousesStore()
+const { branches, warehouses, warehouseSelectedId, warehouseViewMode, warehouseData } = storeToRefs(warehousesStore)
 
 const { addToast } = injectToast()
 const showMessage = inject('showMessage')
 
-const warehouseSelectedId = ref(null)
-const warehouseLastSelectedId = ref(null)
-const warehouseViewMode = ref(true)
-const warehouseData = ref({ ...getDefaultValues(WarehouseStructure) })
-
-const selectWarehouse = (id) => {
-  const warehouse = warehouses.value.find(w => w.id === id) ?? { ...getDefaultValues(WarehouseStructure) }
-  warehouseSelectedId.value = warehouse.id ?? null
-  warehouseData.value = { ...warehouse }
-}
-
-const newWarehouse = () => {
-  warehouseViewMode.value = false
-  warehouseLastSelectedId.value = warehouseSelectedId.value
-  selectWarehouse(-1)
-}
-
-const editWarehouse = () => {
-  if (warehouseSelectedId.value) {
-    warehouseViewMode.value = false
-    warehouseLastSelectedId.value = warehouseSelectedId.value
-  }
-}
+const selectWarehouse = (id) => warehousesStore.selectWarehouse(id)
+const newWarehouse = () => warehousesStore.newWarehouse()
+const editWarehouse = () => warehousesStore.editWarehouse()
 
 const saveWarehouse = () => {
-  if (warehouseSelectedId.value) {
-    const index = warehouses.value.findIndex(w => w.id === warehouseSelectedId.value)
-    if (index > -1) {
-      const branch = branches.value.find(b => b.id === warehouseData.value.branchId)
-      warehouses.value[index] = { ...warehouseData.value, id: warehouseSelectedId.value, branchName: branch?.name || '' }
-      warehouseViewMode.value = true
-      selectWarehouse(warehouses.value[index].id)
-      addToast('تم تحديث المستودع بنجاح', 'success')
-    }
-  } else {
-    const newId = Math.max(...warehouses.value.map(w => w.id)) + 1
-    const branch = branches.value.find(b => b.id === warehouseData.value.branchId)
-    const newWarehouse = { ...warehouseData.value, id: newId, no: newId, branchName: branch?.name || '', productsCount: 0 }
-    warehouses.value.push(newWarehouse)
-    warehouseViewMode.value = true
-    selectWarehouse(newWarehouse.id)
-    addToast('تم إضافة المستودع بنجاح', 'success')
-  }
+  const res = warehousesStore.saveWarehouse()
+  addToast(res.type === 'updated' ? 'تم تحديث المستودع بنجاح' : 'تم إضافة المستودع بنجاح', 'success')
 }
 
-const cancelWarehouseEdit = () => {
-  warehouseViewMode.value = true
-  selectWarehouse(warehouseLastSelectedId.value)
-}
+const cancelWarehouseEdit = () => warehousesStore.cancelWarehouseEdit()
 
 const deleteWarehouse = () => {
   if (!warehouseSelectedId.value) return
@@ -156,20 +83,15 @@ const deleteWarehouse = () => {
     message: `هل أنت متأكد من حذف المستودع «${warehouseData.value.name}»؟`,
     cancelText: 'إلغاء',
     confirmText: 'حذف',
-    onCancel: () => { },
+    onCancel: () => {},
     onConfirm: () => {
-      const index = warehouses.value.findIndex(w => w.id === warehouseData.value.id)
-      if (index > -1) {
-        warehouses.value.splice(index, 1)
-        selectWarehouse(warehouses.value[index]?.id ?? warehouses.value[index - 1]?.id ?? null)
-        addToast('تم حذف المستودع بنجاح', 'success')
-      }
+      const ok = warehousesStore.confirmDeleteSelected()
+      if (ok) addToast('تم حذف المستودع بنجاح', 'success')
     }
   })
 }
 
 onMounted(() => {
-  warehouseViewMode.value = true
-  selectWarehouse(warehouses.value[0]?.id ?? -1)
+  warehousesStore.init()
 })
 </script>

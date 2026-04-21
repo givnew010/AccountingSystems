@@ -75,113 +75,24 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted, inject } from 'vue'
+import { onMounted, inject } from 'vue'
+import { storeToRefs } from 'pinia'
 import { injectToast } from '~/composables/useToast'
-import { getDefaultValues } from '~/composables/helper'
-
-const Structure = {
-  id: { type: Number, default: null },
-  no: { type: Number, default: null },
-  number: { type: String, default: '' },
-  date: { type: String, default: new Date().toISOString().split('T')[0] },
-  customerId: { type: [Number, String], default: '' },
-  customer: { type: Object, default: null },
-  paymentMethod: { type: String, default: 'cash' },
-  notes: { type: String, default: '' },
-  items: { type: Array, default: [] },
-  total: { type: Number, default: 0 },
-  status: { type: String, default: 'draft' }
-}
+const salesStore = useSalesStore()
+const { customers, invoicesForList, selectedItemId, isViewMode, currentData, invoiceTotal, salesItemsColumns } =
+  storeToRefs(salesStore)
 
 const { addToast } = injectToast()
 const showMessage = inject('showMessage')
-
-const customers = ref([
-  { id: 1, name: 'أحمد محمد' },
-  { id: 2, name: 'فاطمة علي' },
-  { id: 3, name: 'محمد أحمد' }
-])
-
-const products = ref([
-  { id: 1, name: 'منتج 1', price: 10.00, costPrice: 8.00, stock: 100 },
-  { id: 2, name: 'منتج 2', price: 25.50, costPrice: 20.00, stock: 50 },
-  { id: 3, name: 'منتج 3', price: 15.75, costPrice: 12.00, stock: 75 }
-])
-
-const invoices = ref([
-  {
-    id: 1, no: 1, number: 'INV-001', date: '2024-01-15', customerId: 1, customer: { name: 'أحمد محمد' },
-    paymentMethod: 'cash', notes: '', items: [
-      { productId: 1, unit: 'piece', quantity: 2, price: 10.00, discount: 0, total: 20.00 }
-    ], total: 20.00, status: 'draft'
-  }
-])
-
-const selectedItemId = ref(null)
-const lastSelectedItemId = ref(null)
-const isViewMode = ref(true)
-const currentData = ref({ ...getDefaultValues(Structure), items: [] })
-
-const invoicesForList = computed(() => invoices.value.map(inv => ({
-  ...inv,
-  name: `${inv.number} - ${inv.customer?.name || ''}`,
-  no: inv.id
-})))
-
-const invoiceTotal = computed(() => {
-  return (currentData.value.items || []).reduce((sum, item) => sum + (item.total || 0), 0)
-})
-
-const getStatusLabel = (status) => {
-  const labels = { draft: 'مسودة', posted: 'مُرحّلة', paid: 'مدفوعة' }
-  return labels[status] || status
-}
-
-const selectItem = (id) => {
-  const invoice = invoices.value.find(inv => inv.id === id) ?? { ...getDefaultValues(Structure), items: [] }
-  selectedItemId.value = invoice.id ?? null
-  currentData.value = { ...invoice, items: invoice.items ? invoice.items.map(i => ({ ...i })) : [] }
-}
-
-const newInvoice = () => {
-  isViewMode.value = false
-  lastSelectedItemId.value = selectedItemId.value
-  const nextNumber = `INV-${String(invoices.value.length + 1).padStart(3, '0')}`
-  selectedItemId.value = null
-  currentData.value = { ...getDefaultValues(Structure), number: nextNumber, items: [] }
-}
-
-const editInvoice = () => {
-  if (selectedItemId.value) {
-    isViewMode.value = false
-    lastSelectedItemId.value = selectedItemId.value
-  }
-}
+const getStatusLabel = (status) => salesStore.getStatusLabel(status)
+const selectItem = (id) => salesStore.selectItem(id)
+const newInvoice = () => salesStore.newInvoice()
+const editInvoice = () => salesStore.editInvoice()
+const cancelEdit = () => salesStore.cancelEdit()
 
 const saveInvoice = () => {
-  const customer = customers.value.find(c => c.id == currentData.value.customerId)
-  const total = invoiceTotal.value
-  if (selectedItemId.value) {
-    const index = invoices.value.findIndex(inv => inv.id === selectedItemId.value)
-    if (index > -1) {
-      invoices.value[index] = { ...currentData.value, id: selectedItemId.value, customer, total }
-      isViewMode.value = true
-      selectItem(invoices.value[index].id)
-      addToast('تم تحديث الفاتورة بنجاح', 'success')
-    }
-  } else {
-    const newId = Math.max(...invoices.value.map(inv => inv.id), 0) + 1
-    const newInvoice = { ...currentData.value, id: newId, no: newId, customer, total }
-    invoices.value.push(newInvoice)
-    isViewMode.value = true
-    selectItem(newInvoice.id)
-    addToast('تم إضافة الفاتورة بنجاح', 'success')
-  }
-}
-
-const cancelEdit = () => {
-  isViewMode.value = true
-  selectItem(lastSelectedItemId.value)
+  const res = salesStore.saveInvoice()
+  addToast(res.type === 'updated' ? 'تم تحديث الفاتورة بنجاح' : 'تم إضافة الفاتورة بنجاح', 'success')
 }
 
 const deleteInvoice = () => {
@@ -193,121 +104,22 @@ const deleteInvoice = () => {
     confirmText: 'حذف',
     onCancel: () => {},
     onConfirm: () => {
-      const index = invoices.value.findIndex(inv => inv.id === currentData.value.id)
-      if (index > -1) {
-        invoices.value.splice(index, 1)
-        selectItem(invoices.value[index]?.id ?? invoices.value[index - 1]?.id ?? null)
-        addToast('تم حذف الفاتورة بنجاح', 'success')
-      }
+      const ok = salesStore.confirmDeleteSelected()
+      if (ok) addToast('تم حذف الفاتورة بنجاح', 'success')
     }
   })
 }
 
 const postInvoice = () => {
-  if (!selectedItemId.value || currentData.value.status === 'posted') return
-  const index = invoices.value.findIndex(inv => inv.id === selectedItemId.value)
-  if (index > -1) {
-    invoices.value[index].status = 'posted'
-    invoices.value[index].postedDate = new Date().toISOString().split('T')[0]
-    currentData.value.status = 'posted'
-    addToast('تم ترحيل الفاتورة بنجاح', 'success')
-  }
+  const ok = salesStore.postInvoice()
+  if (ok) addToast('تم ترحيل الفاتورة بنجاح', 'success')
 }
 
 const printInvoice = () => {
   addToast('جاري الطباعة...', 'info')
 }
 
-const salesItemsColumns = computed(() => [
-  {
-    field: 'productId',
-    label: 'المنتج',
-    type: 'select',
-    placeholder: 'اختر المنتج',
-    trigger: true,
-    options: products.value.map(p => ({ label: p.name, value: p.id })),
-    width: '160px'
-  },
-  {
-    field: 'unit',
-    label: 'الوحدة',
-    type: 'select',
-    default: 'piece',
-    options: [
-      { label: 'قطعة', value: 'piece' },
-      { label: 'كيلو', value: 'kg' },
-      { label: 'صندوق', value: 'box' }
-    ],
-    width: '90px'
-  },
-  {
-    field: 'quantity',
-    label: 'الكمية',
-    type: 'input',
-    inputType: 'number',
-    step: '0.01',
-    min: 0,
-    default: null,
-    width: '75px',
-    align: 'center'
-  },
-  {
-    field: 'price',
-    label: 'السعر',
-    type: 'input',
-    inputType: 'number',
-    step: '0.01',
-    min: 0,
-    default: null,
-    width: '85px',
-    align: 'center'
-  },
-  {
-    field: 'discount',
-    label: 'الخصم',
-    type: 'input',
-    inputType: 'number',
-    step: '0.01',
-    min: 0,
-    default: null,
-    width: '75px',
-    align: 'center'
-  },
-  {
-    field: 'total',
-    label: 'الإجمالي',
-    type: 'display',
-    bold: true,
-    align: 'center',
-    width: '85px',
-    format: (val, row) => {
-      const qty = parseFloat(row.quantity) || 0
-      const price = parseFloat(row.price) || 0
-      const discount = parseFloat(row.discount) || 0
-      return Math.max(0, qty * price - discount).toFixed(2)
-    }
-  }
-])
-
-// Auto-fill price when product is selected
-watch(
-  () => currentData.value.items,
-  (items) => {
-    if (!items) return
-    items.forEach(item => {
-      if (item.productId && (item.price === null || item.price === undefined || item.price === '')) {
-        const product = products.value.find(p => p.id == item.productId)
-        if (product) {
-          item.price = product.price
-        }
-      }
-    })
-  },
-  { deep: true }
-)
-
 onMounted(() => {
-  isViewMode.value = true
-  selectItem(invoices.value[0]?.id ?? -1)
+  salesStore.init()
 })
 </script>

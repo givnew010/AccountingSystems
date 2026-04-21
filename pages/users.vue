@@ -77,97 +77,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted, inject } from 'vue'
+import { onMounted, inject } from 'vue'
+import { storeToRefs } from 'pinia'
 import { injectToast } from '~/composables/useToast'
-import { getDefaultValues } from '~/composables/helper'
-
-const Structure = {
-  id: { type: Number, default: null },
-  no: { type: Number, default: null },
-  username: { type: String, default: '' },
-  name: { type: String, default: '' },
-  email: { type: String, default: '' },
-  password: { type: String, default: '' },
-  role: { type: String, default: '' },
-  status: { type: String, default: 'active' },
-  permissions: { type: Array, default: [] },
-  createdAt: { type: String, default: '' },
-  lastLogin: { type: String, default: null }
-}
+const usersStore = useUsersStore()
+const { availablePermissions, users, selectedItemId, isViewMode, currentData } = storeToRefs(usersStore)
 
 const { addToast } = injectToast()
 const showMessage = inject('showMessage')
-
-const availablePermissions = ref([
-  { key: 'sales', label: 'المبيعات' },
-  { key: 'purchases', label: 'المشتريات' },
-  { key: 'customers', label: 'العملاء' },
-  { key: 'products', label: 'المنتجات' },
-  { key: 'reports', label: 'التقارير' },
-  { key: 'settings', label: 'الإعدادات' },
-  { key: 'users', label: 'إدارة المستخدمين' },
-  { key: 'all', label: 'جميع الصلاحيات' }
-])
-
-const users = ref([
-  { id: 1, no: 1, name: 'المدير العام', username: 'admin', email: 'admin@company.com', role: 'مدير النظام', status: 'active', permissions: ['all'], createdAt: '2024-01-15T10:00:00Z', lastLogin: '2024-01-17T09:30:00Z' },
-  { id: 2, no: 2, name: 'أحمد المحاسب', username: 'accountant', email: 'accountant@company.com', role: 'محاسب', status: 'active', permissions: ['sales', 'purchases', 'reports'], createdAt: '2024-01-16T14:20:00Z', lastLogin: '2024-01-17T08:15:00Z' },
-  { id: 3, no: 3, name: 'فاطمة المبيعات', username: 'sales_manager', email: 'sales@company.com', role: 'مدير مبيعات', status: 'active', permissions: ['sales', 'customers', 'reports'], createdAt: '2024-01-16T16:45:00Z', lastLogin: null }
-])
-
-const selectedItemId = ref(null)
-const lastSelectedItemId = ref(null)
-const isViewMode = ref(true)
-const currentData = ref({ ...getDefaultValues(Structure) })
-
-const selectItem = (id) => {
-  const user = users.value.find(u => u.id === id) ?? { ...getDefaultValues(Structure) }
-  selectedItemId.value = user.id ?? null
-  currentData.value = { ...user, password: '' }
-}
-
-const newUser = () => {
-  isViewMode.value = false
-  lastSelectedItemId.value = selectedItemId.value
-  selectItem(-1)
-}
-
-const editUser = () => {
-  if (selectedItemId.value) {
-    isViewMode.value = false
-    lastSelectedItemId.value = selectedItemId.value
-  }
-}
+const selectItem = (id) => usersStore.selectItem(id)
+const newUser = () => usersStore.newUser()
+const editUser = () => usersStore.editUser()
+const cancelEdit = () => usersStore.cancelEdit()
 
 const saveUser = () => {
-  if (selectedItemId.value) {
-    const index = users.value.findIndex(u => u.id === selectedItemId.value)
-    if (index > -1) {
-      const existing = users.value[index]
-      users.value[index] = {
-        ...currentData.value,
-        id: selectedItemId.value,
-        password: currentData.value.password || existing.password,
-        createdAt: existing.createdAt,
-        lastLogin: existing.lastLogin
-      }
-      isViewMode.value = true
-      selectItem(users.value[index].id)
-      addToast('تم تحديث المستخدم بنجاح', 'success')
-    }
-  } else {
-    const newId = Math.max(...users.value.map(u => u.id)) + 1
-    const newUser = { ...currentData.value, id: newId, no: newId, createdAt: new Date().toISOString(), lastLogin: null }
-    users.value.push(newUser)
-    isViewMode.value = true
-    selectItem(newUser.id)
-    addToast('تم إضافة المستخدم بنجاح', 'success')
-  }
-}
-
-const cancelEdit = () => {
-  isViewMode.value = true
-  selectItem(lastSelectedItemId.value)
+  const res = usersStore.saveUser()
+  addToast(res.type === 'updated' ? 'تم تحديث المستخدم بنجاح' : 'تم إضافة المستخدم بنجاح', 'success')
 }
 
 const deleteUser = () => {
@@ -183,18 +108,11 @@ const deleteUser = () => {
 }
 
 const confirmDelete = () => {
-  const index = users.value.findIndex(u => u.id === currentData.value.id)
-  if (index > -1) {
-    users.value.splice(index, 1)
-    selectItem(index >= 0 && index < users.value.length ?
-      users.value[index].id : index === users.value.length ?
-        users.value[index - 1]?.id : null)
-    addToast('تم حذف المستخدم بنجاح', 'success')
-  }
+  const ok = usersStore.confirmDeleteSelected()
+  if (ok) addToast('تم حذف المستخدم بنجاح', 'success')
 }
 
 onMounted(() => {
-  isViewMode.value = true
-  selectItem(users.value[0]?.id ?? -1)
+  usersStore.init()
 })
 </script>

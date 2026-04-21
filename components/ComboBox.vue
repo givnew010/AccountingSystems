@@ -2,7 +2,7 @@
   <div ref="rootRef" class="relative" @keydown="onKeydown">
     <div
       :class="[
-        'flex items-center w-full border transition-colors',
+        'flex items-center w-full border transition-colors overflow-hidden',
         size === 'sm' ? 'rounded' : 'rounded-lg',
         disabled ? 'bg-gray-100' : 'bg-white',
         isOpen && !disabled
@@ -23,7 +23,7 @@
         @click.stop="open"
         @input="onInput"
         :class="[
-          'flex-1 bg-transparent focus:outline-none disabled:cursor-not-allowed',
+          'flex-1 min-w-0 bg-transparent focus:outline-none disabled:cursor-not-allowed',
           size === 'sm' ? 'px-2 py-0.5 text-sm' : 'px-3 py-2',
           !searchable && !disabled ? 'cursor-pointer' : ''
         ]"
@@ -34,7 +34,7 @@
         type="button"
         tabindex="-1"
         @mousedown.prevent="clear"
-        :class="['flex items-center text-gray-400 hover:text-gray-600', size === 'sm' ? 'px-1' : 'px-1.5']"
+        :class="['flex items-center shrink-0 text-gray-400 hover:text-gray-600', size === 'sm' ? 'px-1' : 'px-1.5']"
         :title="'مسح'"
       >
         <svg :class="size === 'sm' ? 'w-3.5 h-3.5' : 'w-4 h-4'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -48,7 +48,7 @@
         tabindex="-1"
         @mousedown.prevent
         @click.stop="toggle"
-        :class="['flex items-center text-gray-400', size === 'sm' ? 'pl-1 pr-1.5' : 'pl-1 pr-3']"
+        :class="['flex items-center shrink-0 text-gray-400', size === 'sm' ? 'pl-1 pr-1.5' : 'pl-1 pr-3']"
       >
         <svg
           :class="[

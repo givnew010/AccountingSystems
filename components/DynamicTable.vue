@@ -1,7 +1,7 @@
 <template>
-  <div class="border border-gray-200 rounded-lg overflow-hidden">
+  <div class="border border-gray-300 rounded-lg overflow-hidden bg-white">
     <!-- Table Header Title -->
-    <div v-if="title" class="px-3 py-2 border-b border-gray-200 bg-gray-50">
+    <div v-if="title" class="px-4 py-3 border-b border-gray-200 bg-gray-50">
       <h3 class="text-sm font-semibold text-gray-800">{{ title }}</h3>
     </div>
 
@@ -10,7 +10,7 @@
         <thead>
           <tr class="bg-gray-50">
             <!-- Row Number Column -->
-            <th class="w-8 px-2 py-1 text-center text-xs font-semibold text-gray-500">
+            <th class="w-10 px-3 py-2 text-center text-xs font-semibold text-gray-500 border-b border-gray-200">
               #
             </th>
 
@@ -19,7 +19,7 @@
               v-for="col in columns"
               :key="col.field"
               :style="col.width ? { width: col.width } : {}"
-              class="px-2 py-1 text-center text-xs font-semibold text-gray-600"
+              class="px-3 py-2 text-center text-xs font-semibold text-gray-600 border-b border-gray-200"
             >
               {{ col.label }}
             </th>
@@ -27,7 +27,7 @@
             <!-- Delete Column -->
             <th
               v-if="showDelete && !isViewMode"
-              class="w-8 px-1 py-1 text-center text-xs font-semibold text-gray-500"
+              class="w-10 px-2 py-2 text-center text-xs font-semibold text-gray-500 border-b border-gray-200"
             >
             </th>
           </tr>
@@ -43,7 +43,7 @@
             ]"
           >
             <!-- Row Number -->
-            <td class="px-1 py-0.5 text-center text-xs font-medium text-gray-400 select-none">
+            <td class="px-3 py-2 text-center text-xs font-medium text-gray-400 select-none align-middle border-b border-gray-100">
               {{ rowIndex + 1 }}
             </td>
 
@@ -51,30 +51,28 @@
             <td
               v-for="col in columns"
               :key="col.field"
-              class="px-1 py-0.5"
+              class="px-2 py-1.5 align-middle border-b border-gray-100"
             >
               <!-- View Mode: display text -->
               <template v-if="isViewMode">
-                <span class="block px-1 py-0 text-sm text-gray-800">
+                <span class="block px-1 text-sm text-gray-800">
                   {{ getDisplayValue(row, col) }}
                 </span>
               </template>
 
               <!-- Edit Mode: Input -->
               <template v-else-if="col.type === 'input'">
-                <input
+                <UiInput
                   v-model="row[col.field]"
                   :type="col.inputType || 'text'"
                   :step="col.step || undefined"
                   :min="col.min !== undefined ? col.min : undefined"
                   :max="col.max !== undefined ? col.max : undefined"
                   :placeholder="col.placeholder || ''"
-                  :readonly="col.readonly"
+                  :readonly="!!col.readonly"
+                  size="sm"
                   :class="[
-                    'w-full px-1.5 py-px text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-colors',
-                    col.readonly
-                      ? 'bg-gray-50 border-gray-200 text-gray-600 cursor-default'
-                      : 'bg-white border-gray-300 text-gray-800',
+                    col.readonly ? 'bg-gray-100 text-gray-600 cursor-default' : '',
                     col.align === 'center' ? 'text-center' : col.align === 'left' ? 'text-left' : ''
                   ]"
                   @input="onFieldChange(rowIndex, col)"
@@ -84,13 +82,9 @@
 
               <!-- Edit Mode: Select / Dropdown -->
               <template v-else-if="col.type === 'select'">
-                <select
+                <UiSelect
                   v-model="row[col.field]"
-                  :class="[
-                    'w-full px-1.5 py-px text-sm border border-gray-300 rounded bg-white text-gray-800',
-                    'focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-colors',
-                    'appearance-none cursor-pointer'
-                  ]"
+                  size="sm"
                   @change="onFieldChange(rowIndex, col)"
                 >
                   <option v-if="col.placeholder" value="">{{ col.placeholder }}</option>
@@ -101,7 +95,7 @@
                   >
                     {{ opt.label }}
                   </option>
-                </select>
+                </UiSelect>
               </template>
 
               <!-- Edit Mode: ComboBox -->
@@ -120,10 +114,8 @@
               <!-- Edit Mode: Checkbox -->
               <template v-else-if="col.type === 'checkbox'">
                 <div class="flex justify-center">
-                  <input
-                    type="checkbox"
+                  <UiCheckbox
                     v-model="row[col.field]"
-                    class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-400 cursor-pointer"
                     @change="onFieldChange(rowIndex, col)"
                   />
                 </div>
@@ -131,14 +123,11 @@
 
               <!-- Edit Mode: Textarea -->
               <template v-else-if="col.type === 'textarea'">
-                <textarea
+                <UiTextarea
                   v-model="row[col.field]"
                   :placeholder="col.placeholder || ''"
                   rows="1"
-                  :class="[
-                    'w-full px-1.5 py-px text-sm border border-gray-300 rounded bg-white text-gray-800',
-                    'focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-colors resize-none'
-                  ]"
+                  size="sm"
                   @input="onFieldChange(rowIndex, col)"
                 />
               </template>
@@ -160,7 +149,7 @@
             <!-- Delete Cell -->
             <td
               v-if="showDelete && !isViewMode"
-              class="px-1 py-0.5 text-center"
+              class="px-2 py-1.5 text-center align-middle border-b border-gray-100"
             >
               <button
                 type="button"
@@ -189,7 +178,7 @@
           <tr v-if="rows.length === 0">
             <td
               :colspan="totalCols"
-              class="px-3 py-6 text-center text-sm text-gray-400"
+              class="px-4 py-8 text-center text-sm text-gray-400"
             >
               {{ emptyText || 'لا توجد بيانات' }}
             </td>

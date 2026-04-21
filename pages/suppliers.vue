@@ -11,65 +11,56 @@
 
         <form @submit.prevent="saveSupplier" class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">الاسم</label>
-            <input v-model="currentData.name" type="text" required :disabled="isViewMode"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100" />
+            <UiLabel required :disabled="isViewMode">الاسم</UiLabel>
+            <UiInput v-model="currentData.name" type="text" required :disabled="isViewMode" />
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">الهاتف</label>
-            <input v-model="currentData.phone" type="tel" required :disabled="isViewMode"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100" />
+            <UiLabel required :disabled="isViewMode">الهاتف</UiLabel>
+            <UiInput v-model="currentData.phone" type="tel" required :disabled="isViewMode" />
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">البريد الإلكتروني</label>
-            <input v-model="currentData.email" type="email" :disabled="isViewMode"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100" />
+            <UiLabel :disabled="isViewMode">البريد الإلكتروني</UiLabel>
+            <UiInput v-model="currentData.email" type="email" :disabled="isViewMode" />
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">العنوان</label>
-            <textarea v-model="currentData.address" rows="3" :disabled="isViewMode"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"></textarea>
+            <UiLabel :disabled="isViewMode">العنوان</UiLabel>
+            <UiTextarea v-model="currentData.address" :disabled="isViewMode" rows="3" />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">الرصيد الافتتاحي</label>
-              <input v-model.number="currentData.openingBalance" type="number" step="0.01" min="0"
-                :disabled="isViewMode"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100" />
+              <UiLabel :disabled="isViewMode">الرصيد الافتتاحي</UiLabel>
+              <UiInput v-model="currentData.openingBalance" type="number" step="0.01" min="0" :disabled="isViewMode" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">نوع الرصيد</label>
-              <select v-model="currentData.balanceType" :disabled="isViewMode"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100">
+              <UiLabel :disabled="isViewMode">نوع الرصيد</UiLabel>
+              <UiSelect v-model="currentData.balanceType" :disabled="isViewMode">
                 <option value="debit">مدين</option>
                 <option value="credit">دائن</option>
-              </select>
+              </UiSelect>
             </div>
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">شروط الدفع</label>
-            <select v-model="currentData.paymentTerms" :disabled="isViewMode"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100">
+            <UiLabel :disabled="isViewMode">شروط الدفع</UiLabel>
+            <UiSelect v-model="currentData.paymentTerms" :disabled="isViewMode">
               <option value="immediate">فوري</option>
               <option value="7days">7 أيام</option>
               <option value="15days">15 يوم</option>
               <option value="30days">30 يوم</option>
               <option value="60days">60 يوم</option>
-            </select>
+            </UiSelect>
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">الحالة</label>
-            <select v-model="currentData.status" :disabled="isViewMode"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100">
+            <UiLabel :disabled="isViewMode">الحالة</UiLabel>
+            <UiSelect v-model="currentData.status" :disabled="isViewMode">
               <option value="active">نشط</option>
               <option value="inactive">غير نشط</option>
-            </select>
+            </UiSelect>
           </div>
         </form>
       </div>
@@ -78,76 +69,26 @@
 </template>
 
 <script setup>
-import { ref, inject, onMounted } from 'vue'
+import { inject, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import { injectToast } from '~/composables/useToast'
-import { getDefaultValues } from '~/composables/helper'
 
-const Structure = {
-  id: { type: Number, default: null },
-  no: { type: Number, default: null },
-  name: { type: String, default: '' },
-  phone: { type: String, default: '' },
-  email: { type: String, default: '' },
-  address: { type: String, default: '' },
-  openingBalance: { type: Number, default: 0 },
-  balanceType: { type: String, default: 'credit' },
-  paymentTerms: { type: String, default: '30days' },
-  status: { type: String, default: 'active' }
-}
-
-const selectedItemId = ref(null)
-const lastSelectedItemId = ref(null)
-const isViewMode = ref(true)
+const suppliersStore = useSuppliersStore()
+const { suppliers, selectedItemId, isViewMode, currentData } = storeToRefs(suppliersStore)
 const { addToast } = injectToast()
-const currentData = ref({ ...getDefaultValues(Structure) })
 const showMessage = inject('showMessage')
 
-const suppliers = ref([
-  { id: 1, no: 1, name: 'شركة الأدوات المكتبية', phone: '0112345678', email: 'office@tools-sa.com', address: 'الرياض، المملكة العربية السعودية', openingBalance: 2500, balanceType: 'credit', paymentTerms: '30days', status: 'active' },
-  { id: 2, no: 2, name: 'مؤسسة الإلكترونيات المتقدمة', phone: '0123456789', email: 'sales@electronics-sa.com', address: 'جدة، المملكة العربية السعودية', openingBalance: 1500, balanceType: 'debit', paymentTerms: '15days', status: 'active' },
-  { id: 3, no: 3, name: 'شركة المواد الغذائية', phone: '0134567890', email: 'info@food-supplies.com', address: 'الدمام، المملكة العربية السعودية', openingBalance: 0, balanceType: 'debit', paymentTerms: '7days', status: 'inactive' }
-])
-
 onMounted(() => {
-  isViewMode.value = true
-  selectItem(suppliers.value[0]?.id ?? -1)
+  suppliersStore.init()
 })
 
-const newSupplier = () => {
-  isViewMode.value = false
-  lastSelectedItemId.value = selectedItemId.value
-  selectItem(-1)
-}
-
-const editSupplier = () => {
-  if (selectedItemId.value) {
-    isViewMode.value = false
-    lastSelectedItemId.value = selectedItemId.value
-  }
-}
+const newSupplier = () => suppliersStore.newSupplier()
+const editSupplier = () => suppliersStore.editSupplier()
+const cancelNewOrEdit = () => suppliersStore.cancelNewOrEdit()
 
 const saveSupplier = () => {
-  if (selectedItemId.value) {
-    const index = suppliers.value.findIndex(s => s.id === selectedItemId.value)
-    if (index > -1) {
-      suppliers.value[index] = { ...currentData.value, id: selectedItemId.value }
-      isViewMode.value = true
-      selectItem(suppliers.value[index].id)
-      addToast('تم تحديث المورد بنجاح', 'success')
-    }
-  } else {
-    const newId = Math.max(...suppliers.value.map(s => s.id)) + 1
-    const newSupplierData = { ...currentData.value, id: newId, no: newId }
-    suppliers.value.push(newSupplierData)
-    isViewMode.value = true
-    selectItem(newSupplierData.id)
-    addToast('تم إضافة المورد بنجاح', 'success')
-  }
-}
-
-const cancelNewOrEdit = () => {
-  isViewMode.value = true
-  selectItem(lastSelectedItemId.value)
+  const res = suppliersStore.saveSupplier()
+  addToast(res.type === 'updated' ? 'تم تحديث المورد بنجاح' : 'تم إضافة المورد بنجاح', 'success')
 }
 
 const deleteSupplier = () => {
@@ -163,23 +104,13 @@ const deleteSupplier = () => {
 }
 
 const confirmDelete = () => {
-  const index = suppliers.value.findIndex(s => s.id === currentData.value.id)
-  if (index > -1) {
-    suppliers.value.splice(index, 1)
-    selectItem(index >= 0 && index < suppliers.value.length ?
-      suppliers.value[index].id : index === suppliers.value.length ?
-        suppliers.value[index - 1]?.id : null)
-    addToast('تم حذف المورد بنجاح', 'success')
-  }
+  const ok = suppliersStore.confirmDeleteSelected()
+  if (ok) addToast('تم حذف المورد بنجاح', 'success')
 }
 
 const printSupplier = () => {
   alert('طباعة المورد - سيتم تنفيذها لاحقاً')
 }
 
-const selectItem = (id) => {
-  const supplier = suppliers.value.find(s => s.id === id) ?? { ...getDefaultValues(Structure) }
-  selectedItemId.value = supplier.id ?? null
-  currentData.value = { ...supplier }
-}
+const selectItem = (id) => suppliersStore.selectItem(id)
 </script>

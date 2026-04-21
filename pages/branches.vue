@@ -53,76 +53,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted, inject } from 'vue'
+import { onMounted, inject } from 'vue'
+import { storeToRefs } from 'pinia'
 import { injectToast } from '~/composables/useToast'
-import { getDefaultValues } from '~/composables/helper'
-
-const BranchStructure = {
-  id: { type: Number, default: null },
-  no: { type: Number, default: null },
-  name: { type: String, default: '' },
-  address: { type: String, default: '' },
-  phone: { type: String, default: '' },
-  email: { type: String, default: '' },
-  status: { type: String, default: 'active' },
-  warehousesCount: { type: Number, default: 0 }
-}
-
-const branches = ref([
-  { id: 1, no: 1, name: 'المقر الرئيسي', address: 'الرياض، المملكة العربية السعودية', phone: '+966112345678', email: 'main@company.com', status: 'active', warehousesCount: 3 },
-  { id: 2, no: 2, name: 'فرع جدة', address: 'جدة، المملكة العربية السعودية', phone: '+966212345678', email: 'jeddah@company.com', status: 'active', warehousesCount: 2 },
-  { id: 3, no: 3, name: 'فرع الدمام', address: 'الدمام، المملكة العربية السعودية', phone: '+966312345678', email: 'dammam@company.com', status: 'inactive', warehousesCount: 0 }
-])
+const branchesStore = useBranchesStore()
+const { branches, branchSelectedId, branchViewMode, branchData } = storeToRefs(branchesStore)
 
 const { addToast } = injectToast()
 const showMessage = inject('showMessage')
-
-const branchSelectedId = ref(null)
-const branchLastSelectedId = ref(null)
-const branchViewMode = ref(true)
-const branchData = ref({ ...getDefaultValues(BranchStructure) })
-
-const selectBranch = (id) => {
-  const branch = branches.value.find(b => b.id === id) ?? { ...getDefaultValues(BranchStructure) }
-  branchSelectedId.value = branch.id ?? null
-  branchData.value = { ...branch }
-}
-
-const newBranch = () => {
-  branchViewMode.value = false
-  branchLastSelectedId.value = branchSelectedId.value
-  selectBranch(-1)
-}
-
-const editBranch = () => {
-  if (branchSelectedId.value) {
-    branchViewMode.value = false
-    branchLastSelectedId.value = branchSelectedId.value
-  }
-}
+const selectBranch = (id) => branchesStore.selectBranch(id)
+const newBranch = () => branchesStore.newBranch()
+const editBranch = () => branchesStore.editBranch()
+const cancelBranchEdit = () => branchesStore.cancelBranchEdit()
 
 const saveBranch = () => {
-  if (branchSelectedId.value) {
-    const index = branches.value.findIndex(b => b.id === branchSelectedId.value)
-    if (index > -1) {
-      branches.value[index] = { ...branchData.value, id: branchSelectedId.value }
-      branchViewMode.value = true
-      selectBranch(branches.value[index].id)
-      addToast('تم تحديث الفرع بنجاح', 'success')
-    }
-  } else {
-    const newId = Math.max(...branches.value.map(b => b.id)) + 1
-    const newBranch = { ...branchData.value, id: newId, no: newId, warehousesCount: 0 }
-    branches.value.push(newBranch)
-    branchViewMode.value = true
-    selectBranch(newBranch.id)
-    addToast('تم إضافة الفرع بنجاح', 'success')
-  }
-}
-
-const cancelBranchEdit = () => {
-  branchViewMode.value = true
-  selectBranch(branchLastSelectedId.value)
+  const res = branchesStore.saveBranch()
+  addToast(res.type === 'updated' ? 'تم تحديث الفرع بنجاح' : 'تم إضافة الفرع بنجاح', 'success')
 }
 
 const deleteBranch = () => {
@@ -132,20 +78,15 @@ const deleteBranch = () => {
     message: `هل أنت متأكد من حذف الفرع «${branchData.value.name}»؟`,
     cancelText: 'إلغاء',
     confirmText: 'حذف',
-    onCancel: () => { },
+    onCancel: () => {},
     onConfirm: () => {
-      const index = branches.value.findIndex(b => b.id === branchData.value.id)
-      if (index > -1) {
-        branches.value.splice(index, 1)
-        selectBranch(branches.value[index]?.id ?? branches.value[index - 1]?.id ?? null)
-        addToast('تم حذف الفرع بنجاح', 'success')
-      }
+      const ok = branchesStore.confirmDeleteSelected()
+      if (ok) addToast('تم حذف الفرع بنجاح', 'success')
     }
   })
 }
 
 onMounted(() => {
-  branchViewMode.value = true
-  selectBranch(branches.value[0]?.id ?? -1)
+  branchesStore.init()
 })
 </script>
