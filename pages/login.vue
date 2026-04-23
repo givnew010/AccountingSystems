@@ -92,11 +92,4 @@ const handleLogin = async () => {
   const res = await loginStore.submit(authStore)
   if (res.ok) await router.push('/')
 }
-
-// Redirect if already authenticated
-onMounted(() => {
-  if (authStore.isAuthenticated) {
-    router.push('/')
-  }
-})
 </script>

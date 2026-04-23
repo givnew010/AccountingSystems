@@ -21,8 +21,6 @@ import { provideToast } from '~/composables/useToast'
 
 const sidebarStore = useSidebarStore()
 const authStore = useAuthStore()
-const router = useRouter()
-const route = useRoute()
 
 provideToast()
 
@@ -51,19 +49,5 @@ function showMessage({ title = '', message = '', cancelText = 'إلغاء', conf
   };
   globalMessage.show = true
 }
-// Handle authentication routing
-watchEffect(() => {
-  if (process.client) {
-    // If not authenticated and not on login page, redirect to login
-    if (!authStore.isAuthenticated && route.path !== '/login') {
-      router.push('/login')
-    }
-    // If authenticated and on login page, redirect to dashboard
-    else if (authStore.isAuthenticated && route.path === '/login') {
-      router.push('/')
-    }
-  }
-})
-
 provide('showMessage', showMessage)
 </script>

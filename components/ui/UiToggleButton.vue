@@ -51,14 +51,14 @@
       v-if="modelValue && (onLabel || onIcon)"
       :class="['absolute font-bold', sizeClasses.label, colorClasses.labelOn, isRtl ? 'right-3' : 'left-3']"
     >
-      <component :is="onIcon" v-if="onIcon" :class="sizeClasses.icon" />
+      <UiIcon v-if="onIcon" :icon="onIcon" :class="sizeClasses.icon" decorative />
       <template v-else>{{ onLabel }}</template>
     </span>
     <span
       v-if="!modelValue && (offLabel || offIcon)"
       :class="['absolute font-bold', sizeClasses.label, colorClasses.labelOff, isRtl ? 'left-3' : 'right-3']"
     >
-      <component :is="offIcon" v-if="offIcon" :class="sizeClasses.icon" />
+      <UiIcon v-if="offIcon" :icon="offIcon" :class="sizeClasses.icon" decorative />
       <template v-else>{{ offLabel }}</template>
     </span>
 
@@ -70,15 +70,17 @@
         modelValue ? sizeClasses.knobOn : sizeClasses.knobOff
       ]"
     >
-      <component
+      <UiIcon
         v-if="modelValue && knobOnIcon"
-        :is="knobOnIcon"
+        :icon="knobOnIcon"
         :class="[sizeClasses.icon, colorClasses.knobIcon]"
+        decorative
       />
-      <component
+      <UiIcon
         v-else-if="!modelValue && knobOffIcon"
-        :is="knobOffIcon"
+        :icon="knobOffIcon"
         :class="[sizeClasses.icon, colorClasses.knobIcon]"
+        decorative
       />
     </span>
   </button>

@@ -5,8 +5,130 @@
       <p class="text-sm text-gray-500 mt-1">عرض شامل لجميع مكونات الواجهة مع كل خصائصها وحالاتها.</p>
     </header>
 
+    <UiTabs v-model="componentPreviewTab" :tabs="componentTabs" />
+
+    <!-- UiBadge -->
+    <section v-show="componentPreviewTab === 'ui-badge'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h2 class="text-lg font-semibold text-gray-800 mb-1">UiBadge</h2>
+      <p class="text-xs text-gray-500 mb-4">الخصائص: variant — size — pill</p>
+      <div class="space-y-3">
+        <div class="flex flex-wrap gap-2">
+          <UiBadge variant="gray">افتراضي</UiBadge>
+          <UiBadge variant="blue">معلومة</UiBadge>
+          <UiBadge variant="green">نشط</UiBadge>
+          <UiBadge variant="yellow">معلّق</UiBadge>
+          <UiBadge variant="red">ملغي</UiBadge>
+          <UiBadge variant="purple">خاص</UiBadge>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <UiBadge size="xs" variant="blue">XS</UiBadge>
+          <UiBadge size="sm" variant="green">SM</UiBadge>
+          <UiBadge size="md" variant="red">MD</UiBadge>
+          <UiBadge variant="blue" pill>شكل Pill</UiBadge>
+        </div>
+      </div>
+    </section>
+
+    <!-- UiIcon -->
+    <section v-show="componentPreviewTab === 'ui-icon'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h2 class="text-lg font-semibold text-gray-800 mb-1">UiIcon</h2>
+      <p class="text-xs text-gray-500 mb-4">الخصائص: icon — size — tone — spin</p>
+      <div class="space-y-3">
+        <div class="flex flex-wrap items-center gap-4">
+          <UiIcon :icon="BellIcon" size="xs" />
+          <UiIcon :icon="BellIcon" size="sm" />
+          <UiIcon :icon="BellIcon" size="md" />
+          <UiIcon :icon="BellIcon" size="lg" />
+          <UiIcon :icon="BellIcon" size="xl" />
+        </div>
+        <div class="flex flex-wrap items-center gap-4">
+          <UiIcon :icon="CheckCircleIcon" tone="success" />
+          <UiIcon :icon="ExclamationTriangleIcon" tone="warning" />
+          <UiIcon :icon="XCircleIcon" tone="danger" />
+          <UiIcon :icon="InformationCircleIcon" tone="primary" />
+          <UiIcon :icon="ArrowPathIcon" tone="muted" spin />
+        </div>
+      </div>
+    </section>
+
+    <!-- UiToolTip -->
+    <section v-show="componentPreviewTab === 'ui-tooltip'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h2 class="text-lg font-semibold text-gray-800 mb-1">UiToolTip</h2>
+      <p class="text-xs text-gray-500 mb-4">الخصائص: text — position — delay — disabled</p>
+      <div class="flex flex-wrap items-center gap-3">
+        <UiToolTip text="حفظ" position="top">
+          <UiButton size="sm">Top</UiButton>
+        </UiToolTip>
+        <UiToolTip text="تعديل" position="right">
+          <UiButton size="sm" variant="secondary">Right</UiButton>
+        </UiToolTip>
+        <UiToolTip text="حذف" position="bottom">
+          <UiButton size="sm" variant="danger">Bottom</UiButton>
+        </UiToolTip>
+        <UiToolTip text="نسخ" position="left" :delay="300">
+          <UiButton size="sm" variant="gray">Left (delay)</UiButton>
+        </UiToolTip>
+      </div>
+    </section>
+
+    <!-- UiTabs -->
+    <section v-show="componentPreviewTab === 'ui-tabs'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h2 class="text-lg font-semibold text-gray-800 mb-1">UiTabs</h2>
+      <p class="text-xs text-gray-500 mb-4">الخصائص: tabs — v-model — change</p>
+      <UiTabs v-model="activeTab" :tabs="tabsItems" @change="onTabChange">
+        <template #default="{ activeKey }">
+          <div class="rounded-lg border border-gray-200 p-4 text-sm text-gray-700 bg-gray-50">
+            <p v-if="activeKey === 'overview'">محتوى تبويب الملخص.</p>
+            <p v-else-if="activeKey === 'details'">محتوى تبويب التفاصيل.</p>
+            <p v-else-if="activeKey === 'settings'">محتوى تبويب الإعدادات.</p>
+          </div>
+        </template>
+      </UiTabs>
+      <p class="text-xs text-gray-500 mt-2">التبويب النشط: {{ activeTab }}</p>
+    </section>
+
+    <!-- UiModal -->
+    <section v-show="componentPreviewTab === 'ui-modal'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h2 class="text-lg font-semibold text-gray-800 mb-1">UiModal</h2>
+      <p class="text-xs text-gray-500 mb-4">الخصائص: v-model — title — description — footer slot — maxWidth</p>
+      <div class="flex flex-wrap gap-2">
+        <UiButton @click="showDemoModal = true">فتح المودال</UiButton>
+      </div>
+      <UiModal
+        v-model="showDemoModal"
+        title="تأكيد العملية"
+        description="مثال على استخدام UiModal في الصفحة."
+        max-width="md"
+      >
+        <p class="text-sm text-gray-700">
+          هل تريد حفظ التغييرات الحالية؟ يمكنك الإلغاء أو التأكيد من الأزرار بالأسفل.
+        </p>
+        <template #footer>
+          <UiButton variant="secondary" @click="showDemoModal = false">إلغاء</UiButton>
+          <UiButton variant="primary" @click="confirmModalAction">تأكيد</UiButton>
+        </template>
+      </UiModal>
+    </section>
+
+    <!-- UiToggleButton2 -->
+    <section v-show="componentPreviewTab === 'ui-toggle-button-2'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h2 class="text-lg font-semibold text-gray-800 mb-1">UiToggleButton2</h2>
+      <p class="text-xs text-gray-500 mb-4">مطابق لنمط الصورة: سويتش + مجموعة خيارات مع أيقونات</p>
+      <div class="space-y-4">
+        <div class="flex items-center gap-4">
+          <UiToggleButton2 v-model="toggleSwitchA" size="sm" />
+          <UiToggleButton2 v-model="toggleSwitchB" size="md" />
+          <span class="text-xs text-gray-500">A: {{ toggleSwitchA }} | B: {{ toggleSwitchB }}</span>
+        </div>
+        <div class="rounded-xl border border-gray-200 p-4 max-w-xl">
+          <p class="text-sm font-semibold text-gray-800 mb-3">Toggle Group</p>
+          <UiToggleButton2 v-model="toggleViewMode" :options="toggleViewOptions" />
+        </div>
+      </div>
+    </section>
+
     <!-- UiButton -->
-    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-button'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiButton</h2>
       <p class="text-xs text-gray-500 mb-4">الخصائص: variant (primary/secondary/danger/warning/success/gray) — size (sm/md) — disabled — type</p>
 
@@ -66,7 +188,7 @@
     </section>
 
     <!-- UiInput -->
-    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-input'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiInput</h2>
       <p class="text-xs text-gray-500 mb-4">الخصائص: type — placeholder — size (sm/md) — disabled — readonly — error</p>
 
@@ -108,7 +230,7 @@
     </section>
 
     <!-- UiTextarea -->
-    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-textarea'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiTextarea</h2>
       <p class="text-xs text-gray-500 mb-4">الخصائص: placeholder — rows — size — disabled — readonly — error</p>
 
@@ -141,7 +263,7 @@
     </section>
 
     <!-- UiSelect -->
-    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-select'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiSelect</h2>
       <p class="text-xs text-gray-500 mb-4">قائمة منسدلة أصلية — الخصائص: size — disabled — error</p>
 
@@ -181,7 +303,7 @@
     </section>
 
     <!-- UiCheckbox -->
-    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-checkbox'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiCheckbox</h2>
       <p class="text-xs text-gray-500 mb-4">الخصائص: modelValue — disabled — id — slot للنص</p>
 
@@ -195,7 +317,7 @@
     </section>
 
     <!-- UiLabel -->
-    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-label'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiLabel</h2>
       <p class="text-xs text-gray-500 mb-4">الخصائص: forId — required — disabled</p>
 
@@ -216,7 +338,7 @@
     </section>
 
     <!-- ComboBox -->
-    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'combo-box'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">ComboBox</h2>
       <p class="text-xs text-gray-500 mb-4">قائمة منسدلة مع بحث — الخصائص: options — placeholder — searchable — clearable — size — disabled</p>
 
@@ -250,7 +372,7 @@
     </section>
 
     <!-- UiToggleButton -->
-    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-toggle-button'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiToggleButton</h2>
       <p class="text-xs text-gray-500 mb-4">مفتاح تبديل (boolean) أو مجموعة خيارات — الخصائص: size — color — variant — onLabel/offLabel — onIcon/offIcon — knobOnIcon/knobOffIcon — options — disabled</p>
 
@@ -324,7 +446,7 @@
     </section>
 
     <!-- UiScroll -->
-    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-scroll'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiScroll</h2>
       <p class="text-xs text-gray-500 mb-4">حاوية تمرير مع شريط تمرير مخصص — الخصائص: maxHeight — height — maxWidth — horizontal — size (sm/md/lg)</p>
 
@@ -370,7 +492,7 @@
     </section>
 
     <!-- ActionButtons -->
-    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'action-buttons'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">ActionButtons</h2>
       <p class="text-xs text-gray-500 mb-4">أزرار الإجراءات الموحدة (جديد / تعديل / حفظ / إلغاء / حذف ...)</p>
       <ActionButtons
@@ -386,7 +508,7 @@
     </section>
 
     <!-- DynamicTable -->
-    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'dynamic-table'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">DynamicTable</h2>
       <p class="text-xs text-gray-500 mb-4">جدول قابل للتحرير مع أعمدة متنوعة</p>
       <div class="mb-3">
@@ -402,7 +524,7 @@
     </section>
 
     <!-- ListSection -->
-    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'list-section'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">ListSection</h2>
       <p class="text-xs text-gray-500 mb-4">قائمة جانبية للاختيار من بين عناصر</p>
       <div class="h-72 border border-gray-200 rounded-lg overflow-hidden flex">
@@ -417,7 +539,7 @@
     </section>
 
     <!-- MessageDialog & Toast -->
-    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'messages-toast'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">رسائل وإشعارات</h2>
       <p class="text-xs text-gray-500 mb-4">MessageDialog (عبر inject) و Toast (عبر useToast)</p>
 
@@ -435,7 +557,21 @@
 
 <script setup>
 import { ref, inject } from 'vue'
-import { PlusIcon, TrashIcon, LockClosedIcon, LockOpenIcon } from '@heroicons/vue/24/outline'
+import {
+  PlusIcon,
+  TrashIcon,
+  LockClosedIcon,
+  LockOpenIcon,
+  Squares2X2Icon,
+  Bars3Icon,
+  Cog6ToothIcon,
+  BellIcon,
+  CheckCircleIcon,
+  ExclamationTriangleIcon,
+  XCircleIcon,
+  InformationCircleIcon,
+  ArrowPathIcon
+} from '@heroicons/vue/24/outline'
 import { injectToast } from '~/composables/useToast'
 
 definePageMeta({ layout: 'default' })
@@ -509,6 +645,46 @@ const modeOptions = [
   { label: 'شهر', value: 'month' }
 ]
 
+const showDemoModal = ref(false)
+const componentPreviewTab = ref('ui-badge')
+const componentTabs = [
+  { key: 'ui-badge', label: 'UiBadge' },
+  { key: 'ui-icon', label: 'UiIcon' },
+  { key: 'ui-tooltip', label: 'UiToolTip' },
+  { key: 'ui-tabs', label: 'UiTabs' },
+  { key: 'ui-modal', label: 'UiModal' },
+  { key: 'ui-toggle-button-2', label: 'UiToggleButton2' },
+  { key: 'ui-button', label: 'UiButton' },
+  { key: 'ui-input', label: 'UiInput' },
+  { key: 'ui-textarea', label: 'UiTextarea' },
+  { key: 'ui-select', label: 'UiSelect' },
+  { key: 'ui-checkbox', label: 'UiCheckbox' },
+  { key: 'ui-label', label: 'UiLabel' },
+  { key: 'combo-box', label: 'ComboBox' },
+  { key: 'ui-toggle-button', label: 'UiToggleButton' },
+  { key: 'ui-scroll', label: 'UiScroll' },
+  { key: 'action-buttons', label: 'ActionButtons' },
+  { key: 'dynamic-table', label: 'DynamicTable' },
+  { key: 'list-section', label: 'ListSection' },
+  { key: 'messages-toast', label: 'Messages & Toast' }
+]
+
+const activeTab = ref('overview')
+const tabsItems = [
+  { key: 'overview', label: 'ملخص', icon: Squares2X2Icon },
+  { key: 'details', label: 'تفاصيل', icon: Bars3Icon },
+  { key: 'settings', label: 'إعدادات', icon: Cog6ToothIcon }
+]
+
+const toggleSwitchA = ref(false)
+const toggleSwitchB = ref(true)
+const toggleViewMode = ref('grid')
+const toggleViewOptions = [
+  { label: 'شبكي', value: 'grid', icon: Squares2X2Icon },
+  { label: 'قائمة', value: 'list', icon: Bars3Icon },
+  { label: 'ملخص', value: 'summary', icon: Cog6ToothIcon }
+]
+
 const tableEditMode = ref(false)
 const tableColumns = [
   { field: 'name', label: 'الاسم', type: 'text' },
@@ -549,5 +725,14 @@ const showConfirmDialog = () => {
   } else {
     toast?.warning('MessageDialog غير متاح')
   }
+}
+
+const onTabChange = (value) => {
+  toast?.info(`تم التبديل إلى: ${value}`)
+}
+
+const confirmModalAction = () => {
+  showDemoModal.value = false
+  toast?.success('تم التأكيد من داخل UiModal')
 }
 </script>
