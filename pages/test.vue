@@ -249,6 +249,126 @@
       </div>
     </section>
 
+    <!-- UiToggleButton -->
+    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h2 class="text-lg font-semibold text-gray-800 mb-1">UiToggleButton</h2>
+      <p class="text-xs text-gray-500 mb-4">مفتاح تبديل (boolean) أو مجموعة خيارات — الخصائص: size — color — variant — onLabel/offLabel — onIcon/offIcon — knobOnIcon/knobOffIcon — options — disabled</p>
+
+      <div class="space-y-6">
+        <div>
+          <p class="text-sm text-gray-600 mb-2">سويتش بسيط</p>
+          <div class="flex items-center gap-4">
+            <UiToggleButton v-model="toggle1" />
+            <span class="text-sm text-gray-500">القيمة: {{ toggle1 }}</span>
+          </div>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600 mb-2">سويتش مع نص ON / OFF</p>
+          <div class="flex items-center gap-4">
+            <UiToggleButton v-model="toggle2" on-label="ON" off-label="OFF" />
+            <UiToggleButton :model-value="false" on-label="ON" off-label="OFF" />
+          </div>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600 mb-2">سويتش بأيقونة (variant=outline)</p>
+          <div class="flex items-center gap-4">
+            <UiToggleButton
+              v-model="toggle3"
+              variant="outline"
+              :knob-on-icon="LockClosedIcon"
+              :knob-off-icon="LockOpenIcon"
+            />
+            <span class="text-sm text-gray-500">{{ toggle3 ? 'مغلق' : 'مفتوح' }}</span>
+          </div>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600 mb-2">الأحجام</p>
+          <div class="flex items-center gap-4">
+            <UiToggleButton v-model="toggle4" size="sm" on-label="ON" off-label="OFF" />
+            <UiToggleButton v-model="toggle4" size="md" on-label="ON" off-label="OFF" />
+            <UiToggleButton v-model="toggle4" size="lg" on-label="ON" off-label="OFF" />
+          </div>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600 mb-2">الألوان</p>
+          <div class="flex items-center gap-4">
+            <UiToggleButton :model-value="true" color="primary" />
+            <UiToggleButton :model-value="true" color="success" />
+            <UiToggleButton :model-value="true" color="danger" />
+            <UiToggleButton :model-value="true" color="gray" />
+          </div>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600 mb-2">معطل</p>
+          <div class="flex items-center gap-4">
+            <UiToggleButton :model-value="true" disabled />
+            <UiToggleButton :model-value="false" disabled />
+          </div>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600 mb-2">مجموعة خيارات (options)</p>
+          <div class="flex flex-col gap-3">
+            <UiToggleButton v-model="toggleGroup1" :options="hotelOptions" />
+            <UiToggleButton v-model="toggleGroup2" :options="planOptions" color="success" size="lg" />
+            <UiToggleButton v-model="toggleGroup3" :options="modeOptions" color="gray" size="sm" />
+            <p class="text-xs text-gray-500">المختار: {{ toggleGroup1 }} | {{ toggleGroup2 }} | {{ toggleGroup3 }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- UiScroll -->
+    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h2 class="text-lg font-semibold text-gray-800 mb-1">UiScroll</h2>
+      <p class="text-xs text-gray-500 mb-4">حاوية تمرير مع شريط تمرير مخصص — الخصائص: maxHeight — height — maxWidth — horizontal — size (sm/md/lg)</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <p class="text-sm text-gray-600 mb-2">تمرير عمودي (maxHeight=200px)</p>
+          <UiScroll max-height="200px" class="border border-gray-200 rounded-lg p-3">
+            <p v-for="i in 30" :key="i" class="text-sm text-gray-700 py-1 border-b border-gray-100">
+              السطر رقم {{ i }} — محتوى تجريبي للتمرير العمودي
+            </p>
+          </UiScroll>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600 mb-2">تمرير أفقي (horizontal)</p>
+          <UiScroll horizontal max-width="100%" class="border border-gray-200 rounded-lg p-3">
+            <div class="flex gap-3 w-max">
+              <div v-for="i in 20" :key="i" class="w-32 h-20 flex-shrink-0 bg-blue-100 text-blue-700 rounded flex items-center justify-center font-medium">
+                بطاقة {{ i }}
+              </div>
+            </div>
+          </UiScroll>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600 mb-2">شريط رفيع (size=sm)</p>
+          <UiScroll size="sm" max-height="150px" class="border border-gray-200 rounded-lg p-3">
+            <p v-for="i in 20" :key="i" class="text-sm text-gray-700 py-1">
+              عنصر صغير {{ i }}
+            </p>
+          </UiScroll>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600 mb-2">شريط عريض (size=lg)</p>
+          <UiScroll size="lg" max-height="150px" class="border border-gray-200 rounded-lg p-3">
+            <p v-for="i in 20" :key="i" class="text-sm text-gray-700 py-1">
+              عنصر كبير {{ i }}
+            </p>
+          </UiScroll>
+        </div>
+      </div>
+    </section>
+
     <!-- ActionButtons -->
     <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">ActionButtons</h2>
@@ -315,7 +435,7 @@
 
 <script setup>
 import { ref, inject } from 'vue'
-import { PlusIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import { PlusIcon, TrashIcon, LockClosedIcon, LockOpenIcon } from '@heroicons/vue/24/outline'
 import { injectToast } from '~/composables/useToast'
 
 definePageMeta({ layout: 'default' })
@@ -367,6 +487,27 @@ const longOptions = Array.from({ length: 50 }, (_, i) => ({
 
 const isViewMode = ref(true)
 const selectedId = ref(1)
+
+const toggle1 = ref(false)
+const toggle2 = ref(true)
+const toggle3 = ref(true)
+const toggle4 = ref(true)
+const toggleGroup1 = ref('hotels')
+const toggleGroup2 = ref('monthly')
+const toggleGroup3 = ref('day')
+const hotelOptions = [
+  { label: 'فنادق', value: 'hotels' },
+  { label: 'شقق', value: 'apartments' }
+]
+const planOptions = [
+  { label: 'شهري', value: 'monthly' },
+  { label: 'سنوي', value: 'yearly' }
+]
+const modeOptions = [
+  { label: 'يوم', value: 'day' },
+  { label: 'أسبوع', value: 'week' },
+  { label: 'شهر', value: 'month' }
+]
 
 const tableEditMode = ref(false)
 const tableColumns = [
