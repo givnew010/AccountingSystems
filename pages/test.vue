@@ -1,0 +1,412 @@
+<template>
+  <div class="p-6 space-y-8 max-w-5xl mx-auto">
+    <header>
+      <h1 class="text-2xl font-bold text-gray-800">صفحة تجربة المكونات</h1>
+      <p class="text-sm text-gray-500 mt-1">عرض شامل لجميع مكونات الواجهة مع كل خصائصها وحالاتها.</p>
+    </header>
+
+    <!-- UiButton -->
+    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h2 class="text-lg font-semibold text-gray-800 mb-1">UiButton</h2>
+      <p class="text-xs text-gray-500 mb-4">الخصائص: variant (primary/secondary/danger/warning/success/gray) — size (sm/md) — disabled — type</p>
+
+      <div class="space-y-4">
+        <div>
+          <p class="text-sm text-gray-600 mb-2">الأنواع (variant) — حجم md</p>
+          <div class="flex flex-wrap gap-2">
+            <UiButton variant="primary">أساسي</UiButton>
+            <UiButton variant="secondary">ثانوي</UiButton>
+            <UiButton variant="success">نجاح</UiButton>
+            <UiButton variant="warning">تحذير</UiButton>
+            <UiButton variant="danger">حذف</UiButton>
+            <UiButton variant="gray">رمادي</UiButton>
+          </div>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600 mb-2">الحجم (size=sm)</p>
+          <div class="flex flex-wrap gap-2">
+            <UiButton size="sm" variant="primary">أساسي</UiButton>
+            <UiButton size="sm" variant="secondary">ثانوي</UiButton>
+            <UiButton size="sm" variant="success">نجاح</UiButton>
+            <UiButton size="sm" variant="warning">تحذير</UiButton>
+            <UiButton size="sm" variant="danger">حذف</UiButton>
+            <UiButton size="sm" variant="gray">رمادي</UiButton>
+          </div>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600 mb-2">معطل (disabled)</p>
+          <div class="flex flex-wrap gap-2">
+            <UiButton disabled>أساسي معطل</UiButton>
+            <UiButton variant="danger" disabled>حذف معطل</UiButton>
+          </div>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600 mb-2">مع أيقونة (slot=icon)</p>
+          <div class="flex flex-wrap gap-2">
+            <UiButton variant="primary">
+              <template #icon><PlusIcon class="w-4 h-4" /></template>
+              إضافة
+            </UiButton>
+            <UiButton variant="danger">
+              <template #icon><TrashIcon class="w-4 h-4" /></template>
+              حذف
+            </UiButton>
+          </div>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600 mb-2">حدث النقر</p>
+          <UiButton variant="success" @click="onClickDemo">اضغط هنا</UiButton>
+          <span v-if="clickCount > 0" class="mr-3 text-sm text-gray-700">عدد الضغطات: {{ clickCount }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- UiInput -->
+    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h2 class="text-lg font-semibold text-gray-800 mb-1">UiInput</h2>
+      <p class="text-xs text-gray-500 mb-4">الخصائص: type — placeholder — size (sm/md) — disabled — readonly — error</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <UiLabel>نص عادي</UiLabel>
+          <UiInput v-model="form.text" placeholder="أدخل نصاً" />
+          <p class="text-xs text-gray-500 mt-1">القيمة: {{ form.text || '—' }}</p>
+        </div>
+        <div>
+          <UiLabel>رقم</UiLabel>
+          <UiInput v-model="form.number" type="number" placeholder="0" />
+        </div>
+        <div>
+          <UiLabel>بريد إلكتروني</UiLabel>
+          <UiInput v-model="form.email" type="email" placeholder="name@example.com" />
+        </div>
+        <div>
+          <UiLabel>كلمة المرور</UiLabel>
+          <UiInput v-model="form.password" type="password" placeholder="••••••" />
+        </div>
+        <div>
+          <UiLabel>صغير (size=sm)</UiLabel>
+          <UiInput v-model="form.small" size="sm" placeholder="حقل صغير" />
+        </div>
+        <div>
+          <UiLabel>معطل (disabled)</UiLabel>
+          <UiInput model-value="قيمة ثابتة" disabled />
+        </div>
+        <div>
+          <UiLabel>قراءة فقط (readonly)</UiLabel>
+          <UiInput model-value="قيمة للقراءة فقط" readonly />
+        </div>
+        <div>
+          <UiLabel>حالة الخطأ (error)</UiLabel>
+          <UiInput v-model="form.errorField" placeholder="حقل به خطأ" error />
+        </div>
+      </div>
+    </section>
+
+    <!-- UiTextarea -->
+    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h2 class="text-lg font-semibold text-gray-800 mb-1">UiTextarea</h2>
+      <p class="text-xs text-gray-500 mb-4">الخصائص: placeholder — rows — size — disabled — readonly — error</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <UiLabel>عادي (rows=3)</UiLabel>
+          <UiTextarea v-model="form.notes" placeholder="اكتب ملاحظاتك..." />
+        </div>
+        <div>
+          <UiLabel>سطور أكثر (rows=5)</UiLabel>
+          <UiTextarea v-model="form.longNotes" :rows="5" placeholder="نص طويل..." />
+        </div>
+        <div>
+          <UiLabel>صغير (size=sm)</UiLabel>
+          <UiTextarea v-model="form.smallNotes" size="sm" placeholder="ملاحظة قصيرة" />
+        </div>
+        <div>
+          <UiLabel>معطل</UiLabel>
+          <UiTextarea model-value="نص ثابت معطل" disabled />
+        </div>
+        <div>
+          <UiLabel>قراءة فقط</UiLabel>
+          <UiTextarea model-value="نص للقراءة فقط" readonly />
+        </div>
+        <div>
+          <UiLabel>خطأ</UiLabel>
+          <UiTextarea v-model="form.errorNotes" placeholder="ملاحظة بها خطأ" error />
+        </div>
+      </div>
+    </section>
+
+    <!-- UiSelect -->
+    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h2 class="text-lg font-semibold text-gray-800 mb-1">UiSelect</h2>
+      <p class="text-xs text-gray-500 mb-4">قائمة منسدلة أصلية — الخصائص: size — disabled — error</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <UiLabel>عادي</UiLabel>
+          <UiSelect v-model="form.select">
+            <option value="">اختر...</option>
+            <option value="1">الخيار الأول</option>
+            <option value="2">الخيار الثاني</option>
+            <option value="3">الخيار الثالث</option>
+          </UiSelect>
+          <p class="text-xs text-gray-500 mt-1">القيمة: {{ form.select || '—' }}</p>
+        </div>
+        <div>
+          <UiLabel>صغير</UiLabel>
+          <UiSelect v-model="form.selectSm" size="sm">
+            <option value="a">أ</option>
+            <option value="b">ب</option>
+            <option value="c">ج</option>
+          </UiSelect>
+        </div>
+        <div>
+          <UiLabel>معطل</UiLabel>
+          <UiSelect model-value="x" disabled>
+            <option value="x">معطل</option>
+          </UiSelect>
+        </div>
+        <div>
+          <UiLabel>خطأ</UiLabel>
+          <UiSelect v-model="form.selectErr" error>
+            <option value="">اختر...</option>
+            <option value="1">قيمة 1</option>
+          </UiSelect>
+        </div>
+      </div>
+    </section>
+
+    <!-- UiCheckbox -->
+    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h2 class="text-lg font-semibold text-gray-800 mb-1">UiCheckbox</h2>
+      <p class="text-xs text-gray-500 mb-4">الخصائص: modelValue — disabled — id — slot للنص</p>
+
+      <div class="space-y-3">
+        <UiCheckbox v-model="form.terms" id="cb-terms">أوافق على الشروط والأحكام</UiCheckbox>
+        <UiCheckbox v-model="form.newsletter" id="cb-news">اشتراك في النشرة البريدية</UiCheckbox>
+        <UiCheckbox :model-value="true" disabled id="cb-d1">معطل (محدد)</UiCheckbox>
+        <UiCheckbox :model-value="false" disabled id="cb-d2">معطل (غير محدد)</UiCheckbox>
+        <p class="text-xs text-gray-500">الموافقة: {{ form.terms ? 'نعم' : 'لا' }} — النشرة: {{ form.newsletter ? 'نعم' : 'لا' }}</p>
+      </div>
+    </section>
+
+    <!-- UiLabel -->
+    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h2 class="text-lg font-semibold text-gray-800 mb-1">UiLabel</h2>
+      <p class="text-xs text-gray-500 mb-4">الخصائص: forId — required — disabled</p>
+
+      <div class="space-y-3">
+        <div>
+          <UiLabel>تسمية عادية</UiLabel>
+          <UiInput placeholder="..." />
+        </div>
+        <div>
+          <UiLabel required>تسمية إلزامية</UiLabel>
+          <UiInput placeholder="..." />
+        </div>
+        <div>
+          <UiLabel disabled>تسمية معطلة</UiLabel>
+          <UiInput disabled placeholder="..." />
+        </div>
+      </div>
+    </section>
+
+    <!-- ComboBox -->
+    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h2 class="text-lg font-semibold text-gray-800 mb-1">ComboBox</h2>
+      <p class="text-xs text-gray-500 mb-4">قائمة منسدلة مع بحث — الخصائص: options — placeholder — searchable — clearable — size — disabled</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <UiLabel>عادي مع بحث</UiLabel>
+          <ComboBox v-model="form.cb1" :options="comboOptions" placeholder="اختر دولة" />
+          <p class="text-xs text-gray-500 mt-1">القيمة: {{ form.cb1 ?? '—' }}</p>
+        </div>
+        <div>
+          <UiLabel>قابل للمسح (clearable)</UiLabel>
+          <ComboBox v-model="form.cb2" :options="comboOptions" placeholder="اختر..." clearable />
+        </div>
+        <div>
+          <UiLabel>صغير (size=sm)</UiLabel>
+          <ComboBox v-model="form.cb3" :options="comboOptions" placeholder="..." size="sm" clearable />
+        </div>
+        <div>
+          <UiLabel>بدون بحث (searchable=false)</UiLabel>
+          <ComboBox v-model="form.cb4" :options="comboOptions" :searchable="false" placeholder="اختيار فقط" />
+        </div>
+        <div>
+          <UiLabel>معطل</UiLabel>
+          <ComboBox :model-value="1" :options="comboOptions" disabled />
+        </div>
+        <div>
+          <UiLabel>قائمة طويلة</UiLabel>
+          <ComboBox v-model="form.cb5" :options="longOptions" placeholder="ابحث في 50 عنصراً" clearable />
+        </div>
+      </div>
+    </section>
+
+    <!-- ActionButtons -->
+    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h2 class="text-lg font-semibold text-gray-800 mb-1">ActionButtons</h2>
+      <p class="text-xs text-gray-500 mb-4">أزرار الإجراءات الموحدة (جديد / تعديل / حفظ / إلغاء / حذف ...)</p>
+      <ActionButtons
+        :is-view-mode="isViewMode"
+        :selected-id="selectedId"
+        @new="isViewMode = false; selectedId = null"
+        @edit="isViewMode = false"
+        @save="isViewMode = true"
+        @cancel="isViewMode = true"
+        @delete="selectedId = null"
+      />
+      <p class="text-xs text-gray-500 mt-3">الوضع: {{ isViewMode ? 'عرض' : 'تحرير' }} — العنصر المحدد: {{ selectedId ?? '—' }}</p>
+    </section>
+
+    <!-- DynamicTable -->
+    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h2 class="text-lg font-semibold text-gray-800 mb-1">DynamicTable</h2>
+      <p class="text-xs text-gray-500 mb-4">جدول قابل للتحرير مع أعمدة متنوعة</p>
+      <div class="mb-3">
+        <UiCheckbox v-model="tableEditMode">وضع التحرير</UiCheckbox>
+      </div>
+      <DynamicTable
+        v-model="tableRows"
+        :columns="tableColumns"
+        :is-view-mode="!tableEditMode"
+        title="عناصر تجريبية"
+        empty-text="لا توجد عناصر"
+      />
+    </section>
+
+    <!-- ListSection -->
+    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h2 class="text-lg font-semibold text-gray-800 mb-1">ListSection</h2>
+      <p class="text-xs text-gray-500 mb-4">قائمة جانبية للاختيار من بين عناصر</p>
+      <div class="h-72 border border-gray-200 rounded-lg overflow-hidden flex">
+        <ListSection
+          :items="listItems"
+          :selected-item-id="listSelectedId"
+          title="قائمة العملاء"
+          @select-item="(id) => listSelectedId = id"
+        />
+      </div>
+      <p class="text-xs text-gray-500 mt-2">المختار: {{ listSelectedId ?? '—' }}</p>
+    </section>
+
+    <!-- MessageDialog & Toast -->
+    <section class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h2 class="text-lg font-semibold text-gray-800 mb-1">رسائل وإشعارات</h2>
+      <p class="text-xs text-gray-500 mb-4">MessageDialog (عبر inject) و Toast (عبر useToast)</p>
+
+      <div class="flex flex-wrap gap-2">
+        <UiButton variant="primary" @click="showInfoDialog">رسالة معلومات</UiButton>
+        <UiButton variant="warning" @click="showConfirmDialog">رسالة تأكيد</UiButton>
+        <UiButton variant="success" @click="toast?.success('تمت العملية بنجاح')">إشعار نجاح</UiButton>
+        <UiButton variant="danger" @click="toast?.error('حدث خطأ ما')">إشعار خطأ</UiButton>
+        <UiButton variant="gray" @click="toast?.info('معلومة')">إشعار معلومات</UiButton>
+        <UiButton variant="warning" @click="toast?.warning('انتبه!')">إشعار تحذير</UiButton>
+      </div>
+    </section>
+  </div>
+</template>
+
+<script setup>
+import { ref, inject } from 'vue'
+import { PlusIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import { injectToast } from '~/composables/useToast'
+
+definePageMeta({ layout: 'default' })
+
+const toast = injectToast()
+const showMessage = inject('showMessage', null)
+
+const clickCount = ref(0)
+const onClickDemo = () => clickCount.value++
+
+const form = ref({
+  text: '',
+  number: null,
+  email: '',
+  password: '',
+  small: '',
+  errorField: '',
+  notes: '',
+  longNotes: '',
+  smallNotes: '',
+  errorNotes: '',
+  select: '',
+  selectSm: 'a',
+  selectErr: '',
+  terms: false,
+  newsletter: true,
+  cb1: null,
+  cb2: 2,
+  cb3: null,
+  cb4: null,
+  cb5: null
+})
+
+const comboOptions = [
+  { label: 'مصر', value: 1 },
+  { label: 'السعودية', value: 2 },
+  { label: 'الإمارات', value: 3 },
+  { label: 'الأردن', value: 4 },
+  { label: 'لبنان', value: 5 },
+  { label: 'العراق', value: 6 },
+  { label: 'الكويت', value: 7 },
+  { label: 'قطر', value: 8 }
+]
+
+const longOptions = Array.from({ length: 50 }, (_, i) => ({
+  label: `عنصر رقم ${i + 1}`,
+  value: i + 1
+}))
+
+const isViewMode = ref(true)
+const selectedId = ref(1)
+
+const tableEditMode = ref(false)
+const tableColumns = [
+  { field: 'name', label: 'الاسم', type: 'text' },
+  { field: 'qty', label: 'الكمية', type: 'number' },
+  { field: 'price', label: 'السعر', type: 'number' }
+]
+const tableRows = ref([
+  { name: 'منتج أ', qty: 2, price: 100 },
+  { name: 'منتج ب', qty: 5, price: 50 }
+])
+
+const listItems = [
+  { no: 1, name: 'العميل الأول' },
+  { no: 2, name: 'العميل الثاني' },
+  { no: 3, name: 'العميل الثالث' },
+  { no: 4, name: 'العميل الرابع' }
+]
+const listSelectedId = ref(1)
+
+const showInfoDialog = () => {
+  if (showMessage) {
+    showMessage({ title: 'معلومة', message: 'هذه رسالة معلومات بسيطة.', type: 'info' })
+  } else {
+    toast?.info('MessageDialog غير متاح')
+  }
+}
+
+const showConfirmDialog = () => {
+  if (showMessage) {
+    showMessage({
+      title: 'تأكيد',
+      message: 'هل أنت متأكد من المتابعة؟',
+      type: 'warning',
+      showCancel: true,
+      onConfirm: () => toast?.success('تم التأكيد'),
+      onCancel: () => toast?.info('تم الإلغاء')
+    })
+  } else {
+    toast?.warning('MessageDialog غير متاح')
+  }
+}
+</script>

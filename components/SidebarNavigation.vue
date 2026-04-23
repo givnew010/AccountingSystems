@@ -202,7 +202,8 @@ import {
   TruckIcon,
   ShoppingBagIcon,
   ArrowUturnLeftIcon,
-  ShoppingCartIcon
+  ShoppingCartIcon,
+  BeakerIcon
 } from '@heroicons/vue/24/outline'
 
 const sidebarStore = useSidebarStore()
@@ -273,7 +274,8 @@ const navigationStructure = [
   },
   { type: 'link', name: 'reports', path: '/reports', label: 'التقارير', icon: ChartBarIcon },
   { type: 'link', name: 'users', path: '/users', label: 'المستخدمين', icon: UsersIcon },
-  { type: 'link', name: 'settings', path: '#', label: 'الإعدادات', icon: Cog6ToothIcon }
+  { type: 'link', name: 'settings', path: '#', label: 'الإعدادات', icon: Cog6ToothIcon },
+  { type: 'link', name: 'test', path: '/test', label: 'التجريبة', icon: BeakerIcon }
 ]
 
 const expandedGroups = ref({
