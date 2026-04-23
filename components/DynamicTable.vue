@@ -1,16 +1,16 @@
 <template>
-  <div class="border border-gray-300 rounded-lg overflow-hidden bg-white">
-    <!-- Table Header Title -->
-    <div v-if="title" class="px-4 py-3 border-b border-gray-200 bg-gray-50">
-      <h3 class="text-sm font-semibold text-gray-800">{{ title }}</h3>
-    </div>
+  <div>
+    <!-- Title outside the table -->
+    <h3 v-if="title" class="text-sm font-semibold text-gray-700 mb-2">
+      {{ title }}
+    </h3>
 
-    <div class="overflow-x-auto">
+    <div class="overflow-x-auto rounded-lg bg-white">
       <table class="w-full border-collapse">
         <thead>
           <tr class="bg-gray-50">
             <!-- Row Number Column -->
-            <th class="w-10 px-3 py-2 text-center text-xs font-semibold text-gray-500 border-b border-gray-200">
+            <th class="w-10 px-3 py-2.5 text-center text-xs font-semibold text-gray-500">
               #
             </th>
 
@@ -19,7 +19,7 @@
               v-for="col in columns"
               :key="col.field"
               :style="col.width ? { width: col.width } : {}"
-              class="px-3 py-2 text-center text-xs font-semibold text-gray-600 border-b border-gray-200"
+              class="px-3 py-2.5 text-center text-xs font-semibold text-gray-500"
             >
               {{ col.label }}
             </th>
@@ -27,7 +27,7 @@
             <!-- Delete Column -->
             <th
               v-if="showDelete && !isViewMode"
-              class="w-10 px-2 py-2 text-center text-xs font-semibold text-gray-500 border-b border-gray-200"
+              class="w-10 px-2 py-2.5 text-center text-xs font-semibold text-gray-500"
             >
             </th>
           </tr>
@@ -38,12 +38,12 @@
             v-for="(row, rowIndex) in rows"
             :key="rowIndex"
             :class="[
-              rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50/40',
-              'hover:bg-blue-50/30 transition-colors duration-100'
+              rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50',
+              'hover:bg-blue-50/40 transition-colors duration-100'
             ]"
           >
             <!-- Row Number -->
-            <td class="px-3 py-2 text-center text-xs font-medium text-gray-400 select-none align-middle border-b border-gray-100">
+            <td class="px-3 py-2 text-center text-xs font-medium text-gray-500 select-none align-middle">
               {{ rowIndex + 1 }}
             </td>
 
@@ -51,7 +51,7 @@
             <td
               v-for="col in columns"
               :key="col.field"
-              class="px-2 py-1.5 align-middle border-b border-gray-100"
+              class="px-3 py-2 text-center align-middle"
             >
               <!-- View Mode: display text -->
               <template v-if="isViewMode">
@@ -149,7 +149,7 @@
             <!-- Delete Cell -->
             <td
               v-if="showDelete && !isViewMode"
-              class="px-2 py-1.5 text-center align-middle border-b border-gray-100"
+              class="px-2 py-2 text-center align-middle"
             >
               <button
                 type="button"
