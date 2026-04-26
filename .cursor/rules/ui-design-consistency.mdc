@@ -1,0 +1,34 @@
+---
+description: Enforce using shared UI components and system design style
+alwaysApply: true
+---
+
+# UI Design Consistency
+
+When building any new page, section, or component, follow these rules:
+
+- Prefer existing components from `@ui` before creating custom UI.
+- Reuse `@ui` primitives for buttons, inputs, selects, modals, tooltips, badges, toggles, checkboxes, and similar controls.
+- Keep spacing, typography, radius, colors, and interaction behavior aligned with the current system design.
+- If a required variant is missing, extend the closest existing `@ui` component instead of introducing a separate design pattern.
+
+## Examples
+
+```vue
+<!-- ❌ BAD: custom button style that bypasses design system -->
+<button class="px-3 py-2 rounded bg-blue-600 text-white">Save</button>
+```
+
+```vue
+<!-- ✅ GOOD: reuse shared UI component -->
+<UiButton color="primary">Save</UiButton>
+```
+
+```vue
+<!-- ✅ GOOD: compose UI from system components -->
+<UiModal>
+  <template #header>Confirm Action</template>
+  <UiCheckbox v-model="confirmed">I understand</UiCheckbox>
+  <UiButton color="danger">Delete</UiButton>
+</UiModal>
+```

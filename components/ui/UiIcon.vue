@@ -10,6 +10,7 @@
     ]"
     :aria-hidden="decorative ? 'true' : undefined"
     :role="decorative ? undefined : 'img'"
+    :aria-label="!decorative ? label : undefined"
   />
 </template>
 
@@ -27,6 +28,7 @@ const props = withDefaults(
     size?: Size
     tone?: Tone
     decorative?: boolean
+    label?: string
     spin?: boolean
   }>(),
   {
@@ -34,6 +36,7 @@ const props = withDefaults(
     size: 'md',
     tone: 'default',
     decorative: true,
+    label: '',
     spin: false
   }
 )

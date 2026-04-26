@@ -14,7 +14,7 @@
       ]"
       @click="selectOption(item.value)"
     >
-      <UiIcon v-if="item.icon" :icon="item.icon" size="sm" decorative />
+      <UiIcon v-if="item.icon" :icon="item.icon" :size="groupIconSize" decorative />
       <span>{{ item.label }}</span>
     </button>
   </div>
@@ -87,6 +87,7 @@ const sizeTrackClasses = computed(() => (props.size === 'sm' ? 'w-12 h-7' : 'w-1
 const sizeThumbClasses = computed(() => (props.size === 'sm' ? 'w-5 h-5' : 'w-6 h-6'))
 const thumbOffClasses = computed(() => (props.size === 'sm' ? 'left-1' : 'left-1'))
 const thumbOnClasses = computed(() => (props.size === 'sm' ? 'left-6' : 'left-7'))
+const groupIconSize = computed(() => (props.size === 'sm' ? 'xs' : 'sm'))
 
 const updateValue = (value: Primitive) => {
   emit('update:modelValue', value)

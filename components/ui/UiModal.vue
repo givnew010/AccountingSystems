@@ -19,32 +19,71 @@
           maxWidthClass
         ]"
       >
-        <header v-if="showHeader" class="flex items-start justify-between gap-4 px-5 py-4 border-b border-gray-200">
+        <header
+          v-if="showHeader"
+          :class="[
+            'flex items-start justify-between gap-4 px-5 py-4 border-b',
+            headerClasses.wrapper
+          ]"
+        >
           <div class="min-w-0">
-            <h3 class="text-base font-semibold text-gray-900 truncate">
+            <h3 :class="['text-base font-semibold truncate', headerClasses.title]">
               <slot name="title">{{ title }}</slot>
             </h3>
-            <p v-if="description" class="mt-1 text-sm text-gray-500">
+            <p v-if="description" :class="['mt-1 text-sm', headerClasses.description]">
               {{ description }}
             </p>
           </div>
-          <button
+          <UiButton
             v-if="showClose"
-            type="button"
-            class="text-gray-400 hover:text-gray-600 rounded p-1"
+            icon-button
+            icon-button-style="plain"
+            variant="gray"
+            size="sm"
+            :icon="XMarkIcon"
             aria-label="Close dialog"
             @click="close('close-button')"
-          >
-            <UiIcon :icon="XMarkIcon" size="sm" decorative />
-          </button>
+          />
         </header>
 
         <section class="px-5 py-4 max-h-[70vh] overflow-auto">
           <slot />
         </section>
 
-        <footer v-if="$slots.footer" class="px-5 py-4 border-t border-gray-200 flex items-center justify-end gap-2">
-          <slot name="footer" />
+        <footer
+          v-if="showFooter && (showCancelButton || showConfirmButton || showExtraButton)"
+          class="px-5 py-4 border-t border-gray-200 flex items-center justify-end gap-2"
+        >
+          <UiButton
+            v-if="showExtraButton"
+            :variant="extraButtonVariant"
+            :icon="extraButtonIcon"
+            :icon-position="extraButtonIconPosition"
+            :disabled="extraButtonDisabled"
+            @click="onExtraClick"
+          >
+            {{ extraButtonText }}
+          </UiButton>
+          <UiButton
+            v-if="showCancelButton"
+            :variant="cancelButtonVariant"
+            :icon="cancelButtonIcon"
+            :icon-position="cancelButtonIconPosition"
+            :disabled="cancelButtonDisabled"
+            @click="onCancelClick"
+          >
+            {{ cancelButtonText }}
+          </UiButton>
+          <UiButton
+            v-if="showConfirmButton"
+            :variant="confirmButtonVariant"
+            :icon="confirmButtonIcon"
+            :icon-position="confirmButtonIconPosition"
+            :disabled="confirmButtonDisabled"
+            @click="onConfirmClick"
+          >
+            {{ confirmButtonText }}
+          </UiButton>
         </footer>
       </div>
     </div>
@@ -56,7 +95,16 @@ import { computed, watch, onBeforeUnmount } from 'vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 
 type MaxWidth = 'sm' | 'md' | 'lg' | 'xl' | '2xl'
-type CloseSource = 'programmatic' | 'backdrop' | 'escape' | 'close-button'
+type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'warning' | 'success' | 'gray'
+type HeaderVariant = 'primary' | 'success' | 'warning' | 'danger' | 'gray'
+type CloseSource =
+  | 'programmatic'
+  | 'backdrop'
+  | 'escape'
+  | 'close-button'
+  | 'cancel-button'
+  | 'confirm-button'
+  | 'extra-button'
 
 const props = withDefaults(
   defineProps<{
@@ -68,7 +116,30 @@ const props = withDefaults(
     closeOnEsc?: boolean
     showClose?: boolean
     showHeader?: boolean
+    headerVariant?: HeaderVariant
     lockScroll?: boolean
+    showFooter?: boolean
+    showCancelButton?: boolean
+    showConfirmButton?: boolean
+    showExtraButton?: boolean
+    cancelButtonText?: string
+    confirmButtonText?: string
+    extraButtonText?: string
+    cancelButtonVariant?: ButtonVariant
+    confirmButtonVariant?: ButtonVariant
+    extraButtonVariant?: ButtonVariant
+    cancelButtonIcon?: any
+    confirmButtonIcon?: any
+    extraButtonIcon?: any
+    cancelButtonIconPosition?: 'left' | 'right'
+    confirmButtonIconPosition?: 'left' | 'right'
+    extraButtonIconPosition?: 'left' | 'right'
+    cancelButtonDisabled?: boolean
+    confirmButtonDisabled?: boolean
+    extraButtonDisabled?: boolean
+    closeOnCancel?: boolean
+    closeOnConfirm?: boolean
+    closeOnExtra?: boolean
   }>(),
   {
     modelValue: false,
@@ -79,7 +150,30 @@ const props = withDefaults(
     closeOnEsc: true,
     showClose: true,
     showHeader: true,
-    lockScroll: true
+    headerVariant: 'primary',
+    lockScroll: true,
+    showFooter: true,
+    showCancelButton: true,
+    showConfirmButton: true,
+    showExtraButton: false,
+    cancelButtonText: 'إلغاء',
+    confirmButtonText: 'تأكيد',
+    extraButtonText: 'إجراء إضافي',
+    cancelButtonVariant: 'secondary',
+    confirmButtonVariant: 'primary',
+    extraButtonVariant: 'gray',
+    cancelButtonIcon: null,
+    confirmButtonIcon: null,
+    extraButtonIcon: null,
+    cancelButtonIconPosition: 'left',
+    confirmButtonIconPosition: 'left',
+    extraButtonIconPosition: 'left',
+    cancelButtonDisabled: false,
+    confirmButtonDisabled: false,
+    extraButtonDisabled: false,
+    closeOnCancel: true,
+    closeOnConfirm: true,
+    closeOnExtra: false
   }
 )
 
@@ -87,6 +181,9 @@ const emit = defineEmits<{
   'update:modelValue': [value: boolean]
   open: []
   close: [source: CloseSource]
+  cancel: []
+  confirm: []
+  extra: []
 }>()
 
 const isOpen = computed(() => !!props.modelValue)
@@ -99,6 +196,42 @@ const maxWidthClass = computed(() => {
     case '2xl': return 'max-w-2xl'
     case 'lg':
     default: return 'max-w-lg'
+  }
+})
+
+const headerClasses = computed(() => {
+  switch (props.headerVariant) {
+    case 'success':
+      return {
+        wrapper: 'bg-green-50 border-green-100',
+        title: 'text-green-900',
+        description: 'text-green-700'
+      }
+    case 'warning':
+      return {
+        wrapper: 'bg-yellow-50 border-yellow-100',
+        title: 'text-yellow-900',
+        description: 'text-yellow-700'
+      }
+    case 'danger':
+      return {
+        wrapper: 'bg-red-50 border-red-100',
+        title: 'text-red-900',
+        description: 'text-red-700'
+      }
+    case 'gray':
+      return {
+        wrapper: 'bg-gray-50 border-gray-200',
+        title: 'text-gray-900',
+        description: 'text-gray-600'
+      }
+    case 'primary':
+    default:
+      return {
+        wrapper: 'bg-blue-50 border-blue-100',
+        title: 'text-blue-900',
+        description: 'text-blue-700'
+      }
   }
 })
 
@@ -128,6 +261,21 @@ const onBackdropClick = () => {
 const handleEsc = () => {
   if (!props.closeOnEsc) return
   close('escape')
+}
+
+const onCancelClick = () => {
+  emit('cancel')
+  if (props.closeOnCancel) close('cancel-button')
+}
+
+const onConfirmClick = () => {
+  emit('confirm')
+  if (props.closeOnConfirm) close('confirm-button')
+}
+
+const onExtraClick = () => {
+  emit('extra')
+  if (props.closeOnExtra) close('extra-button')
 }
 </script>
 

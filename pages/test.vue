@@ -10,8 +10,8 @@
     <!-- UiBadge -->
     <section v-show="componentPreviewTab === 'ui-badge'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiBadge</h2>
-      <p class="text-xs text-gray-500 mb-4">الخصائص: variant — size — pill</p>
-      <div class="space-y-3">
+      <p class="text-xs text-gray-500 mb-4">الخصائص: variant — size — pill — styleType — icon — iconPosition</p>
+      <div class="space-y-4">
         <div class="flex flex-wrap gap-2">
           <UiBadge variant="gray">افتراضي</UiBadge>
           <UiBadge variant="blue">معلومة</UiBadge>
@@ -26,13 +26,38 @@
           <UiBadge size="md" variant="red">MD</UiBadge>
           <UiBadge variant="blue" pill>شكل Pill</UiBadge>
         </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <UiBadge variant="red" :icon="NoSymbolIcon">موقف عن البيع</UiBadge>
+          <UiBadge variant="red" style-type="outline" :icon="NoSymbolIcon">موقف عن البيع</UiBadge>
+          <UiBadge variant="blue" :icon="InformationCircleIcon" icon-position="left">تفاصيل المنتج</UiBadge>
+          <UiBadge variant="green" :icon="CheckCircleIcon">متاح</UiBadge>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <UiBadge size="sm" variant="red" :icon="NoSymbolIcon">موقف عن البيع</UiBadge>
+          <UiBadge size="sm" variant="red" style-type="outline" :icon="NoSymbolIcon">موقف عن البيع</UiBadge>
+          <UiBadge size="sm" variant="blue" :icon="InformationCircleIcon" icon-position="left">تفاصيل المنتج</UiBadge>
+          <UiBadge size="sm" variant="green" :icon="CheckCircleIcon">متاح</UiBadge>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <UiBadge size="md" variant="red" :icon="NoSymbolIcon">موقف عن البيع</UiBadge>
+          <UiBadge size="md" variant="red" style-type="outline" :icon="NoSymbolIcon">موقف عن البيع</UiBadge>
+          <UiBadge size="md" variant="blue" :icon="InformationCircleIcon" icon-position="left">تفاصيل المنتج</UiBadge>
+          <UiBadge size="md" variant="green" :icon="CheckCircleIcon">متاح</UiBadge>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-800 mb-1">icons Withe Size : md , iconSize : lg</h3>
+        <div class="flex flex-wrap items-center gap-2">
+          <UiBadge size="md" iconSize="lg" variant="red" :icon="NoSymbolIcon">موقف عن البيع</UiBadge>
+          <UiBadge size="md" iconSize="lg" variant="red" style-type="outline" :icon="NoSymbolIcon">موقف عن البيع</UiBadge>
+          <UiBadge size="md" iconSize="lg" variant="blue" :icon="InformationCircleIcon" icon-position="left">تفاصيل المنتج</UiBadge>
+          <UiBadge size="md" iconSize="lg" variant="green" :icon="CheckCircleIcon">متاح</UiBadge>
+        </div>
       </div>
     </section>
 
     <!-- UiIcon -->
     <section v-show="componentPreviewTab === 'ui-icon'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiIcon</h2>
-      <p class="text-xs text-gray-500 mb-4">الخصائص: icon — size — tone — spin</p>
+      <p class="text-xs text-gray-500 mb-4">الخصائص: icon — size — tone — spin — decorative — label</p>
       <div class="space-y-3">
         <div class="flex flex-wrap items-center gap-4">
           <UiIcon :icon="BellIcon" size="xs" />
@@ -48,26 +73,90 @@
           <UiIcon :icon="InformationCircleIcon" tone="primary" />
           <UiIcon :icon="ArrowPathIcon" tone="muted" spin />
         </div>
+        <div class="flex flex-wrap items-center gap-4">
+          <UiIcon :icon="InformationCircleIcon" tone="primary" :decorative="false" label="معلومة" />
+          <UiIcon :icon="ExclamationTriangleIcon" tone="warning" :decorative="false" label="تحذير" />
+          <UiIcon :icon="XCircleIcon" tone="danger" :decorative="false" label="خطأ" />
+        </div>
       </div>
     </section>
 
     <!-- UiToolTip -->
     <section v-show="componentPreviewTab === 'ui-tooltip'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiToolTip</h2>
-      <p class="text-xs text-gray-500 mb-4">الخصائص: text — position — delay — disabled</p>
-      <div class="flex flex-wrap items-center gap-3">
-        <UiToolTip text="حفظ" position="top">
-          <UiButton size="sm">Top</UiButton>
-        </UiToolTip>
-        <UiToolTip text="تعديل" position="right">
-          <UiButton size="sm" variant="secondary">Right</UiButton>
-        </UiToolTip>
-        <UiToolTip text="حذف" position="bottom">
-          <UiButton size="sm" variant="danger">Bottom</UiButton>
-        </UiToolTip>
-        <UiToolTip text="نسخ" position="left" :delay="300">
-          <UiButton size="sm" variant="gray">Left (delay)</UiButton>
-        </UiToolTip>
+      <p class="text-xs text-gray-500 mb-4">الخصائص: text — title — description — position — delay — disabled</p>
+
+      <div class="space-y-6">
+        <div>
+          <p class="text-sm text-gray-600 mb-3">1) الحالة البسيطة (text) مع جميع الاتجاهات</p>
+          <div class="flex flex-wrap items-center gap-3">
+            <UiToolTip text="هذا تلميح علوي" position="top">
+              <UiButton size="sm">Top</UiButton>
+            </UiToolTip>
+            <UiToolTip text="هذا تلميح يمين" position="right">
+              <UiButton size="sm" variant="secondary">Right</UiButton>
+            </UiToolTip>
+            <UiToolTip text="هذا تلميح سفلي" position="bottom">
+              <UiButton size="sm" variant="danger">Bottom</UiButton>
+            </UiToolTip>
+            <UiToolTip text="هذا تلميح يسار" position="left">
+              <UiButton size="sm" variant="gray">Left</UiButton>
+            </UiToolTip>
+          </div>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600 mb-3">2) الحالة التفصيلية (title + description) مع جميع الاتجاهات</p>
+          <div class="flex flex-wrap items-center gap-3">
+            <UiToolTip
+              position="top"
+              title="This is a tooltip"
+              description="Tooltips are used to describe or identify an element. In most scenarios, tooltips help the user understand meaning, function or alt-text."
+            >
+              <UiButton size="sm" variant="primary">Detailed Top</UiButton>
+            </UiToolTip>
+            <UiToolTip
+              position="right"
+              title="This is a tooltip"
+              description="Tooltips are used to describe or identify an element. In most scenarios, tooltips help the user understand meaning, function or alt-text."
+            >
+              <UiButton size="sm" variant="secondary">Detailed Right</UiButton>
+            </UiToolTip>
+            <UiToolTip
+              position="bottom"
+              title="This is a tooltip"
+              description="Tooltips are used to describe or identify an element. In most scenarios, tooltips help the user understand meaning, function or alt-text."
+            >
+              <UiButton size="sm" variant="success">Detailed Bottom</UiButton>
+            </UiToolTip>
+            <UiToolTip
+              position="left"
+              title="This is a tooltip"
+              description="Tooltips are used to describe or identify an element. In most scenarios, tooltips help the user understand meaning, function or alt-text."
+            >
+              <UiButton size="sm" variant="gray">Detailed Left</UiButton>
+            </UiToolTip>
+          </div>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600 mb-3">3) حالات إضافية: delay و disabled</p>
+          <div class="flex flex-wrap items-center gap-3">
+            <UiToolTip text="يظهر بعد 600ms" :delay="600">
+              <UiButton size="sm" variant="warning">Delay 600ms</UiButton>
+            </UiToolTip>
+            <UiToolTip text="لن يظهر لأن المكوّن disabled" disabled>
+              <UiButton size="sm" variant="danger">Disabled Tooltip</UiButton>
+            </UiToolTip>
+            <UiToolTip
+              title="تنبيه سريع"
+              description="يمكنك تمرير title فقط، أو title مع description حسب الحاجة."
+              position="top"
+            >
+              <UiButton size="sm" variant="secondary">Title + Description</UiButton>
+            </UiToolTip>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -90,23 +179,51 @@
     <!-- UiModal -->
     <section v-show="componentPreviewTab === 'ui-modal'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiModal</h2>
-      <p class="text-xs text-gray-500 mb-4">الخصائص: v-model — title — description — footer slot — maxWidth</p>
+      <p class="text-xs text-gray-500 mb-4">الخصائص: v-model — title — description — headerVariant — maxWidth — footer actions (cancel/confirm/extra)</p>
       <div class="flex flex-wrap gap-2">
-        <UiButton @click="showDemoModal = true">فتح المودال</UiButton>
+        <UiButton @click="showDemoModal = true">فتح مودال افتراضي</UiButton>
+        <UiButton variant="danger" @click="showDangerModal = true">فتح مودال تحذيري</UiButton>
       </div>
       <UiModal
         v-model="showDemoModal"
         title="تأكيد العملية"
-        description="مثال على استخدام UiModal في الصفحة."
+        description="مودال افتراضي مع 3 أزرار قابلة للتخصيص."
         max-width="md"
+        header-variant="primary"
+        :show-extra-button="true"
+        extra-button-text="حفظ كمسودة"
+        :extra-button-icon="PlusIcon"
+        cancel-button-text="إلغاء"
+        :cancel-button-icon="XCircleIcon"
+        confirm-button-text="تأكيد الحفظ"
+        :confirm-button-icon="CheckCircleIcon"
+        @confirm="onModalConfirm"
+        @cancel="onModalCancel"
+        @extra="onModalExtra"
       >
         <p class="text-sm text-gray-700">
-          هل تريد حفظ التغييرات الحالية؟ يمكنك الإلغاء أو التأكيد من الأزرار بالأسفل.
+          هل تريد حفظ التغييرات الحالية؟ يمكنك تجربة زر إضافي بدون إغلاق تلقائي.
         </p>
-        <template #footer>
-          <UiButton variant="secondary" @click="showDemoModal = false">إلغاء</UiButton>
-          <UiButton variant="primary" @click="confirmModalAction">تأكيد</UiButton>
-        </template>
+      </UiModal>
+
+      <UiModal
+        v-model="showDangerModal"
+        title="حذف العنصر"
+        description="هذا الإجراء لا يمكن التراجع عنه."
+        max-width="sm"
+        header-variant="danger"
+        :show-extra-button="false"
+        cancel-button-text="تراجع"
+        confirm-button-text="حذف نهائي"
+        confirm-button-variant="danger"
+        :confirm-button-icon="TrashIcon"
+        :close-on-backdrop="false"
+        @confirm="onDangerConfirm"
+        @cancel="onDangerCancel"
+      >
+        <p class="text-sm text-gray-700">
+          عند التأكيد سيتم حذف البيانات بشكل دائم.
+        </p>
       </UiModal>
     </section>
 
@@ -130,7 +247,7 @@
     <!-- UiButton -->
     <section v-show="componentPreviewTab === 'ui-button'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiButton</h2>
-      <p class="text-xs text-gray-500 mb-4">الخصائص: variant (primary/secondary/danger/warning/success/gray) — size (sm/md) — disabled — type</p>
+      <p class="text-xs text-gray-500 mb-4">الخصائص: variant — size — disabled — type — iconButton — iconButtonStyle (filled/plain) — icon — iconPosition — slot:icon</p>
 
       <div class="space-y-4">
         <div>
@@ -162,19 +279,116 @@
           <div class="flex flex-wrap gap-2">
             <UiButton disabled>أساسي معطل</UiButton>
             <UiButton variant="danger" disabled>حذف معطل</UiButton>
+            <UiButton variant="secondary" size="sm" disabled>ثانوي صغير معطل</UiButton>
           </div>
         </div>
 
         <div>
-          <p class="text-sm text-gray-600 mb-2">مع أيقونة (slot=icon)</p>
+          <p class="text-sm text-gray-600 mb-2">زر نص + أيقونة عبر slot:icon</p>
           <div class="flex flex-wrap gap-2">
             <UiButton variant="primary">
-              <template #icon><PlusIcon class="w-4 h-4" /></template>
+              <template #icon>
+                <PlusIcon class="w-4 h-4" />
+              </template>
               إضافة
             </UiButton>
             <UiButton variant="danger">
-              <template #icon><TrashIcon class="w-4 h-4" /></template>
+              <template #icon>
+                <TrashIcon class="w-4 h-4" />
+              </template>
               حذف
+            </UiButton>
+            <UiButton variant="success" size="sm">
+              <template #icon>
+                <CheckCircleIcon class="w-4 h-4" />
+              </template>
+              حفظ
+            </UiButton>
+          </div>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600 mb-2">زر نص + أيقونة عبر icon prop (يسار/يمين)</p>
+          <div class="flex flex-wrap gap-2">
+            <UiButton variant="primary" :icon="PlusIcon">icon left</UiButton>
+            <UiButton variant="secondary" :icon="ArrowPathIcon" icon-position="right">icon right</UiButton>
+            <UiButton variant="gray" :icon="BellIcon" icon-size="md">icon size md</UiButton>
+          </div>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600 mb-2">IconButton — النمط المعبأ (filled)</p>
+          <div class="flex flex-wrap items-center gap-2">
+            <UiButton variant="primary" :icon-button="true" title="إضافة">
+              <template #icon>
+                <PlusIcon class="w-5 h-5" />
+              </template>
+            </UiButton>
+            <UiButton variant="warning" :icon-button="true" title="تعديل">
+              <template #icon>
+                <LockOpenIcon class="w-5 h-5" />
+              </template>
+            </UiButton>
+            <UiButton variant="danger" :icon-button="true" title="حذف">
+              <template #icon>
+                <TrashIcon class="w-5 h-5" />
+              </template>
+            </UiButton>
+            <UiButton variant="secondary" size="sm" :icon-button="true" title="مسح">
+              <template #icon>
+                <XCircleIcon class="w-4 h-4" />
+              </template>
+            </UiButton>
+            <UiButton variant="gray" :icon-button="true" disabled title="معطل">
+              <template #icon>
+                <BellIcon class="w-5 h-5" />
+              </template>
+            </UiButton>
+          </div>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600 mb-2">IconButton — النمط الشفاف (plain: بدون border/background)</p>
+          <div class="flex flex-wrap items-center gap-2">
+            <UiButton variant="primary" :icon-button="true" icon-button-style="plain" title="إضافة">
+              <template #icon>
+                <PlusIcon class="w-5 h-5" />
+              </template>
+            </UiButton>
+            <UiButton variant="secondary" :icon-button="true" icon-button-style="plain" title="تنبيه">
+              <template #icon>
+                <BellIcon class="w-5 h-5" />
+              </template>
+            </UiButton>
+            <UiButton variant="success" :icon-button="true" icon-button-style="plain" title="نجاح">
+              <template #icon>
+                <CheckCircleIcon class="w-5 h-5" />
+              </template>
+            </UiButton>
+            <UiButton variant="warning" :icon-button="true" icon-button-style="plain" title="تحذير">
+              <template #icon>
+                <ExclamationTriangleIcon class="w-5 h-5" />
+              </template>
+            </UiButton>
+            <UiButton variant="danger" :icon-button="true" icon-button-style="plain" title="حذف">
+              <template #icon>
+                <TrashIcon class="w-5 h-5" />
+              </template>
+            </UiButton>
+            <UiButton variant="gray" :icon-button="true" icon-button-style="plain" title="معلومة">
+              <template #icon>
+                <InformationCircleIcon class="w-5 h-5" />
+              </template>
+            </UiButton>
+            <UiButton variant="danger" size="sm" :icon-button="true" icon-button-style="plain" title="صغير">
+              <template #icon>
+                <XCircleIcon class="w-4 h-4" />
+              </template>
+            </UiButton>
+            <UiButton variant="gray" :icon-button="true" icon-button-style="plain" disabled title="معطل">
+              <template #icon>
+                <LockClosedIcon class="w-5 h-5" />
+              </template>
             </UiButton>
           </div>
         </div>
@@ -183,6 +397,18 @@
           <p class="text-sm text-gray-600 mb-2">حدث النقر</p>
           <UiButton variant="success" @click="onClickDemo">اضغط هنا</UiButton>
           <span v-if="clickCount > 0" class="mr-3 text-sm text-gray-700">عدد الضغطات: {{ clickCount }}</span>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-600 mb-2">أنواع الزر (type)</p>
+          <form class="flex flex-wrap items-center gap-2" @submit.prevent="onSubmitDemo" @reset.prevent="onResetDemo">
+            <UiButton type="button" variant="secondary" @click="typeButtonCount++">Button</UiButton>
+            <UiButton type="submit" variant="primary">Submit</UiButton>
+            <UiButton type="reset" variant="gray">Reset</UiButton>
+            <span class="text-xs text-gray-600">
+              button: {{ typeButtonCount }} | submit: {{ submitCount }} | reset: {{ resetCount }}
+            </span>
+          </form>
         </div>
       </div>
     </section>
@@ -374,7 +600,7 @@
     <!-- UiToggleButton -->
     <section v-show="componentPreviewTab === 'ui-toggle-button'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiToggleButton</h2>
-      <p class="text-xs text-gray-500 mb-4">مفتاح تبديل (boolean) أو مجموعة خيارات — الخصائص: size — color — variant — onLabel/offLabel — onIcon/offIcon — knobOnIcon/knobOffIcon — options — disabled</p>
+      <p class="text-xs text-gray-500 mb-4">مفتاح تبديل (boolean) أو مجموعة خيارات — الخصائص: size — color — variant — onLabel/offLabel — onIcon/offIcon — knobOnIcon/knobOffIcon — options — disabled (الأيقونات الداخلية decorative افتراضياً)</p>
 
       <div class="space-y-6">
         <div>
@@ -404,6 +630,7 @@
             />
             <span class="text-sm text-gray-500">{{ toggle3 ? 'مغلق' : 'مفتوح' }}</span>
           </div>
+          <p class="text-xs text-gray-500 mt-2">ملاحظة: أيقونات المفتاح هنا تُعرض للزينة داخل المكوّن، لذلك لا تحتاج label منفصل.</p>
         </div>
 
         <div>
@@ -569,6 +796,7 @@ import {
   CheckCircleIcon,
   ExclamationTriangleIcon,
   XCircleIcon,
+  NoSymbolIcon,
   InformationCircleIcon,
   ArrowPathIcon
 } from '@heroicons/vue/24/outline'
@@ -581,6 +809,11 @@ const showMessage = inject('showMessage', null)
 
 const clickCount = ref(0)
 const onClickDemo = () => clickCount.value++
+const typeButtonCount = ref(0)
+const submitCount = ref(0)
+const resetCount = ref(0)
+const onSubmitDemo = () => submitCount.value++
+const onResetDemo = () => resetCount.value++
 
 const form = ref({
   text: '',
@@ -646,27 +879,28 @@ const modeOptions = [
 ]
 
 const showDemoModal = ref(false)
-const componentPreviewTab = ref('ui-badge')
+const showDangerModal = ref(false)
+const componentPreviewTab = ref('ui-icon')
 const componentTabs = [
-  { key: 'ui-badge', label: 'UiBadge' },
   { key: 'ui-icon', label: 'UiIcon' },
   { key: 'ui-tooltip', label: 'UiToolTip' },
-  { key: 'ui-tabs', label: 'UiTabs' },
-  { key: 'ui-modal', label: 'UiModal' },
-  { key: 'ui-toggle-button-2', label: 'UiToggleButton2' },
+  { key: 'ui-scroll', label: 'UiScroll' },
+  { key: 'ui-label', label: 'UiLabel' },
+  { key: 'ui-badge', label: 'UiBadge' },
   { key: 'ui-button', label: 'UiButton' },
+  { key: 'ui-checkbox', label: 'UiCheckbox' },
   { key: 'ui-input', label: 'UiInput' },
   { key: 'ui-textarea', label: 'UiTextarea' },
   { key: 'ui-select', label: 'UiSelect' },
-  { key: 'ui-checkbox', label: 'UiCheckbox' },
-  { key: 'ui-label', label: 'UiLabel' },
-  { key: 'combo-box', label: 'ComboBox' },
   { key: 'ui-toggle-button', label: 'UiToggleButton' },
-  { key: 'ui-scroll', label: 'UiScroll' },
+  { key: 'ui-toggle-button-2', label: 'UiToggleButton2' },
+  { key: 'ui-tabs', label: 'UiTabs' },
+  { key: 'ui-modal', label: 'UiModal' },
+  { key: 'messages-toast', label: 'Messages & Toast' },
+  { key: 'combo-box', label: 'ComboBox' },
   { key: 'action-buttons', label: 'ActionButtons' },
   { key: 'dynamic-table', label: 'DynamicTable' },
   { key: 'list-section', label: 'ListSection' },
-  { key: 'messages-toast', label: 'Messages & Toast' }
 ]
 
 const activeTab = ref('overview')
@@ -731,8 +965,23 @@ const onTabChange = (value) => {
   toast?.info(`تم التبديل إلى: ${value}`)
 }
 
-const confirmModalAction = () => {
-  showDemoModal.value = false
-  toast?.success('تم التأكيد من داخل UiModal')
+const onModalConfirm = () => {
+  toast?.success('تم تأكيد الحفظ')
+}
+
+const onModalCancel = () => {
+  toast?.info('تم إلغاء العملية')
+}
+
+const onModalExtra = () => {
+  toast?.info('تم حفظ المحتوى كمسودة')
+}
+
+const onDangerConfirm = () => {
+  toast?.success('تم حذف العنصر')
+}
+
+const onDangerCancel = () => {
+  toast?.warning('تم التراجع عن الحذف')
 }
 </script>

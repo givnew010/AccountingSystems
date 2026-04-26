@@ -51,14 +51,14 @@
       v-if="modelValue && (onLabel || onIcon)"
       :class="['absolute font-bold', sizeClasses.label, colorClasses.labelOn, isRtl ? 'right-3' : 'left-3']"
     >
-      <UiIcon v-if="onIcon" :icon="onIcon" :class="sizeClasses.icon" decorative />
+      <UiIcon v-if="onIcon" :icon="onIcon" :size="iconSize" decorative />
       <template v-else>{{ onLabel }}</template>
     </span>
     <span
       v-if="!modelValue && (offLabel || offIcon)"
       :class="['absolute font-bold', sizeClasses.label, colorClasses.labelOff, isRtl ? 'left-3' : 'right-3']"
     >
-      <UiIcon v-if="offIcon" :icon="offIcon" :class="sizeClasses.icon" decorative />
+      <UiIcon v-if="offIcon" :icon="offIcon" :size="iconSize" decorative />
       <template v-else>{{ offLabel }}</template>
     </span>
 
@@ -73,13 +73,15 @@
       <UiIcon
         v-if="modelValue && knobOnIcon"
         :icon="knobOnIcon"
-        :class="[sizeClasses.icon, colorClasses.knobIcon]"
+        :size="iconSize"
+        :class="colorClasses.knobIcon"
         decorative
       />
       <UiIcon
         v-else-if="!modelValue && knobOffIcon"
         :icon="knobOffIcon"
-        :class="[sizeClasses.icon, colorClasses.knobIcon]"
+        :size="iconSize"
+        :class="colorClasses.knobIcon"
         decorative
       />
     </span>
@@ -141,6 +143,15 @@ const selectOption = (value: any) => {
   emit('change', value)
 }
 
+const iconSize = computed(() => {
+  switch (props.size) {
+    case 'sm': return 'xs'
+    case 'lg': return 'sm'
+    case 'md':
+    default: return 'sm'
+  }
+})
+
 const sizeClasses = computed(() => {
   switch (props.size) {
     case 'sm':
@@ -150,7 +161,6 @@ const sizeClasses = computed(() => {
         knobOn: 'left-0.5',
         knobOff: 'right-0.5',
         label: 'text-[10px]',
-        icon: 'w-3 h-3',
         group: 'text-xs',
         groupBtn: 'px-3 py-1'
       }
@@ -161,7 +171,6 @@ const sizeClasses = computed(() => {
         knobOn: 'left-1',
         knobOff: 'right-1',
         label: 'text-sm',
-        icon: 'w-4 h-4',
         group: 'text-base',
         groupBtn: 'px-6 py-2'
       }
@@ -173,7 +182,6 @@ const sizeClasses = computed(() => {
         knobOn: 'left-1',
         knobOff: 'right-1',
         label: 'text-xs',
-        icon: 'w-3.5 h-3.5',
         group: 'text-sm',
         groupBtn: 'px-5 py-1.5'
       }
