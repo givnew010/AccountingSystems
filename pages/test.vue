@@ -227,6 +227,94 @@
       </UiModal>
     </section>
 
+    <!-- UiDatePicker -->
+    <section v-show="componentPreviewTab === 'ui-date-picker'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h2 class="text-lg font-semibold text-gray-800 mb-1">UiDatePicker</h2>
+      <p class="text-xs text-gray-500 mb-4">حقل تاريخ مع تقويم منبثق — الخصائص: v-model — placeholder — size — disabled — readonly — error — clearable — typable — min — max — displayFormat — firstDayOfWeek</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <UiLabel>عادي (ISO)</UiLabel>
+          <UiDatePicker v-model="date.basic" />
+          <p class="text-xs text-gray-500 mt-1">القيمة: {{ date.basic || '—' }}</p>
+        </div>
+
+        <div>
+          <UiLabel>مع قيمة افتراضية + قابل للمسح</UiLabel>
+          <UiDatePicker v-model="date.withValue" clearable />
+        </div>
+
+        <div>
+          <UiLabel>صيغة العرض dmy (يوم/شهر/سنة)</UiLabel>
+          <UiDatePicker v-model="date.dmy" display-format="dmy" placeholder="dd/mm/yyyy" clearable />
+          <p class="text-xs text-gray-500 mt-1">القيمة المخزنة: {{ date.dmy || '—' }}</p>
+        </div>
+
+        <div>
+          <UiLabel>صيغة العرض mdy (شهر/يوم/سنة)</UiLabel>
+          <UiDatePicker v-model="date.mdy" display-format="mdy" placeholder="mm/dd/yyyy" clearable />
+        </div>
+
+        <div>
+          <UiLabel>قابل للكتابة (typable)</UiLabel>
+          <UiDatePicker v-model="date.typable" typable clearable placeholder="2026-04-26" />
+          <p class="text-xs text-gray-500 mt-1">يمكنك الكتابة يدوياً بصيغة YYYY-MM-DD</p>
+        </div>
+
+        <div>
+          <UiLabel>صغير (size=sm)</UiLabel>
+          <UiDatePicker v-model="date.small" size="sm" clearable />
+        </div>
+
+        <div>
+          <UiLabel>معطل (disabled)</UiLabel>
+          <UiDatePicker model-value="2026-01-15" disabled />
+        </div>
+
+        <div>
+          <UiLabel>قراءة فقط (readonly)</UiLabel>
+          <UiDatePicker model-value="2026-03-20" readonly />
+        </div>
+
+        <div>
+          <UiLabel>حالة الخطأ (error)</UiLabel>
+          <UiDatePicker v-model="date.errorField" error placeholder="حقل به خطأ" />
+        </div>
+
+        <div>
+          <UiLabel>نطاق محدد (min/max)</UiLabel>
+          <UiDatePicker
+            v-model="date.ranged"
+            :min="date.minBound"
+            :max="date.maxBound"
+            clearable
+          />
+          <p class="text-xs text-gray-500 mt-1">من {{ date.minBound }} إلى {{ date.maxBound }}</p>
+        </div>
+
+        <div>
+          <UiLabel>أول أيام الأسبوع: السبت</UiLabel>
+          <UiDatePicker v-model="date.weekSat" :first-day-of-week="6" />
+        </div>
+
+        <div>
+          <UiLabel>أول أيام الأسبوع: الأحد</UiLabel>
+          <UiDatePicker v-model="date.weekSun" :first-day-of-week="0" />
+        </div>
+
+        <div>
+          <UiLabel>أول أيام الأسبوع: الإثنين</UiLabel>
+          <UiDatePicker v-model="date.weekMon" :first-day-of-week="1" />
+        </div>
+
+        <div>
+          <UiLabel>مع حدث change</UiLabel>
+          <UiDatePicker v-model="date.eventDate" clearable @change="onDateChange" />
+          <p class="text-xs text-gray-500 mt-1">آخر تغيير: {{ date.lastChange || '—' }}</p>
+        </div>
+      </div>
+    </section>
+
     <!-- UiToggleButton2 -->
     <section v-show="componentPreviewTab === 'ui-toggle-button-2'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiToggleButton2</h2>
@@ -857,6 +945,29 @@ const longOptions = Array.from({ length: 50 }, (_, i) => ({
 const isViewMode = ref(true)
 const selectedId = ref(1)
 
+const date = ref({
+  basic: '',
+  withValue: '2026-04-26',
+  dmy: '2026-04-26',
+  mdy: '2026-04-26',
+  typable: '',
+  small: '',
+  errorField: '',
+  ranged: '',
+  minBound: '2026-04-01',
+  maxBound: '2026-05-31',
+  weekSat: '',
+  weekSun: '',
+  weekMon: '',
+  eventDate: '',
+  lastChange: ''
+})
+
+const onDateChange = (value) => {
+  date.value.lastChange = value ?? 'تم المسح'
+  toast?.info(`تاريخ جديد: ${value ?? '—'}`)
+}
+
 const toggle1 = ref(false)
 const toggle2 = ref(true)
 const toggle3 = ref(true)
@@ -896,6 +1007,7 @@ const componentTabs = [
   { key: 'ui-toggle-button-2', label: 'UiToggleButton2' },
   { key: 'ui-tabs', label: 'UiTabs' },
   { key: 'ui-modal', label: 'UiModal' },
+  { key: 'ui-date-picker', label: 'UiDatePicker' },
   { key: 'messages-toast', label: 'Messages & Toast' },
   { key: 'combo-box', label: 'ComboBox' },
   { key: 'action-buttons', label: 'ActionButtons' },
