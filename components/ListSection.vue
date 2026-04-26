@@ -15,9 +15,7 @@
       <div class="mb-1.5" v-if="showStatusFilter">
         <select v-model="statusFilter" :disabled="disabled"
           class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100">
-          <option value="all">جميع الحالات</option>
-          <option value="active">نشط</option>
-          <option value="inactive">غير نشط</option>
+          <option v-for="opt in resolvedStatusOptions" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
         </select>
       </div>
 
@@ -113,6 +111,10 @@ const props = defineProps({
   },
   selectedItemId: {
     type: [String, Number, null],
+    default: null
+  },
+  statusOptions: {
+    type: Array,
     default: null
   }
 })
@@ -237,7 +239,8 @@ const formatDate = (dateString) => {
 const itemStatusText = (status) => {
   const statuses = {
     paid: 'مدفوعة', unpaid: 'غير مدفوعة', draft: 'مسودة',
-    cancelled: 'ملغاة', active: 'نشط', inactive: 'غير نشط'
+    cancelled: 'ملغاة', active: 'نشط', inactive: 'غير نشط',
+    pending: 'قيد الانتظار', in_progress: 'قيد التنفيذ', completed: 'مكتملة'
   };
   return statuses[status] || status;
 };
@@ -246,8 +249,23 @@ const itemStatusClass = (status) => {
   const classes = {
     paid: 'bg-green-100 text-green-700', unpaid: 'bg-yellow-100 text-yellow-700',
     draft: 'bg-gray-200 text-gray-600', cancelled: 'bg-red-100 text-red-700',
-    active: 'bg-blue-100 text-blue-700', inactive: 'bg-red-100 text-red-700'
+    active: 'bg-blue-100 text-blue-700', inactive: 'bg-red-100 text-red-700',
+    pending: 'bg-yellow-100 text-yellow-700',
+    in_progress: 'bg-blue-100 text-blue-700',
+    completed: 'bg-green-100 text-green-700'
   };
   return classes[status] || 'bg-gray-100 text-gray-500';
 };
+
+const defaultStatusOptions = [
+  { value: 'all', label: 'جميع الحالات' },
+  { value: 'active', label: 'نشط' },
+  { value: 'inactive', label: 'غير نشط' }
+]
+
+const resolvedStatusOptions = computed(() => {
+  return Array.isArray(props.statusOptions) && props.statusOptions.length
+    ? props.statusOptions
+    : defaultStatusOptions
+})
 </script>
