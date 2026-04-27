@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      {
+        "command": ".cursor/hooks/prevent-dangerous-shell.js",
+        "timeout": 10,
+        "failClosed": false
+      }
+    ],
+    "afterFileEdit": [
+      {
+        "command": ".cursor/hooks/lint-after-edit.js",
+        "timeout": 20,
+        "failClosed": false
+      }
+    ]
+  }
+}

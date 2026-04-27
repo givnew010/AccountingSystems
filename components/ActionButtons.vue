@@ -1,84 +1,115 @@
 <template>
-  <div class="flex flex-wrap gap-2 mb-6">
-    <!-- New Button -->
-    <button
+  <div class="flex flex-wrap items-center gap-2">
+    <UiButton
       v-if="isViewMode && showNew"
       @click="$emit('new')"
-      class="flex items-center justify-center w-10 h-10 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+      variant="primary"
+      size="md"
+      :icon="PlusIcon"
+      icon-button
+      icon-label="إضافة مهمة جديدة"
+      title="إضافة"
     >
-      <PlusIcon class="w-5 h-5" />
-    </button>
+      <span class="sr-only">إضافة</span>
+    </UiButton>
 
     <!-- Edit Button -->
-    <button
+    <UiButton
       v-if="isViewMode && showEdit"
       @click="$emit('edit')"
       :disabled="editDisabled"
-      class="flex items-center justify-center w-10 h-10 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 disabled:opacity-50 disabled:cursor-not-allowed"
+      variant="warning"
+      size="md"
+      :icon="PencilIcon"
+      icon-button
+      icon-label="تعديل المهمة المحددة"
+      title="تعديل"
     >
-      <PencilIcon class="w-5 h-5" />
-    </button>
+      <span class="sr-only">تعديل</span>
+    </UiButton>
 
     <!-- Delete Button -->
-    <button
+    <UiButton
       v-if="isViewMode && showDelete"
       @click="$emit('delete')"
       :disabled="deleteDisabled"
-      class="flex items-center justify-center w-10 h-10 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+      variant="danger"
+      size="md"
+      :icon="TrashIcon"
+      icon-button
+      icon-label="حذف المهمة المحددة"
+      title="حذف"
     >
-      <TrashIcon class="w-5 h-5" />
-    </button>
+      <span class="sr-only">حذف</span>
+    </UiButton>
 
     <!-- Print Button -->
-    <button
+    <UiButton
       v-if="isViewMode && showPrint"
       @click="$emit('print')"
       :disabled="printDisabled"
-      class="flex items-center justify-center w-10 h-10 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+      variant="gray"
+      size="md"
+      :icon="PrinterIcon"
+      icon-button
+      icon-label="طباعة"
+      title="طباعة"
     >
-      <PrinterIcon class="w-5 h-5" />
-    </button>
+      <span class="sr-only">طباعة</span>
+    </UiButton>
 
     <!-- Post Button -->
-    <button
+    <UiButton
       v-if="isViewMode && showPost"
       @click="$emit('post')"
       :disabled="postDisabled"
-      class="flex items-center justify-center w-10 h-10 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+      variant="success"
+      size="md"
+      :icon="ArrowUpTrayIcon"
+      icon-button
+      icon-label="ترحيل"
+      title="ترحيل"
     >
-      <ArrowUpTrayIcon class="w-5 h-5" />
-    </button>
+      <span class="sr-only">ترحيل</span>
+    </UiButton>
 
     <!-- Import Button -->
-    <button
+    <UiButton
       v-if="isViewMode && showImport"
       @click="$emit('import')"
-      class="flex items-center justify-center w-10 h-10 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+      variant="secondary"
+      size="md"
+      :icon="ArrowDownTrayIcon"
+      icon-button
+      icon-label="استيراد"
+      title="استيراد"
     >
-      <ArrowDownTrayIcon class="w-5 h-5" />
-    </button>
+      <span class="sr-only">استيراد</span>
+    </UiButton>
 
     <!-- Save Button -->
-    <button
+    <UiButton
       v-if="!isViewMode && showSave"
       @click="$emit('save')"
       :disabled="saveDisabled"
-      class="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+      variant="primary"
+      size="md"
+      :icon="CheckIcon"
     >
-      <CheckIcon class="w-5 h-5" />
       حفظ
-    </button>
+    </UiButton>
 
     <!-- Cancel Button -->
-    <button
+    <UiButton
       v-if="!isViewMode && showCancel"
       @click="$emit('cancel')"
       :disabled="cancelDisabled"
-      class="flex items-center justify-center gap-2 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+      variant="gray"
+      size="md"
+      :icon="XMarkIcon"
     >
-      <XMarkIcon class="w-5 h-5" />
       إلغاء
-    </button>
+    </UiButton>
   </div>
 </template>
 

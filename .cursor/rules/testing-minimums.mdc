@@ -1,0 +1,25 @@
+---
+description: Define minimum test coverage expectations for feature changes
+alwaysApply: true
+---
+
+# Testing Minimums
+
+Every non-trivial change should include test thinking and verification:
+
+- New business logic: add or update unit tests.
+- User workflows: cover key happy path and one failure path.
+- Bug fixes: add regression test for the bug scenario.
+- Refactors: preserve behavior with existing tests or add safety tests.
+
+## Minimum checklist per feature
+
+- One success scenario.
+- One validation/error scenario.
+- One boundary/edge condition.
+
+## PR quality gate
+
+- Explain what was tested manually.
+- Include commands run and outcomes.
+- If tests are skipped, provide explicit reason and risk statement.

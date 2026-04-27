@@ -1,0 +1,24 @@
+---
+description: Improve UI accessibility for keyboard, labels, and focus behavior
+alwaysApply: true
+---
+
+# Accessibility UI Rules
+
+For all interactive UI:
+
+- All controls must have accessible labels.
+- Keyboard-only users must be able to complete core flows.
+- Focus state must be visible and not removed without replacement.
+- Modal/dialog must trap focus and restore it on close.
+
+## Semantics
+
+- Use correct semantic roles for buttons, links, inputs, and dialogs.
+- Avoid click-only divs when a button element is correct.
+- Add ARIA attributes only when native semantics are insufficient.
+
+## Error and status messaging
+
+- Validation errors should be programmatically associated with fields.
+- Important status changes should be announced accessibly.
