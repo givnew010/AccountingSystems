@@ -1,0 +1,27 @@
+---
+name: 'form-validation-standards'
+description: 'Standardize form validation, errors, and submit behavior'
+applyTo: '**'
+---
+
+# Form Validation Standards
+
+Apply a consistent validation strategy for all forms:
+
+- Validate required fields before submit.
+- Show inline field-level errors near the related control.
+- Keep error messages short, actionable, and user-friendly.
+- Disable submit while async submit is in progress.
+- Do not clear user input when API submit fails.
+
+## UX behavior
+
+- First error gets focus when submit fails.
+- Global error banner is used for server/network failures.
+- Success feedback is visible and non-blocking (toast or inline success state).
+
+## Implementation guidance
+
+- Prefer shared validation utilities/composables.
+- Keep validation schema close to form feature code.
+- Normalize backend validation errors into one UI format.

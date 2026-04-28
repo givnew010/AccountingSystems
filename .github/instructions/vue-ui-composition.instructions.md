@@ -1,0 +1,46 @@
+---
+name: "vue-ui-composition"
+description: "Instruction for preferring shared @ui components in Vue SFCs. Use for suggestions, PR reviews and refactors."
+applyTo: "**/*.vue"
+---
+
+# Vue UI Composition with @ui
+
+For Vue files, keep UI implementation consistent with the system design:
+
+- Import and use existing `@ui` components first (`UiButton`, `UiModal`, `UiSelect`, `UiCheckbox`, `UiBadge`, `UiToolTip`, etc.).
+- Avoid raw HTML controls with ad-hoc classes when an equivalent `@ui` component exists.
+- Keep component props and variants aligned with already used patterns in the codebase.
+- Build pages by composing small `@ui` blocks rather than introducing one-off visual patterns.
+- Preserve interaction consistency (hover, focus, disabled, error states) through shared components.
+
+## Examples
+
+```vue
+<!-- ❌ BAD -->
+<template>
+  <input class="border rounded px-2 py-1" />
+  <button class="bg-green-600 text-white rounded px-3 py-2">Submit</button>
+</template>
+```
+
+```vue
+<!-- ✅ GOOD -->
+<template>
+  <UiSelect v-model="selected" :options="options" />
+  <UiButton color="success">Submit</UiButton>
+</template>
+```
+
+```vue
+<!-- ✅ GOOD: keep confirmation flows in shared patterns -->
+<template>
+  <UiModal>
+    <template #header>Archive Item</template>
+    <UiToolTip text="This can be restored later">
+      <UiBadge color="warning">Info</UiBadge>
+    </UiToolTip>
+    <UiButton color="primary">Confirm</UiButton>
+  </UiModal>
+</template>
+```
