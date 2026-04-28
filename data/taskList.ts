@@ -59,6 +59,36 @@ export const taskList: TaskItem[] = [
     status: 'in_progress',
     dueDate: '2026-04-28',
     createdAt: '2026-04-18'
+  },
+  {
+    id: 6,
+    no: 6,
+    name: 'تدريب الموظفين الجدد',
+    description: 'جلسة تعريفية حول استخدام نظام المحاسبة.',
+    priority: 'medium',
+    status: 'pending',
+    dueDate: '2026-04-28',
+    createdAt: '2026-04-18'
+  },
+  {
+    id: 7,
+    no: 7,
+    name: 'تدريب الموظفين الجدد',
+    description: 'جلسة تعريفية حول استخدام نظام المحاسبة.',
+    priority: 'medium',
+    status: 'pending',
+    dueDate: '2026-04-28',
+    createdAt: '2026-04-18'
+  },
+  {
+    id: 8,
+    no: 8,
+    name: 'تدريب الموظفين الجدد',
+    description: 'جلسة تعريفية حول استخدام نظام المحاسبة.',
+    priority: 'medium',
+    status: 'pending',
+    dueDate: '2026-04-28',
+    createdAt: '2026-04-18'
   }
 ]
 

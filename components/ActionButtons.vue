@@ -7,7 +7,6 @@
       size="md"
       :icon="PlusIcon"
       icon-button
-      icon-label="إضافة مهمة جديدة"
       title="إضافة"
     >
       <span class="sr-only">إضافة</span>
@@ -22,7 +21,6 @@
       size="md"
       :icon="PencilIcon"
       icon-button
-      icon-label="تعديل المهمة المحددة"
       title="تعديل"
     >
       <span class="sr-only">تعديل</span>
@@ -37,7 +35,6 @@
       size="md"
       :icon="TrashIcon"
       icon-button
-      icon-label="حذف المهمة المحددة"
       title="حذف"
     >
       <span class="sr-only">حذف</span>
@@ -52,7 +49,6 @@
       size="md"
       :icon="PrinterIcon"
       icon-button
-      icon-label="طباعة"
       title="طباعة"
     >
       <span class="sr-only">طباعة</span>
@@ -67,7 +63,6 @@
       size="md"
       :icon="ArrowUpTrayIcon"
       icon-button
-      icon-label="ترحيل"
       title="ترحيل"
     >
       <span class="sr-only">ترحيل</span>
