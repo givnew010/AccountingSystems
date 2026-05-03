@@ -80,13 +80,24 @@ export const useAuthStore = defineStore('auth', () => {
 
   const checkAuth = () => {
     if (process.client) {
-      const storedUser = localStorage.getItem('auth_user')
+      // تم تعليق الكود رقم #1 واستخدام الكود رقم #2 من اجل عملية login مباشرة 
+      // #1
+      /* const storedUser = localStorage.getItem('auth_user')
       const token = localStorage.getItem('auth_token')
 
       if (storedUser && token) {
         user.value = JSON.parse(storedUser)
         isAuthenticated.value = true
-      }
+      } */
+
+      // #2
+      user.value = {
+      id: mockUsers[0].id,
+      name: mockUsers[0].name,
+      role: mockUsers[0].role,
+      permissions: mockUsers[0].permissions
+    }
+    isAuthenticated.value = true
     }
   }
 

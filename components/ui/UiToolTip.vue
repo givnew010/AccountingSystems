@@ -59,7 +59,7 @@ const props = withDefaults(
     text: '',
     title: '',
     description: '',
-    position: 'top',
+    position: 'right',
     delay: 120,
     disabled: false
   }

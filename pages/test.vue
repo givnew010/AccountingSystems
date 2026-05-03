@@ -8,7 +8,8 @@
     <UiTabs v-model="componentPreviewTab" :tabs="componentTabs" />
 
     <!-- UiBadge -->
-    <section v-show="componentPreviewTab === 'ui-badge'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-badge'"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiBadge</h2>
       <p class="text-xs text-gray-500 mb-4">الخصائص: variant — size — pill — styleType — icon — iconPosition</p>
       <div class="space-y-4">
@@ -47,15 +48,18 @@
         <h3 class="text-lg font-semibold text-gray-800 mb-1">icons Withe Size : md , iconSize : lg</h3>
         <div class="flex flex-wrap items-center gap-2">
           <UiBadge size="md" iconSize="lg" variant="red" :icon="NoSymbolIcon">موقف عن البيع</UiBadge>
-          <UiBadge size="md" iconSize="lg" variant="red" style-type="outline" :icon="NoSymbolIcon">موقف عن البيع</UiBadge>
-          <UiBadge size="md" iconSize="lg" variant="blue" :icon="InformationCircleIcon" icon-position="left">تفاصيل المنتج</UiBadge>
+          <UiBadge size="md" iconSize="lg" variant="red" style-type="outline" :icon="NoSymbolIcon">موقف عن البيع
+          </UiBadge>
+          <UiBadge size="md" iconSize="lg" variant="blue" :icon="InformationCircleIcon" icon-position="left">تفاصيل
+            المنتج</UiBadge>
           <UiBadge size="md" iconSize="lg" variant="green" :icon="CheckCircleIcon">متاح</UiBadge>
         </div>
       </div>
     </section>
 
     <!-- UiIcon -->
-    <section v-show="componentPreviewTab === 'ui-icon'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-icon'"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiIcon</h2>
       <p class="text-xs text-gray-500 mb-4">الخصائص: icon — size — tone — spin — decorative — label</p>
       <div class="space-y-3">
@@ -82,7 +86,8 @@
     </section>
 
     <!-- UiToolTip -->
-    <section v-show="componentPreviewTab === 'ui-tooltip'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-tooltip'"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiToolTip</h2>
       <p class="text-xs text-gray-500 mb-4">الخصائص: text — title — description — position — delay — disabled</p>
 
@@ -108,32 +113,20 @@
         <div>
           <p class="text-sm text-gray-600 mb-3">2) الحالة التفصيلية (title + description) مع جميع الاتجاهات</p>
           <div class="flex flex-wrap items-center gap-3">
-            <UiToolTip
-              position="top"
-              title="This is a tooltip"
-              description="Tooltips are used to describe or identify an element. In most scenarios, tooltips help the user understand meaning, function or alt-text."
-            >
+            <UiToolTip position="top" title="This is a tooltip"
+              description="Tooltips are used to describe or identify an element. In most scenarios, tooltips help the user understand meaning, function or alt-text.">
               <UiButton size="sm" variant="primary">Detailed Top</UiButton>
             </UiToolTip>
-            <UiToolTip
-              position="right"
-              title="This is a tooltip"
-              description="Tooltips are used to describe or identify an element. In most scenarios, tooltips help the user understand meaning, function or alt-text."
-            >
+            <UiToolTip position="right" title="This is a tooltip"
+              description="Tooltips are used to describe or identify an element. In most scenarios, tooltips help the user understand meaning, function or alt-text.">
               <UiButton size="sm" variant="secondary">Detailed Right</UiButton>
             </UiToolTip>
-            <UiToolTip
-              position="bottom"
-              title="This is a tooltip"
-              description="Tooltips are used to describe or identify an element. In most scenarios, tooltips help the user understand meaning, function or alt-text."
-            >
+            <UiToolTip position="bottom" title="This is a tooltip"
+              description="Tooltips are used to describe or identify an element. In most scenarios, tooltips help the user understand meaning, function or alt-text.">
               <UiButton size="sm" variant="success">Detailed Bottom</UiButton>
             </UiToolTip>
-            <UiToolTip
-              position="left"
-              title="This is a tooltip"
-              description="Tooltips are used to describe or identify an element. In most scenarios, tooltips help the user understand meaning, function or alt-text."
-            >
+            <UiToolTip position="left" title="This is a tooltip"
+              description="Tooltips are used to describe or identify an element. In most scenarios, tooltips help the user understand meaning, function or alt-text.">
               <UiButton size="sm" variant="gray">Detailed Left</UiButton>
             </UiToolTip>
           </div>
@@ -148,11 +141,8 @@
             <UiToolTip text="لن يظهر لأن المكوّن disabled" disabled>
               <UiButton size="sm" variant="danger">Disabled Tooltip</UiButton>
             </UiToolTip>
-            <UiToolTip
-              title="تنبيه سريع"
-              description="يمكنك تمرير title فقط، أو title مع description حسب الحاجة."
-              position="top"
-            >
+            <UiToolTip title="تنبيه سريع" description="يمكنك تمرير title فقط، أو title مع description حسب الحاجة."
+              position="top">
               <UiButton size="sm" variant="secondary">Title + Description</UiButton>
             </UiToolTip>
           </div>
@@ -161,7 +151,8 @@
     </section>
 
     <!-- UiTabs -->
-    <section v-show="componentPreviewTab === 'ui-tabs'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-tabs'"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiTabs</h2>
       <p class="text-xs text-gray-500 mb-4">الخصائص: tabs — v-model — change</p>
       <UiTabs v-model="activeTab" :tabs="tabsItems" @change="onTabChange">
@@ -177,50 +168,29 @@
     </section>
 
     <!-- UiModal -->
-    <section v-show="componentPreviewTab === 'ui-modal'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-modal'"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiModal</h2>
-      <p class="text-xs text-gray-500 mb-4">الخصائص: v-model — title — description — headerVariant — maxWidth — footer actions (cancel/confirm/extra)</p>
+      <p class="text-xs text-gray-500 mb-4">الخصائص: v-model — title — description — headerVariant — maxWidth — footer
+        actions (cancel/confirm/extra)</p>
       <div class="flex flex-wrap gap-2">
         <UiButton @click="showDemoModal = true">فتح مودال افتراضي</UiButton>
         <UiButton variant="danger" @click="showDangerModal = true">فتح مودال تحذيري</UiButton>
       </div>
-      <UiModal
-        v-model="showDemoModal"
-        title="تأكيد العملية"
-        description="مودال افتراضي مع 3 أزرار قابلة للتخصيص."
-        max-width="md"
-        header-variant="primary"
-        :show-extra-button="true"
-        extra-button-text="حفظ كمسودة"
-        :extra-button-icon="PlusIcon"
-        cancel-button-text="إلغاء"
-        :cancel-button-icon="XCircleIcon"
-        confirm-button-text="تأكيد الحفظ"
-        :confirm-button-icon="CheckCircleIcon"
-        @confirm="onModalConfirm"
-        @cancel="onModalCancel"
-        @extra="onModalExtra"
-      >
+      <UiModal v-model="showDemoModal" title="تأكيد العملية" description="مودال افتراضي مع 3 أزرار قابلة للتخصيص."
+        max-width="md" header-variant="primary" :show-extra-button="true" extra-button-text="حفظ كمسودة"
+        :extra-button-icon="PlusIcon" cancel-button-text="إلغاء" :cancel-button-icon="XCircleIcon"
+        confirm-button-text="تأكيد الحفظ" :confirm-button-icon="CheckCircleIcon" @confirm="onModalConfirm"
+        @cancel="onModalCancel" @extra="onModalExtra">
         <p class="text-sm text-gray-700">
           هل تريد حفظ التغييرات الحالية؟ يمكنك تجربة زر إضافي بدون إغلاق تلقائي.
         </p>
       </UiModal>
 
-      <UiModal
-        v-model="showDangerModal"
-        title="حذف العنصر"
-        description="هذا الإجراء لا يمكن التراجع عنه."
-        max-width="sm"
-        header-variant="danger"
-        :show-extra-button="false"
-        cancel-button-text="تراجع"
-        confirm-button-text="حذف نهائي"
-        confirm-button-variant="danger"
-        :confirm-button-icon="TrashIcon"
-        :close-on-backdrop="false"
-        @confirm="onDangerConfirm"
-        @cancel="onDangerCancel"
-      >
+      <UiModal v-model="showDangerModal" title="حذف العنصر" description="هذا الإجراء لا يمكن التراجع عنه."
+        max-width="sm" header-variant="danger" :show-extra-button="false" cancel-button-text="تراجع"
+        confirm-button-text="حذف نهائي" confirm-button-variant="danger" :confirm-button-icon="TrashIcon"
+        :close-on-backdrop="false" @confirm="onDangerConfirm" @cancel="onDangerCancel">
         <p class="text-sm text-gray-700">
           عند التأكيد سيتم حذف البيانات بشكل دائم.
         </p>
@@ -228,9 +198,12 @@
     </section>
 
     <!-- UiDatePicker -->
-    <section v-show="componentPreviewTab === 'ui-date-picker'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-date-picker'"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiDatePicker</h2>
-      <p class="text-xs text-gray-500 mb-4">حقل تاريخ مع تقويم منبثق — الخصائص: v-model — placeholder — size — disabled — readonly — error — clearable — typable — min — max — displayFormat — firstDayOfWeek</p>
+      <p class="text-xs text-gray-500 mb-4">حقل تاريخ مع تقويم منبثق — الخصائص: v-model — placeholder — size — disabled
+        —
+        readonly — error — clearable — typable — min — max — displayFormat — firstDayOfWeek</p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
@@ -283,12 +256,7 @@
 
         <div>
           <UiLabel>نطاق محدد (min/max)</UiLabel>
-          <UiDatePicker
-            v-model="date.ranged"
-            :min="date.minBound"
-            :max="date.maxBound"
-            clearable
-          />
+          <UiDatePicker v-model="date.ranged" :min="date.minBound" :max="date.maxBound" clearable />
           <p class="text-xs text-gray-500 mt-1">من {{ date.minBound }} إلى {{ date.maxBound }}</p>
         </div>
 
@@ -316,7 +284,8 @@
     </section>
 
     <!-- UiToggleButton2 -->
-    <section v-show="componentPreviewTab === 'ui-toggle-button-2'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-toggle-button-2'"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiToggleButton2</h2>
       <p class="text-xs text-gray-500 mb-4">مطابق لنمط الصورة: سويتش + مجموعة خيارات مع أيقونات</p>
       <div class="space-y-4">
@@ -333,9 +302,11 @@
     </section>
 
     <!-- UiButton -->
-    <section v-show="componentPreviewTab === 'ui-button'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-button'"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiButton</h2>
-      <p class="text-xs text-gray-500 mb-4">الخصائص: variant — size — disabled — type — iconButton — iconButtonStyle (filled/plain) — icon — iconPosition — slot:icon</p>
+      <p class="text-xs text-gray-500 mb-4">الخصائص: variant — size — disabled — type — iconButton — iconButtonStyle
+        (filled/plain) — icon — iconPosition — slot:icon</p>
 
       <div class="space-y-4">
         <div>
@@ -502,7 +473,8 @@
     </section>
 
     <!-- UiInput -->
-    <section v-show="componentPreviewTab === 'ui-input'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-input'"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiInput</h2>
       <p class="text-xs text-gray-500 mb-4">الخصائص: type — placeholder — size (sm/md) — disabled — readonly — error</p>
 
@@ -537,14 +509,22 @@
           <UiInput model-value="قيمة للقراءة فقط" readonly />
         </div>
         <div>
-          <UiLabel>حالة الخطأ (error)</UiLabel>
-          <UiInput v-model="form.errorField" placeholder="حقل به خطأ" error />
+          <UiLabel>حالة الخطأ (error) — مع أيقونة وتلميح</UiLabel>
+          <UiInput v-model="form.errorField" placeholder="حقل به خطأ" error :error-message="'هذا الحقل مطلوب'" />
+          <p class="text-xs text-gray-500 mt-1">القيمة: {{ form.errorField || '—' }}</p>
+        </div>
+
+        <div>
+          <UiLabel>صغير (size=sm) و >حالة الخطأ (error) — مع أيقونة وتلميح</UiLabel>
+          <UiInput v-model="form.errorField" size="sm" placeholder="حقل به خطأ مخصص" error
+            :error-message="'المدخل غير صالح'" />
         </div>
       </div>
     </section>
 
     <!-- UiTextarea -->
-    <section v-show="componentPreviewTab === 'ui-textarea'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-textarea'"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiTextarea</h2>
       <p class="text-xs text-gray-500 mb-4">الخصائص: placeholder — rows — size — disabled — readonly — error</p>
 
@@ -571,13 +551,20 @@
         </div>
         <div>
           <UiLabel>خطأ</UiLabel>
-          <UiTextarea v-model="form.errorNotes" placeholder="ملاحظة بها خطأ" error />
+          <UiTextarea v-model="form.errorNotes" placeholder="ملاحظة بها خطأ" error
+            :error-message="'هذه الملاحظة مطلوبة'" />
+        </div>
+
+        <div>
+          <UiLabel>خطأ مع أيقونة مخصصة</UiLabel>
+          <UiTextarea v-model="form.errorNotes" placeholder="ملاحظة بها خطأ" error :error-message="'المدخل غير صالح'" />
         </div>
       </div>
     </section>
 
     <!-- UiSelect -->
-    <section v-show="componentPreviewTab === 'ui-select'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-select'"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiSelect</h2>
       <p class="text-xs text-gray-500 mb-4">قائمة منسدلة أصلية — الخصائص: size — disabled — error</p>
 
@@ -608,7 +595,15 @@
         </div>
         <div>
           <UiLabel>خطأ</UiLabel>
-          <UiSelect v-model="form.selectErr" error>
+          <UiSelect v-model="form.selectErr" error :error-message="'الاختيار مطلوب'">
+            <option value="">اختر...</option>
+            <option value="1">قيمة 1</option>
+          </UiSelect>
+        </div>
+
+        <div>
+          <UiLabel>خطأ مع أيقونة مخصصة</UiLabel>
+          <UiSelect v-model="form.selectErr" error :error-message="'القيمة غير مقبولة'">
             <option value="">اختر...</option>
             <option value="1">قيمة 1</option>
           </UiSelect>
@@ -617,7 +612,8 @@
     </section>
 
     <!-- UiCheckbox -->
-    <section v-show="componentPreviewTab === 'ui-checkbox'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-checkbox'"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiCheckbox</h2>
       <p class="text-xs text-gray-500 mb-4">الخصائص: modelValue — disabled — id — slot للنص</p>
 
@@ -626,12 +622,15 @@
         <UiCheckbox v-model="form.newsletter" id="cb-news">اشتراك في النشرة البريدية</UiCheckbox>
         <UiCheckbox :model-value="true" disabled id="cb-d1">معطل (محدد)</UiCheckbox>
         <UiCheckbox :model-value="false" disabled id="cb-d2">معطل (غير محدد)</UiCheckbox>
-        <p class="text-xs text-gray-500">الموافقة: {{ form.terms ? 'نعم' : 'لا' }} — النشرة: {{ form.newsletter ? 'نعم' : 'لا' }}</p>
+        <p class="text-xs text-gray-500">الموافقة: {{ form.terms ? 'نعم' : 'لا' }} — النشرة: {{ form.newsletter ? 'نعم'
+          :
+          'لا' }}</p>
       </div>
     </section>
 
     <!-- UiLabel -->
-    <section v-show="componentPreviewTab === 'ui-label'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-label'"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiLabel</h2>
       <p class="text-xs text-gray-500 mb-4">الخصائص: forId — required — disabled</p>
 
@@ -652,9 +651,12 @@
     </section>
 
     <!-- ComboBox -->
-    <section v-show="componentPreviewTab === 'combo-box'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'combo-box'"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">ComboBox</h2>
-      <p class="text-xs text-gray-500 mb-4">قائمة منسدلة مع بحث — الخصائص: options — placeholder — searchable — clearable — size — disabled</p>
+      <p class="text-xs text-gray-500 mb-4">قائمة منسدلة مع بحث — الخصائص: options — placeholder — searchable —
+        clearable —
+        size — disabled</p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
@@ -686,9 +688,12 @@
     </section>
 
     <!-- UiToggleButton -->
-    <section v-show="componentPreviewTab === 'ui-toggle-button'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-toggle-button'"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiToggleButton</h2>
-      <p class="text-xs text-gray-500 mb-4">مفتاح تبديل (boolean) أو مجموعة خيارات — الخصائص: size — color — variant — onLabel/offLabel — onIcon/offIcon — knobOnIcon/knobOffIcon — options — disabled (الأيقونات الداخلية decorative افتراضياً)</p>
+      <p class="text-xs text-gray-500 mb-4">مفتاح تبديل (boolean) أو مجموعة خيارات — الخصائص: size — color — variant —
+        onLabel/offLabel — onIcon/offIcon — knobOnIcon/knobOffIcon — options — disabled (الأيقونات الداخلية decorative
+        افتراضياً)</p>
 
       <div class="space-y-6">
         <div>
@@ -710,15 +715,13 @@
         <div>
           <p class="text-sm text-gray-600 mb-2">سويتش بأيقونة (variant=outline)</p>
           <div class="flex items-center gap-4">
-            <UiToggleButton
-              v-model="toggle3"
-              variant="outline"
-              :knob-on-icon="LockClosedIcon"
-              :knob-off-icon="LockOpenIcon"
-            />
+            <UiToggleButton v-model="toggle3" variant="outline" :knob-on-icon="LockClosedIcon"
+              :knob-off-icon="LockOpenIcon" />
             <span class="text-sm text-gray-500">{{ toggle3 ? 'مغلق' : 'مفتوح' }}</span>
           </div>
-          <p class="text-xs text-gray-500 mt-2">ملاحظة: أيقونات المفتاح هنا تُعرض للزينة داخل المكوّن، لذلك لا تحتاج label منفصل.</p>
+          <p class="text-xs text-gray-500 mt-2">ملاحظة: أيقونات المفتاح هنا تُعرض للزينة داخل المكوّن، لذلك لا تحتاج
+            label
+            منفصل.</p>
         </div>
 
         <div>
@@ -761,9 +764,11 @@
     </section>
 
     <!-- UiScroll -->
-    <section v-show="componentPreviewTab === 'ui-scroll'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'ui-scroll'"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">UiScroll</h2>
-      <p class="text-xs text-gray-500 mb-4">حاوية تمرير مع شريط تمرير مخصص — الخصائص: maxHeight — height — maxWidth — horizontal — size (sm/md/lg)</p>
+      <p class="text-xs text-gray-500 mb-4">حاوية تمرير مع شريط تمرير مخصص — الخصائص: maxHeight — height — maxWidth —
+        horizontal — size (sm/md/lg)</p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
@@ -779,7 +784,8 @@
           <p class="text-sm text-gray-600 mb-2">تمرير أفقي (horizontal)</p>
           <UiScroll horizontal max-width="100%" class="border border-gray-200 rounded-lg p-3">
             <div class="flex gap-3 w-max">
-              <div v-for="i in 20" :key="i" class="w-32 h-20 flex-shrink-0 bg-blue-100 text-blue-700 rounded flex items-center justify-center font-medium">
+              <div v-for="i in 20" :key="i"
+                class="w-32 h-20 flex-shrink-0 bg-blue-100 text-blue-700 rounded flex items-center justify-center font-medium">
                 بطاقة {{ i }}
               </div>
             </div>
@@ -807,54 +813,44 @@
     </section>
 
     <!-- ActionButtons -->
-    <section v-show="componentPreviewTab === 'action-buttons'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'action-buttons'"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">ActionButtons</h2>
       <p class="text-xs text-gray-500 mb-4">أزرار الإجراءات الموحدة (جديد / تعديل / حفظ / إلغاء / حذف ...)</p>
-      <ActionButtons
-        :is-view-mode="isViewMode"
-        :selected-id="selectedId"
-        @new="isViewMode = false; selectedId = null"
-        @edit="isViewMode = false"
-        @save="isViewMode = true"
-        @cancel="isViewMode = true"
-        @delete="selectedId = null"
-      />
-      <p class="text-xs text-gray-500 mt-3">الوضع: {{ isViewMode ? 'عرض' : 'تحرير' }} — العنصر المحدد: {{ selectedId ?? '—' }}</p>
+      <ActionButtons :is-view-mode="isViewMode" :selected-id="selectedId" @new="isViewMode = false; selectedId = null"
+        @edit="isViewMode = false" @save="isViewMode = true" @cancel="isViewMode = true" @delete="selectedId = null" />
+      <p class="text-xs text-gray-500 mt-3">الوضع: {{ isViewMode ? 'عرض' : 'تحرير' }} — العنصر المحدد: {{ selectedId ??
+        '—'
+      }}</p>
     </section>
 
     <!-- DynamicTable -->
-    <section v-show="componentPreviewTab === 'dynamic-table'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'dynamic-table'"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">DynamicTable</h2>
       <p class="text-xs text-gray-500 mb-4">جدول قابل للتحرير مع أعمدة متنوعة</p>
       <div class="mb-3">
         <UiCheckbox v-model="tableEditMode">وضع التحرير</UiCheckbox>
       </div>
-      <DynamicTable
-        v-model="tableRows"
-        :columns="tableColumns"
-        :is-view-mode="!tableEditMode"
-        title="عناصر تجريبية"
-        empty-text="لا توجد عناصر"
-      />
+      <DynamicTable v-model="tableRows" :columns="tableColumns" :is-view-mode="!tableEditMode" title="عناصر تجريبية"
+        empty-text="لا توجد عناصر" />
     </section>
 
     <!-- ListSection -->
-    <section v-show="componentPreviewTab === 'list-section'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'list-section'"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">ListSection</h2>
       <p class="text-xs text-gray-500 mb-4">قائمة جانبية للاختيار من بين عناصر</p>
       <div class="h-72 border border-gray-200 rounded-lg overflow-hidden flex">
-        <ListSection
-          :items="listItems"
-          :selected-item-id="listSelectedId"
-          title="قائمة العملاء"
-          @select-item="(id) => listSelectedId = id"
-        />
+        <ListSection :items="listItems" :selected-item-id="listSelectedId" title="قائمة العملاء"
+          @select-item="(id) => listSelectedId = id" />
       </div>
       <p class="text-xs text-gray-500 mt-2">المختار: {{ listSelectedId ?? '—' }}</p>
     </section>
 
     <!-- MessageDialog & Toast -->
-    <section v-show="componentPreviewTab === 'messages-toast'" class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <section v-show="componentPreviewTab === 'messages-toast'"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
       <h2 class="text-lg font-semibold text-gray-800 mb-1">رسائل وإشعارات</h2>
       <p class="text-xs text-gray-500 mb-4">MessageDialog (عبر inject) و Toast (عبر useToast)</p>
 
