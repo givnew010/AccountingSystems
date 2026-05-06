@@ -14,18 +14,21 @@
           !searchable && !disabled ? 'cursor-pointer' : ''
         ]" />
 
-      <!-- Button Clear -->
-      <UiButton v-if="clearable && hasValue && !disabled" type="button" tabindex="-1" @mousedown.prevent="clear"
-        :variant="'secondary'" :iconButton="true" iconButtonStyle="plain" :icon="XMarkIcon" :size="size" title="مسح" />
-      <!-- :class="size === 'sm' ? 'px-1' : 'px-1.5'" -->
-      <!-- Button Dropdown -->
-      <UiButton v-if="!disabled" type="button" tabindex="-1" @mousedown.prevent @click.stop="toggle" :iconButton="true"
-        iconButtonStyle="plain" :icon="ChevronDownIcon" :size="size" :class="[
-          size === 'sm' ? 'pl-1 pr-1.5' : 'pl-1 pr-[-2px]',
-          'transition-transform',
-          isOpen ? 'rotate-180' : ''
-        ]" :aria-expanded="isOpen" aria-haspopup="listbox" />
-      <!-- size === 'sm' ? 'pl-1 pr-1.5' : 'pl-1 pr-1', -->
+      <div class="flex items-center gap-1 pl-3">
+        <!-- Button Clear -->
+        <UiButton v-if="clearable && hasValue && !disabled" tabindex="-1" :size="size" :iconButton="true"
+          iconButtonStyle="plain" :iconButtonPlainWithSize="false" :icon="XMarkIcon" @mousedown.prevent="clear" />
+
+        <!-- errorMessage -->
+
+
+        <!-- Button Dropdown -->
+        <UiButton v-if="!disabled" tabindex="-1" :size="size" iconSize="md" :iconButton="true" iconButtonStyle="plain"
+          :iconButtonPlainWithSize="false" :icon="ChevronDownIcon" :aria-expanded="isOpen" aria-haspopup="listbox"
+          @mousedown.prevent @click.stop="toggle" :class="['transition-transform', isOpen ? 'rotate-180' : '']" />
+        <!-- size === 'sm' ? 'pl-1 pr-1.5' : 'pl-1 pr-1', -->
+      </div>
+
     </div>
 
     <ul v-show="isOpen" ref="listRef"
@@ -53,7 +56,9 @@
 <script setup lang="ts">
 import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import UiButton from './ui/UiButton.vue'
-import { XMarkIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
+import UiIcon from './ui/UiIcon.vue'
+import UiToolTip from './ui/UiToolTip.vue'
+import { XMarkIcon, ChevronDownIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
 import { baseFieldClasses, inputSizeClasses, type UiSize } from './ui/uiClasses'
 
 interface Option {
@@ -78,7 +83,7 @@ const props = withDefaults(defineProps<Props>(), {
   searchable: true,
   clearable: false,
   size: 'md',
-  noResultsText: 'لا توجد نتائج'
+  noResultsText: 'لا توجد نتائج',
 })
 
 const emit = defineEmits<{

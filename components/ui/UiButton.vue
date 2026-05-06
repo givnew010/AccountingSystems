@@ -1,34 +1,17 @@
 <template>
-  <button
-    v-bind="$attrs"
-    :type="type"
-    :disabled="disabled"
-    :class="[
-      'inline-flex items-center justify-center rounded-lg transition-colors',
-      sizeClasses,
-      variantClasses,
-      disabled ? 'opacity-50 cursor-not-allowed' : '',
-      $attrs.class || ''
-    ]"
-  >
-    <UiIcon
-      v-if="icon && iconPosition === 'left'"
-      :icon="icon"
-      :size="iconSize"
-      :decorative="iconDecorative"
-      :label="iconLabel"
-      :spin="iconSpin"
-    />
+  <button v-bind="$attrs" :type="type" :disabled="disabled" :class="[
+    'inline-flex items-center justify-center rounded-lg transition-colors',
+    sizeClasses,
+    variantClasses,
+    disabled ? 'opacity-50 cursor-not-allowed' : '',
+    $attrs.class || ''
+  ]">
+    <UiIcon v-if="icon && iconPosition === 'left'" :icon="icon" :size="iconSize" :decorative="iconDecorative"
+      :spin="iconSpin" />
     <slot v-if="!icon" name="icon" />
     <slot />
-    <UiIcon
-      v-if="icon && iconPosition === 'right'"
-      :icon="icon"
-      :size="iconSize"
-      :decorative="iconDecorative"
-      :label="iconLabel"
-      :spin="iconSpin"
-    />
+    <UiIcon v-if="icon && iconPosition === 'right'" :icon="icon" :size="iconSize" :decorative="iconDecorative"
+      :spin="iconSpin" />
   </button>
 </template>
 
@@ -54,8 +37,8 @@ const props = withDefaults(
     iconPosition?: 'left' | 'right'
     iconSize?: IconSize
     iconDecorative?: boolean
-    iconLabel?: string
-    iconSpin?: boolean
+    iconSpin?: boolean,
+    iconButtonPlainWithSize?: boolean
   }>(),
   {
     variant: 'primary',
@@ -68,13 +51,16 @@ const props = withDefaults(
     iconPosition: 'left',
     iconSize: 'sm',
     iconDecorative: true,
-    iconLabel: '',
-    iconSpin: false
+    iconSpin: false,
+    iconButtonPlainWithSize: true
   }
 )
 
 const sizeClasses = computed(() => {
   if (props.iconButton) {
+    if (props.iconButtonStyle === 'plain' && !props.iconButtonPlainWithSize) {
+      return props.size === 'sm' ? 'text-sm' : ''
+    }
     return props.size === 'sm' ? 'w-8 h-8 text-sm' : 'w-10 h-10'
   }
   return props.size === 'sm' ? 'gap-1.5 px-3 py-1.5 text-sm' : 'gap-2 px-4 py-2'
@@ -116,4 +102,3 @@ const variantClasses = computed(() => {
   }
 })
 </script>
-
